@@ -1,15 +1,10 @@
-from odoo import models
+from odoo import models, api
 
-class StockMove(models.Model):
-    _inherit = 'stock.move'
+class ProcurementGroup(models.Model):
+    _inherit = 'procurement.group'
 
-    def _action_confirm(self, merge=True, merge_into=False):
-        # 'YENA DEMİR ÇELİK' şirketi aktifken,
-        # '_action_confirm' metodu hiçbir şey yapmaz ve hemen çıkar.
-        # Bu, bir satış siparişi onaylandığında otomatik satınalma siparişi oluşturmayı engeller.
+    def _run_buy(self, product_id, product_qty, product_uom, location_id, name, origin, values):
+        # Belirli bir şirket için satın alma işlemlerini engelle
         if self.env.company.id == 1:
-            return self
-
-        # 'YENA DEMİR ÇELİK' şirketi aktif değilken,
-        # '_action_confirm' metodu normal şekilde çalışır.
-        return super()._action_confirm(merge=merge, merge_into=merge_into)
+            return
+        super()._run_buy(product_id, product_qty, product_uom, location_id, name, origin, values)
