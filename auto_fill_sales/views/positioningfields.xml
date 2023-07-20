@@ -31,6 +31,7 @@
                     <field name="x_customer_reference" string="C-Reference No" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}" required="1"/>
                     <field name="x_project_sales" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
                     <field name="analytic_account_id" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
+                    <field name="is_current_user" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='product_id']" position="after">
                     <field name="x_coating"/>
@@ -43,6 +44,10 @@
                 </xpath>
                 <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_unit']" position="after">
                     <field name="pricekg"/>
+                </xpath>
+                <xpath expr="(//button[@name='action_quotation_send' and @states='draft'])[1]" position="after">
+                    <button name="action_quotation_send" string="Send by Email" type="object" class="oe_highlight" data-hotkey="g"
+                          attrs="{'invisible': ['|', ('is_current_user', '=', False), ('state', '=', 'done')]}"/>
                 </xpath>
             </field>
         </record>
