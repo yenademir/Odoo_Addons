@@ -50,10 +50,3 @@ class PurchaseOrderLine(models.Model):
     def _compute_pricekg(self):
         for line in self:
             line.pricekg = line.price_subtotal / line.x_totalweight if line.x_totalweight else 0
-
-    @api.model
-    def create(self, vals):
-        # Set x_stage to 21 when a purchase order line is created
-        vals['x_stage'] = 21
-
-        return super(PurchaseOrderLine, self).create(vals)
