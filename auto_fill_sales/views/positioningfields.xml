@@ -44,10 +44,6 @@
                 <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_unit']" position="after">
                     <field name="pricekg"/>
                 </xpath>
-                <xpath expr="(//button[@name='action_quotation_send' and @states='draft'])[1]" position="after">
-                    <button name="action_quotation_send" string="Send by Email" type="object" class="oe_highlight" data-hotkey="g"
-                          attrs="{'invisible': ['|', ('is_current_user', '=', False), ('state', '=', 'done')]}"/>
-                </xpath>
             </field>
         </record>
     </data>
