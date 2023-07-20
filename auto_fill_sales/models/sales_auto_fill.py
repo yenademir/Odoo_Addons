@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
     def _compute_is_current_user(self):
         for record in self:
             record.is_current_user = record.user_id == self.env.user
-            s
+            
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         self.x_contact_id = False
