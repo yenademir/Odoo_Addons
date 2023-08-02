@@ -8,7 +8,6 @@
     'license': 'LGPL-3',
     'depends': ['base', 'sale_management', 'project', 'analytic'],
     'data': [
-        'views/hiddenfields2.xml',
         'views/invisiblefields.xml',
         'views/positioningfields.xml',
         'views/requiredfields.xml',
