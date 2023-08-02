@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <record id="view_order_form_inherit" model="ir.ui.view">
+        <record id="view_order_form_inherit_hidden" model="ir.ui.view">
             <field name="name">sale.order.form.inherit.hidden.yena</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
