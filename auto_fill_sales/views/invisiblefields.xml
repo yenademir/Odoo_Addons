@@ -36,9 +36,9 @@
                 <xpath expr="//field[@name='origin']"  position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <!--<xpath expr="//field[@name='opportunity_id']"  position="attributes">
+                <xpath expr="//field[@name='opportunity_id']"  position="attributes">
                     <attribute name="invisible">1</attribute>
-                </xpath>-->
+                </xpath>
                 <xpath expr="//field[@name='sale_order_template_id']"  position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
