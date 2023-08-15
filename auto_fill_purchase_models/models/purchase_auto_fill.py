@@ -8,6 +8,11 @@ class PurchaseOrder(models.Model):
     x_required_delivery_date = fields.Date('Required Delivery Date')
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
 
+    @api.onchange('x_required_delivery_date')
+    def _onchange_x_required_delivery_date(self):
+        for line in self.order_line:
+            line.x_required_delivery_date = self.x_required_delivery_date
+
     @api.depends('user_id')
     def _compute_is_current_user(self):
         for record in self:
@@ -55,7 +60,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    x_required_delivery_date = fields.Date('Product Required Delivery Date')
+    x_required_delivery_date = fields.Date('Required Delivery Date')
     pricekg = fields.Float(compute='_compute_pricekg', string='EUR/kg', readonly=True, store=True)
 
     @api.depends('price_subtotal', 'x_totalweight')
