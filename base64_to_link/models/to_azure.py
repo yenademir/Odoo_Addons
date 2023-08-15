@@ -62,6 +62,8 @@ class ProductTemplate(models.Model):
                 file_name = record.technical_drawing_url.split('/')[-1]
                 link = '<a href="{}">{}</a>'.format(record.technical_drawing_url, file_name)
                 record.technical_drawing_link = link
+            else:
+                record.technical_drawing_link = False
 
     def _check_technical_drawing(self, old_revision=None, old_drawing_url=None):
         if self.technical_drawing:
