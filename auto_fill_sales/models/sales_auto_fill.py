@@ -102,6 +102,16 @@ class SaleOrder(models.Model):
             })
 
         return res
+        
+    def mark_as_quotation_sent(self):
+        # Burada quotation'ı "sent" olarak işaretlemek için gereken işlemleri yapabilirsiniz
+        # Örnek olarak:
+        self.write({'state': 'sent'})
+        return True
+
+    def print_proposal_form(self):
+        # id'si 2298 olan raporu indir
+        return self.env.ref('__export__.ir_act_report_xml_2298_0173c24c').report_action(self)
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
