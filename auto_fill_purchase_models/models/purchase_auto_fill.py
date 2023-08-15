@@ -55,7 +55,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    x_product_required_delivery_date = fields.Date('Product Required Delivery Date')
+    x_required_delivery_date = fields.Date('Product Required Delivery Date')
     pricekg = fields.Float(compute='_compute_pricekg', string='EUR/kg', readonly=True, store=True)
 
     @api.depends('price_subtotal', 'x_totalweight')
