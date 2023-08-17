@@ -111,7 +111,7 @@ class SaleOrder(models.Model):
 
     def print_proposal_form(self):
         # id'si 2298 olan raporu indir
-        return self.env.ref('__export__.ir_act_report_xml_2298_0173c24c').report_action(self)
+        return self.env.ref('__export__.ir_act_report_xml_2298_852ac486').report_action(self)
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
