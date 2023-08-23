@@ -59,11 +59,15 @@ class SaleOrder(models.Model):
         record.write({
             'analytic_account_id': analytic_account_id,
             'x_project_sales': project.id,
+            'company_id': 2,
         })
 
         return record
 
     def action_confirm(self):
+        if  not self.commitment_date:
+            raise UserError('The C-Delivery Date is mandatory! Please add this date and try again.')
+          
         if self.company_id.id == 1:
             return super().action_confirm()
 
@@ -111,7 +115,7 @@ class SaleOrder(models.Model):
 
     def print_proposal_form(self):
         # id'si 2298 olan raporu indir
-        return self.env.ref('__export__.ir_act_report_xml_2298_852ac486').report_action(self)
+        return self.env.ref('__export__.ir_act_report_xml_2298_0173c24c').report_action(self)
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
