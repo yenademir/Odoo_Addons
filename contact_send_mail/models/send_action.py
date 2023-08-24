@@ -26,7 +26,6 @@ class ResPartner(models.Model):
             'force_email': True,
         }
 
-        data = {'ids': self.ids}  
         
         lang = self.env.context.get('lang')
         if {'default_template_id', 'default_model', 'default_res_id'} <= ctx.keys():
@@ -45,5 +44,4 @@ class ResPartner(models.Model):
             'view_id': compose_form_id,
             'target': 'new',
             'context': ctx,
-            'data': data,
         }
