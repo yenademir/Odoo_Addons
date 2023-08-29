@@ -6,7 +6,6 @@
             <field name="subject">Mutabakat Formu</field>
             <field name="email_from">${object.company_id.email}</field>
             <field name="partner_to">{{ object.id }}</field>
-            <field name="report_template" ref="l10n_tr_account_pbl.report_res_partner"/>
             <field name="report_name">Mutabakat Formu</field>
             <field name="body_html"><![CDATA[
                 <p>Sayın Yetkili,</p>
