@@ -24,8 +24,9 @@ class SaleOrder(models.Model):
                 # İlişkili tüm satın alma sipariş satırlarını güncelle
                 for po_line in purchase_order.order_line:
                     # Satış siparişi satırını, ürün kimliği ile eşleştir
-                    so_line = order.order_line.filtered(lambda line: line.product_id == po_line.product_id)
-                    if so_line:
+                    # Satış siparişi satırlarını, ürün kimliği ile eşleştir
+                    so_lines = order.order_line.filtered(lambda line: line.product_id == po_line.product_id)
+                    for so_line in so_lines:  # Bu döngü, her bir satış sipariş satırı için çalışır
                         new_price_unit = so_line.price_unit * 0.72  # Satış fiyatını 0.72 ile çarp
                         po_line.write({
                             'price_unit': new_price_unit,  # Yeni fiyatı güncelle
