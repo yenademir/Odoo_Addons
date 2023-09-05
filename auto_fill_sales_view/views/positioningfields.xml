@@ -16,7 +16,7 @@
                 <xpath expr="//field[@name='partner_shipping_id']" position="after">
                     <field name="company_id" string="Company (Seller)"/>
                     <field name="user_id" string="Sales Person (E-mail Sender)"/>
-                    <field name="oppurtinity_id"/>
+                    <field name="opportunity_id"/>
                     <field name="incoterm" required="1"/>
                     <field name="payment_term_id"/>
                     <field name="currency_id"/>
