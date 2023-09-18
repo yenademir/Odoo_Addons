@@ -45,7 +45,7 @@ class Task(models.Model):
     _inherit = 'project.task'
 
     story_point = fields.Float(string='Story Point')
-    scrum_project_id = fields.Many2one('scrum.project', string='Scrum Project')
+    scrum_project_id = fields.Many2Many('scrum.project', string='Scrum Project')
 
     @api.model
     def create(self, vals):
