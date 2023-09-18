@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form view -->
+    <record id="view_scrum_form" model="ir.ui.view">
+        <field name="name">scrum.project.form</field>
+        <field name="model">scrum.project</field>
+        <field name="arch" type="xml">
+            <form string="Scrum Project">
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="team" required="1"/>
+                        <field name="start_date" required="1"/>
+                        <field name="end_date" required="1"/>
+                        <field name="estimated_story_point"/>
+                        <field name="result_story_point"/>
+                    </group>
+                    <notebook>
+                        <page string="Tasks">
+                            <field name="line_ids" widget="one2many_list" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="project_id"/>
+                                    <field name="task_id"/>
+                                    <field name="user_ids" widget="many2many_avatar_user"/>
+                                    <field name="story_point"/>
+                                    <field name="date_deadline"/>
+                                    <field name="stage_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_task_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="story_point"/>
+                <field name="scrum_project_id"/>
+            </xpath>
+        </field>
+    </record>
+
+<record id="view_scrum_kanban" model="ir.ui.view">
+    <field name="name">scrum.project.kanban</field>
+    <field name="model">scrum.project</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_project">
+            <field name="name"/>
+            <field name="team"/>
+            <field name="start_date"/>
+            <field name="end_date"/>
+            <field name="estimated_story_point"/>
+            <field name="result_story_point"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click" style="text-align:center; width: 250px; height: 200px; position: relative;">
+                        <h2 class="o_field_char o_field_widget o_readonly_modifier" style="margin-bottom: 15px;">
+                            <t t-esc="record.name.value"/>
+                        </h2>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="text-align: left;">
+                                <div style="display: flex;">
+                                    <span style="min-width: 80px; font-weight: bold;">Team: </span>
+                                    <div class="o_field_char o_field_widget o_readonly_modifier"><t t-esc="record.team.value"/></div>
+                                </div>
+                                <div style="display: flex;">
+                                    <span style="min-width: 80px; font-weight: bold;">Start Date: </span>
+                                    <div class="o_field_date o_field_widget o_readonly_modifier"><t t-esc="record.start_date.value"/></div>
+                                </div>
+                                <div style="display: flex;">
+                                    <span style="min-width: 80px; font-weight: bold;">End Date: </span>
+                                    <div class="o_field_date o_field_widget o_readonly_modifier"><t t-esc="record.end_date.value"/></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 40px; position: absolute; bottom: 20px; left: 50%; width: 200px; transform: translateX(-50%);">
+                            <t t-if="record.estimated_story_point.value != 0">
+                                <t t-set="raw_progress" t-value="record.result_story_point.value / record.estimated_story_point.value * 100"/>
+                                <!-- Round the progress to 2 decimal places -->
+                                <t t-set="progress" t-value="Math.round(raw_progress * 100) / 100"/>
+                                <div class="progress-bar" role="progressbar" t-att-style="'width:' + progress + '%; height: 40px;'"
+                                     aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+                                    <t t-esc="progress + '%'"/>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%; height: 40px;"
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    N/A
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+
+
+
+
+
+    <!-- Eylem (Action) kaydı -->
+    <record id="action_scrum" model="ir.actions.act_window">
+        <field name="name">Scrum Projects</field>
+        <field name="res_model">scrum.project</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="view_scrum_kanban"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first scrum project
+            </p>
+            <p>
+                Here, you can manage and organize your scrum projects.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menü öğesi -->
+    <menuitem id="menu_scrum_project" name="Scrum" parent="project.menu_main_pm" sequence="15" action="action_scrum"/>
+</odoo>
