@@ -41,7 +41,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_deadline']" position="after">
                 <field name="story_point"/>
-                <field name="scrum_project_id"/>
+                <field name="scrum_project_id" widget="many2many_tags"/>
             </xpath>
         </field>
     </record>
