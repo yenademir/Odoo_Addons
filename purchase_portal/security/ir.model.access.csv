@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_call_for_vendors,access_call_for_vendors,model_call_for_vendors,base.group_user,1,1,1,1
+access_call_for_vendors_line,access_call_for_vendors_line,model_call_for_vendors_line,base.group_user,1,1,1,1
+access_purchase_order_portal_user,purchase.order portal user,model_purchase_order,base.group_portal,1,1,0,0
+access_purchase_order_line_portal_user,purchase.order.line portal user,model_purchase_order_line,base.group_portal,1,1,0,0
+access_call_for_vendors_wizard,access_call_for_vendors_wizard,model_call_for_vendors_wizard,base.group_user,1,1,1,1
+access_vendor_wizard_line,access_vendor_wizard_line,model_vendor_wizard_line,base.group_user,1,1,1,1
+access_call_for_vendors_purchase_wizard,access_call_for_vendors_purchase_wizard,model_call_for_vendors_purchase_wizard,base.group_user,1,1,1,1
+access_ir_attachment_portal_user,ir.attachment portal user,base.model_ir_attachment,base.group_portal,1,1,1,1
+access_mail_template_portal_user_full,mail.template portal user full,mail.model_mail_template,base.group_portal,1,1,1,1
+access_product_product_portal_user,product.product portal user,product.model_product_product,base.group_portal,1,0,0,0
+access_product_template_portal_user,product.template portal user,product.model_product_template,base.group_portal,1,0,0,0
