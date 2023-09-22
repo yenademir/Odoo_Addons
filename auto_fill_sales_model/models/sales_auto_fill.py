@@ -11,7 +11,8 @@ class SaleOrder(models.Model):
     x_rfq_reference = fields.Char(string='RFQ Reference')
     x_contact_id = fields.Many2one('res.partner', string='Contact Person')
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
-
+    account_note = fields.Html(string="Account Notes")
+    
     @api.depends('user_id')
     def _compute_is_current_user(self):
         for record in self:
