@@ -39,7 +39,8 @@ class CallForVendorsPurchaseWizard(models.TransientModel):
                 'x_project_purchase': rfq.x_project_purchase.id,
                 'portal_status': 'purchase_sent',
                 'notes': rfq.notes,
-                'custom_attachment_ids': rfq.custom_attachment_ids
+                'custom_attachment_ids': rfq.custom_attachment_ids,
+                'company_id': rfq.company_id.id
             }
 
             for line in approved_lines:
