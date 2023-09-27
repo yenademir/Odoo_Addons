@@ -88,6 +88,7 @@
                                     <field name="product_uom"/>
                                     <field name="price_unit" class="o_field_price_unit_bg" decoration-success="is_cheapest"/>
                                     <field name="currency_id"/>
+                                    <field name="pricekg"/>
                                     <field name="x_required_delivery_date" class="o_field_date_planned_bg" decoration-info="is_earliest"/>
                                     <field name="partner_id" readonly="1"/>
                                     <field name="is_cheapest" invisible="1"/>
