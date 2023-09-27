@@ -168,7 +168,7 @@
 
     <template id="remove_download_print_buttons" inherit_id="account.portal_invoice_page">
         <!-- Use XPath to locate and remove the specific list item containing the buttons -->
-        <xpath expr="//[div[@class='o_download_pdf btn-toolbar flex-sm-nowrap']]" position="replace"/>
+        <xpath expr="//div[@class='o_download_pdf btn-toolbar flex-sm-nowrap']" position="replace"/>
     </template>
 
     <!--<template id="purchase_order_sidebar_yena" inherit_id="portal.portal_record_sidebar">
