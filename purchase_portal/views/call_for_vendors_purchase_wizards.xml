@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_call_for_vendors_purchase_wizard" model="ir.ui.view">
+        <field name="name">call.for.vendors.purchase.wizard.form</field>
+        <field name="model">call.for.vendors.purchase.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Send Purchases">
+                <group>
+                    <field name="call_for_vendors_id" invisible="1"/>
+                    <field name="rfqs_line_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="order_id"/>
+                            <field name="account_analytic_id"/>
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom_category_id" invisible="1"/>
+                            <field name="product_uom"/>
+                            <field name="new_quantity"/>
+                            <field name="x_required_delivery_date"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" class="btn-primary" name="action_confirm"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
