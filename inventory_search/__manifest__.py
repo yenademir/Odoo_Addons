@@ -6,9 +6,9 @@
         This add-on provides enhanced search functionalities to the Inventory module, 
         making it easier and more efficient for users to locate items and manage their inventory.
     """,
-    'author': "Emre Mataracı",
+    'author': "Selçuk Atav",
     'category': 'Inventory',
-    'depends': ['Inventory'],
+    'depends': ['purchase'],
     'data': [
         'views/transfer_search_view.xml',
         'views/product_search_view.xml'
@@ -17,4 +17,3 @@
     'installable': True,
     'auto_install': False,
 }
-
