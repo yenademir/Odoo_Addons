@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_contact_status_inherit_yena" model="ir.ui.view">
+        <field name="name">res.partner.contact_status.inherit.yena</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="contact_type" attrs="{
+                    'invisible': [('contact_status_visibility', '=', True)],
+                    'required': [('contact_status', '=', [])]
+                }"/>
+                <field name="contact_status" widget="many2many_tags" attrs="{'invisible': [('contact_type', '!=', False)]}"/>
+                <field name="contact_status_visibility" invisible="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>
