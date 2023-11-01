@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_type_material_users,type.material_users,model_type_material,base.group_user,1,1,1,1
+access_area_expertise_users,area.expertise_users,model_area_expertise,base.group_user,1,1,1,1
+access_coating_users,coating_users,model_coating,base.group_user,1,1,1,1
+access_welding_users,welding_users,model_welding,base.group_user,1,1,1,1

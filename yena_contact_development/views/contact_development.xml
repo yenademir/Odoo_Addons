@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_yena" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.yena</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='contact_addresses']" position="after">
+                <page string="Supplier Information" attrs="{'invisible': [('contact_type', '!=', 'potential_vendor'), ('contact_status_vendor', '!=', True)]}" groups="base.group_user">
+                    <field name="contact_status_vendor" invisible="1"/>
+                    <span style="font-size: 20px; font-weight: bold;">Bu tedarikçinin kapasitesi hakkında aşağıyı doldurarak bilgi veriniz.</span>
+                        <group col="4">
+                            <field name="creating_changing_design" widget="radio" options="{'horizontal': true}" />
+                            <field name="creating_changing_design_note" nolabel="1" colspan="2" placeholder="Örn.: Kullanılan programlar, Kaç kişilik design ekibi var"/>
+                        </group>
+                        <group col="4">
+                            <field name="preparing_shop_drawings" widget="radio" options="{'horizontal': true}" />
+                            <field name="preparing_shop_drawings_note" nolabel="1" colspan="2" placeholder="Örn.: Kullanılan programlar, Kaç kişilik design ekibi var"/>
+                        </group>
+                        <group col="4">
+                            <field name="material_buying" widget="radio" options="{'horizontal': true}" />
+                            <field name="material_buying_note" nolabel="1" colspan="2" placeholder="Örn.: Bulmakta zorlandığı malzemeler nedir?"/>
+                        </group>
+                        <group col="4">
+                            <field name="cutting_drilling" widget="radio" options="{'horizontal': true}" />
+                            <field name="cutting_drilling_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi kesme,delme metodları ve makineleri var"/>
+                        </group>
+                        <group col="4">
+                            <field name="bending" widget="radio" options="{'horizontal': true}" />
+                            <field name="bending_note" nolabel="1" colspan="2" placeholder="Örn.: bükme metodları ve makineleri var"/>
+                        </group>
+                        <group col="4">
+                            <field name="machining" widget="radio" options="{'horizontal': true}" />
+                            <field name="machining_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi machining metodları ve makineleri var"/>
+                        </group>
+                        <group col="4">
+                            <field name="welding" widget="radio" options="{'horizontal': true}" />
+                            <field name="welding_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi kaynak metodları ve makineleri var" widget="many2many_tags"/>
+                        </group>
+                        <group col="4">
+                            <field name="quality_control" widget="radio" options="{'horizontal': true}" />
+                            <field name="quality_control_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi metodlar"/>
+                        </group>
+                        <group col="4">
+                            <field name="surface_prep" widget="radio" options="{'horizontal': true}" />
+                            <field name="surface_prep_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi preparation metodları"/>
+                        </group>
+                        <group col="4">
+                            <field name="surface_coating" widget="radio" options="{'horizontal': true}" />
+                            <field name="surface_coating_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi coating metodları" widget="many2many_tags"/>
+                        </group>
+                        <group col="4">
+                            <field name="shipment_in_the_country" widget="radio" options="{'horizontal': true}" />
+                            <field name="shipment_in_the_country_note" nolabel="1" colspan="2" placeholder="Örn.: Ne tip aracı var"/>
+                        </group>
+                        <group col="4">
+                            <field name="packaging" widget="radio" options="{'horizontal': true}" />
+                            <field name="packaging_note" nolabel="1" colspan="2" placeholder="Örn.: Paketleme ekibi ve alanı var mı"/>
+                        </group>
+                        <group col="4">
+                            <field name="storing" widget="radio" options="{'horizontal': true}" />
+                            <field name="storing_note" nolabel="1" colspan="2" placeholder="Örn.: Stok alanı var mı, Kaç metrekare"/>
+                        </group>
+                        <group col="4">
+                            <field name="shipment_between_countries" widget="radio" options="{'horizontal': true}" />
+                            <field name="shipment_between_countries_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group col="4">
+                            <field name="export_operation" widget="radio" options="{'horizontal': true}" />
+                            <field name="export_operation_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group col="4">
+                            <field name="import_operation" widget="radio" options="{'horizontal': true}" />
+                            <field name="import_operation_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group col="4">
+                            <field name="customs_clearance" widget="radio" options="{'horizontal': true}" />
+                            <field name="customs_clearance_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group>
+                            <group>
+                                <label for="door_width"/>
+                                <div class="o_row" name="door_width">
+                                    <field name="door_width"/>
+                                    <span>m</span>
+                                </div>
+                                <label for="door_height"/>
+                                <div class="o_row" name="door_height">
+                                    <field name="door_height"/>
+                                    <span>m</span>
+                                </div>
+                                <label for="crane_capacity"/>
+                                <div class="o_row" name="crane_capacity">
+                                    <field name="crane_capacity"/>
+                                    <span>ton</span>
+                                </div>
+                                <label for="indoor_area"/>
+                                <div class="o_row" name="indoor_area">
+                                    <field name="indoor_area"/>
+                                    <span>m2</span>
+                                </div>
+                                <label for="outdoor_area"/>
+                                <div class="o_row" name="outdoor_area">
+                                    <field name="outdoor_area"/>
+                                    <span>m2</span>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="blue_collar_number" />
+                                <field name="white_collar_number" />
+                                <field name="number_of_shifts" placeholder="Günde 'x' vardiya çalışıyorlar" />
+                                <field name="are_of_expertise" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="machine_equipment_list" widget="many2many_binary"/>
+                            <field name="welder_certifications" widget="many2many_binary"/>
+                            <field name="certifications" widget="many2many_binary"/>
+                            <field name="wps_pqr" widget="many2many_binary"/>
+                        </group>
+                </page>
+                <page string="Customer Information" attrs="{'invisible': [('contact_type', '!=', 'potential_customer'), ('contact_status_customer', '!=', True)]}" groups="base.group_user">
+                    <field name="contact_status_customer" invisible="1"/>
+                    <span style="font-size: 20px; font-weight: bold;">Bu müşterinin kapasitesi hakkında aşağıyı doldurarak bilgi veriniz.</span>
+                        <group col="4">
+                            <field name="creating_changing_design" widget="radio" options="{'horizontal': true}" />
+                            <field name="creating_changing_design_note" nolabel="1" colspan="2" placeholder="Örn.: Kullanılan programlar, Kaç kişilik design ekibi var"/>
+                        </group>
+                        <group col="4">
+                            <field name="preparing_shop_drawings" widget="radio" options="{'horizontal': true}" />
+                            <field name="preparing_shop_drawings_note" nolabel="1" colspan="2" placeholder="Örn.: Kullanılan programlar, Kaç kişilik design ekibi var"/>
+                        </group>
+                        <group col="4">
+                            <field name="surface_prep" widget="radio" options="{'horizontal': true}" />
+                            <field name="surface_prep_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi preparation metodları"/>
+                        </group>
+                        <group col="4">
+                            <field name="surface_coating" widget="radio" options="{'horizontal': true}" />
+                            <field name="surface_coating_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi coating metodları" widget="many2many_tags"/>
+                        </group>
+                        <group col="4">
+                            <field name="shipment_in_the_country" widget="radio" options="{'horizontal': true}" />
+                            <field name="shipment_in_the_country_note" nolabel="1" colspan="2" placeholder="Örn.: Ne tip aracı var"/>
+                        </group>
+                        <group col="4">
+                            <field name="storing" widget="radio" options="{'horizontal': true}" />
+                            <field name="storing_note" nolabel="1" colspan="2" placeholder="Örn.: Stok alanı var mı, Kaç metrekare"/>
+                        </group>
+                        <group col="4">
+                            <field name="shipment_between_countries" widget="radio" options="{'horizontal': true}" />
+                            <field name="shipment_between_countries_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group col="4">
+                            <field name="export_operation" widget="radio" options="{'horizontal': true}" />
+                            <field name="export_operation_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group col="4">
+                            <field name="import_operation" widget="radio" options="{'horizontal': true}" />
+                            <field name="import_operation_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group col="4">
+                            <field name="customs_clearance" widget="radio" options="{'horizontal': true}" />
+                            <field name="customs_clearance_note" nolabel="1" colspan="2" placeholder="Örn.: Hangi ülkelere çalışıyor, Hangi firmalar ile çalışıyor"/>
+                        </group>
+                        <group>
+                            <field name="blue_collar_number" />
+                            <field name="white_collar_number" />
+                            <field name="are_of_expertise" widget="many2many_tags"/>
+                        </group>
+                </page>
+                <page string="Rating">
+                    <group>
+                        <field name="final_quality_rating" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('contact_type', '!=', 'potential_vendor'), ('contact_status_vendor', '!=', True)]}"/>
+                        <field name="experience_level" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('contact_type', '!=', 'potential_vendor'), ('contact_status_vendor', '!=', True)]}"/>
+                        <field name="flexibility" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('contact_type', '!=', 'potential_vendor'), ('contact_status_vendor', '!=', True)]}"/>
+                        <field name="welding_skills" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('contact_type', '!=', 'potential_vendor'), ('contact_status_vendor', '!=', True)]}"/>
+                        <field name="comment"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//button[@name='create_company']" position="after">
+                <div class="o_row" attrs="{'invisible': [('is_company', '=', True)]}">
+                    <field name="unknown_company" nolabel="1"/>
+                    <label for="unknown_company" class="ml-3">I don't know her/his company</label>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')], 'required': ['&amp;', ('is_company', '=', False), ('unknown_company', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='title']" position="attributes">
+                <attribute name="attrs">{'required': [('is_company', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='function']" position="replace">
+            </xpath>
+
+            <xpath expr="//field[@name='country_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='type']" position="replace"/>
+
+            <xpath expr="//field[@name='company_type']" position="after">
+                <br/>
+                <field name="type" attrs="{'invisible': [('is_company','=', True)], 'required': [('is_company','!=', True)], 'readonly': [('user_ids', '!=', [])]}" class="font-weight-bold"/>
+            </xpath>
+
+            <xpath expr="//field[@name='industry_id']" position="replace"/>
+
+            <xpath expr="//field[@name='contact_status']" position="after">
+                <field name="industry_id" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_vendor'), ('contact_type', '=', False)], 'required': [('contact_type', '=', 'potential_customer')]}" options="{'no_create': True}"/>
+                <field name="vendor_type" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_customer'), ('contact_type', '=', False) ], 'required': [('contact_type', '=', 'potential_vendor')]}" />
+                <field name="type_of_material" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_customer'), ('vendor_type', '!=', 'material')], 'required': [('vendor_type', '=', 'material')]}" widget="many2many_tags"/>
+            </xpath>
+
+            <xpath expr="//field[@name='lang']" position="replace"/>
+            <xpath expr="//label[@for='lang']" position="replace"/>
+            <xpath expr="//button[@name='56']" position="replace"/>
+
+            <xpath expr="//field[@name='ref']" position="before">
+                <field name="lang"/>
+            </xpath>
+        </field>
+    </record>
+    <!--<record id="mail_tracking_partner_form_inherit_yena" model="ir.ui.view">
+        <field name="name">mail_tracking.form.inherit.yena</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="mail_tracking.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email_score']" position="replace"/>
+            <xpath expr="//field[@name='email_bounced']" position="replace"/>
+        </field>
+    </record>-->
+</odoo>
+
+
