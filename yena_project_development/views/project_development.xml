@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="yena_project_development_buttons" model="ir.ui.view">
+            <field name="name">project.project.yena.project.development.buttons</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project" />
+            <field name="arch" type="xml">
+            <xpath expr="//button[@name='372']" position="after">
+                <button class="oe_stat_button"
+                        type="object"
+                        name="action_show_sales"
+                        icon="fa-ticket"
+                        help="Show related sales">
+                        <field string="Sales"
+                            name="sales_count"
+                            widget="statinfo" />
+                    </button>
+                    <button class="oe_stat_button"
+                        type="object"
+                        name="action_show_purchases"
+                        icon="fa-credit-card"
+                        help="Show related purchases">
+                        <field string="Purchases"
+                            name="purchase_count"
+                            widget="statinfo" />
+                    </button>
+                    <button class="oe_stat_button"
+                        type="object"
+                        name="action_show_transfers"
+                        icon="fa-truck"
+                        help="Show related transfers">
+                        <field string="Transfers"
+                            name="delivery_count"
+                            widget="statinfo" />
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
