@@ -1,0 +1,1 @@
+from . import inventory_development, many2many_models

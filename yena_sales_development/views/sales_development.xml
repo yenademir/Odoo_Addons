@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_yena_development" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.yena.development</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_packaging_qty']" position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_packaging_id']" position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="(//field[@name='date_order'])[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="(//label[@for='date_order'])[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="(//field[@name='date_order'])[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="(//label[@for='date_order'])[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='client_order_ref']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_order_template_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_invoice_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@for='pricelist_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@class='o_row']" position="attributes">
+                <attribute name="style">display: none;</attribute>
+            </xpath>
+            <xpath expr="//field[@name='currency_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="(//button[@name='action_quotation_send' and @states='sent,sale'])[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="(//button[@name='action_quotation_send' and @states='draft'])[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button name="action_quotation_sent" type="object" string="Mark As Quotation Sent" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                <button name="print_proposal_form" string="Print Proposal Form" type="object" class="oe_highlight"  groups="base.group_user"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="contact_id" />
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="company_id" string="Company (Seller)"/>
+                <field name="user_id" string="Sales Person (E-mail Sender)"/>
+                <field name="opportunity_id" />
+                <field name="incoterm" required="1"/>
+                <field name="payment_term_id"/>
+                <field name="currency_id"/>
+                <field name="quota_cancel_reason_id" attrs="{'invisible': [('state', '!=', 'cancel')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='validity_date']" position="after">
+                <field name="rfq_date"/>
+                <field name="quo_date"/>
+                <div class="o_td_label">
+                    <label for="date_order" string="Order Date"/>
+                </div>
+                <field name="date_order" nolabel="1" attrs="{'invisible': [('state', 'in', ['draft', 'sent'])]}" string="Confirmation of Order Date"/>
+                <field name="commitment_date" string="C-Delivery Date"/>
+                <field name="delivery_date"/>
+                <field name="rfq_reference" readonly="1"/>
+                <field name="customer_reference" string="C-Reference No" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}" required="1"/>
+                <field name="project_sales" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
+                <field name="analytic_account_id" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
+                <field name="is_current_user" invisible="1"/>
+            </xpath>
+            <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
+                <field name="product_delivery_date" optional="hide"/>
+            </xpath>
+
+            <xpath expr="(//button[@name='action_quotation_send' and @states='draft'])[1]" position="after">
+                <button name="action_quotation_send" string="Send by Email" type="object" class="oe_highlight" data-hotkey="g"
+                      attrs="{'invisible': ['|', ('is_current_user', '=', False), ('state', '=', 'done')]}"/>
+            </xpath>
+              <xpath expr="//field[@name='note']" position="after">
+                <field name="account_note" class="oe-bordered-editor" style="margin-left:10rem" nolabel="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Customer Name</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                <attribute name="string">C-Invoice Address</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                <attribute name="string">C-Delivery Address</attribute>
+            </xpath>
+            <xpath expr="//field[@name='validity_date']" position="attributes">
+                <attribute name="string">Validtiy of Offer</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quota_cancel_reason_id']" position="attributes">
+                <attribute name="string">Quotation Lost Reason</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="string">Confirmation Date</attribute>
+            </xpath>
+            
+            <xpath expr="(//field[@name='date_order'])[3]" position="attributes">
+                <attribute name="widget">date</attribute>
+            </xpath>
+            <xpath expr="(//field[@name='commitment_date'])[2]" position="attributes">
+                <attribute name="widget">date</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_print_proposal_form" model="ir.actions.server">
+        <field name="name">Print Proposal Form</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">records.print_proposal_form()</field>
+    </record>
+</odoo>

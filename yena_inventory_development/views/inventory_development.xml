@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_package_type_inherit_add" model="ir.ui.view">
+        <field name="name">stock.package.type.form.inherit.add</field>
+        <field name="model">stock.package.type</field>
+        <field name="inherit_id" ref="stock.stock_package_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='delivery']" position="after">
+                <group>
+                    <group>
+                        <label for="gross_weight"/>
+                        <div class="o_row" name="gross_weight">
+                            <field name="gross_weight"/>
+                            <span>kg</span>
+                        </div>
+                        <label for="net_weight"/>
+                        <div class="o_row" name="net_weight">
+                            <field name="net_weight"/>
+                            <span>kg</span>
+                        </div>
+                        <field name="stackable"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+<data>
+    <record id="product_template_main_form_inherit_yena" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.yena</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='inventory']/group[@name='inventory']/group[@name='group_lots_and_weight']/label[@for='weight']" position="attributes">
+                <attribute name="string">Theoretical Weight</attribute>
+            </xpath>
+            <xpath expr="//field[@name='categ_id']" position="before">
+                <field name="weight" string="Theoretical Weight"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="customer" string="Customer of Product" required="1"/>
+                <field name="hs_code"/>
+                <field name="hs_code_description" invisible="1"/>
+                <label for="hs_code_description" string="Well Known (YENA Example)"/>
+                <div class="font-italic text-muted">
+                    <field name="hs_code_description" nolabel="1"/>
+                </div>
+            </xpath>
+            
+            <xpath expr="//notebook" position="inside">
+                <page string="Technical Info">
+                    <group string="Technical Documents">
+                        <field name="weight" string="Theoretical Weight"/>
+                        <field name="material" widget="many2many_tags"/>
+                        <field name="coating"/>
+                        <field name="technical_drawing" filename='technical_drawing_filename'/>
+                        <field name="technical_drawing_url" invisible="1"/>
+                        <field name="technical_drawing_link" attrs="{'invisible': [('technical_drawing_url', '=', False)]}"/>
+                    </group>
+                    <group>
+                        <field name="manufacturing_instructions" widget="many2many_binary" options="{'accept': '.pdf'}"/>
+                        <field name="packaging_instructions" widget="many2many_binary" options="{'accept': '.pdf'}"/>
+                        <field name="packaging_images" widget="many2many_binary" options="{'accept': '.png, .jpeg, .jpg'}"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Other Information">
+                  <group>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                    <field name="write_uid"/>
+                    <field name="write_date"/>
+                  </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='invoicing']" position="inside">
+                <group>
+                    <group>
+                        <field name="list_price"/>
+                        <field name="taxes_id" widget="many2many_tags"/>
+                        <field name="categ_id"/>
+                    </group>
+                    <group>
+                        <field name="standard_price"/>
+                        <field name="supplier_taxes_id" widget="many2many_tags"/>
+                        <field name="origin_country_id"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='company_id']"  position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</data>
+    <record id="form_inherit_yena_development" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.yena.development</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//page/field[@name='order_line']/tree//field[@name='product_id']" position="after">
+                <field name="product_type"/>
+                <field name="product_category"/>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="coating"/>
+            </xpath>
+            <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_unit']" position="after">
+                <field name="pricekg"/>
+                <field name="totalweight"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page/field[@name='order_line']/tree//field[@name='product_id']" position="after">
+                <field name="product_type"/>
+                <field name="product_category"/>
+            </xpath>
+            <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_unit']" position="after">
+                <field name="totalweight"/>
+            </xpath>
+            <xpath expr="//page/field[@name='order_line']/tree//field[@name='totalweight']" position="after">
+                <field name="coating"/>
+            </xpath>
+            <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_unit']" position="after">
+                <field name="pricekg"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="transporatation_follow_up" model="ir.ui.view">
+        <field name="name">transportation.follow.up.tree</field>
+        <field name="model">stock.move</field>
+        <field name="arch" type="xml">
+            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'">
+                <field name="product_id"/>
+                <field name="is_locked" invisible="1"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done" invisible="1"/>
+                <field name="partner_id" attrs="{'readonly': ['&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}"/>
+                <field name="product_uom_qty"/>
+                <field name="project_transfer" widget="many2many_tags"/>
+                <field name="arrive_date"/>
+                <field name="transportation_code" groupby="transportation_code"/>
+                <field name="situation" />
+            </tree>
+        </field>
+    </record>
+    <record id="transportation_follow_up" model="ir.actions.act_window">
+        <field name="name">Transportation Follow Up</field>
+        <field name="res_model">stock.move</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="transporatation_follow_up"/>
+    </record>
+    <menuitem id="transportation_follow_up_menu"
+          name="Transportation Follow Up"
+          parent="stock.menu_stock_root"
+          action="transportation_follow_up"/>
+</odoo>
