@@ -126,7 +126,3 @@ class SaleOrderLine(models.Model):
 
     pricekg = fields.Float(compute='_compute_pricekg', string='EURkg', readonly=True, store=True)
 
-    @api.depends('price_subtotal', 'x_totalweight')
-    def _compute_pricekg(self):
-        for line in self:
-            line.pricekg = line.price_subtotal / line.x_totalweight if line.x_totalweight else 0
