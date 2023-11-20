@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="action_print_proposal_form" model="ir.actions.server">
+            <field name="name">Print Proposal Form</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">records.print_proposal_form()</field>
+        </record>
+    </data>
+</odoo>
