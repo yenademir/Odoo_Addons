@@ -127,10 +127,10 @@ class SaleOrder(models.Model):
 
         return res
 
-    @api.onchange('delivery_date')
-    def _onchange_delivery_date(self):
+   @api.onchange('commitment_date')
+    def _onchange_commitment_date(self):
         for line in self.order_line:
-            line.product_delivery_date = self.delivery_date
+            line.product_delivery_date = self.commitment_date
 
     @api.depends('user_id')
     def _compute_is_current_user(self):
