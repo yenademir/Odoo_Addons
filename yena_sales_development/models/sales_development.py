@@ -127,10 +127,10 @@ class SaleOrder(models.Model):
 
         return res
 
-    @api.onchange('delivery_date')
-    def _onchange_delivery_date(self):
+    @api.onchange('commitment_date')
+    def _onchange_commitment_date(self):
         for line in self.order_line:
-            line.product_delivery_date = self.delivery_date
+            line.product_delivery_date = self.commitment_date
 
     @api.depends('user_id')
     def _compute_is_current_user(self):
@@ -146,7 +146,7 @@ class SaleOrder(models.Model):
         # id'si 2298 olan raporu indir
         return self.env.ref('__export__.ir_act_report_xml_2298_852ac486').report_action(self)
 
-    class SaleOrderLine(models.Model):
+class SaleOrderLine(models.Model):
         _inherit = 'sale.order.line'
 
         product_delivery_date = fields.Date(string="Product Delivery Date")
