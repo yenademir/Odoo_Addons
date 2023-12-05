@@ -6,7 +6,7 @@
     'website': "https://yenaengineering.nl",
     'category': 'Inventory',
     'license': 'LGPL-3',
-    'depends': ['sale', 'crm','sale_crm'],
+    'depends': ['sale', 'crm'],
     'data': [
         'views/sales_development.xml',
     ],
