@@ -128,7 +128,7 @@ class SaleOrder(models.Model):
         return res
 
     @api.onchange('delivery_date')
-    def _onchange_commitment_date(self):
+    def _onchange_delivery_date(self):
         for line in self.order_line:
             line.product_delivery_date = self.delivery_date
 
