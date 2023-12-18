@@ -1,1 +1,0 @@
-from . import odoo_to_web
