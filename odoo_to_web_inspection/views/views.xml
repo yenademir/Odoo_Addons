@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="purchase_order_line_action_send_data_to_web" model="ir.actions.server">
+            <field name="name">Send to App (InspectionPlan)</field>
+            <field name="model_id" ref="purchase.model_purchase_order_line"/>
+            <field name="binding_model_id" ref="purchase.model_purchase_order_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">model.action_send_data_to_web()</field>
+        </record>
+    </data>
+</odoo>
