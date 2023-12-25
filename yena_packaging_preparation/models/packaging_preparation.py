@@ -253,7 +253,7 @@ class PackagingPreparationReportXlsx(models.AbstractModel):
                 'S.NO', 'ORDER NO', 'POSE', 'AÇIKLAMA\nEXPLANATION', 'ÜRÜN MENŞEİ\nORIGIN OF MATERIAL',
                 'MIKTARI\nQUANTITY', 'BİRİM\nUNIT', 'NET AĞIRLIK (KG)\nNET WEIGHT (KG)',
                 'TOPLAM NET AĞIRLIK (KG)\nTOTAL NET WEIGHT (KG)', 'KAP ADETİ\nPACKAGE QUANTITY',
-                'BRÜT AĞIRLIK (KG)\nTARE WEİGHT (KG)', 'BRÜT AĞIRLIK (KG)\nGROSS WEİGHT (KG)',
+                'DARA AĞIRLIK (KG)\nTARE WEİGHT (KG)', 'TOPLAM DARA AĞIRLIK (KG)\nTOTAL GROSS WEİGHT (KG)',
                 'EN (MM)\nWIDTH (MM)', 'BOY (MM)\nLENGTH (MM)', 'YÜKSEKLİK (MM)\nHEIGHT (MM)', 'STACKABLE', 'PALLET NO'
             ]
             pallet_data = {}
