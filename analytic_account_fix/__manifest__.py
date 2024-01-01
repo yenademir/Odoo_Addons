@@ -1,5 +1,5 @@
 {
-    'name': 'Remove Funcyion',
+    'name': 'Remove Function',
     'version': '1.0',
     'category': 'Your Module Category',
     'summary': 'Short description of your module',
