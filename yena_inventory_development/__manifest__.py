@@ -6,7 +6,7 @@
     'website': "https://yenaengineering.nl",
     'category': 'Inventory',
     'license': 'LGPL-3',
-    'depends': ['product', 'stock', 'barcodes', 'digest', 'purchase', 'base', 'account', 'delivery' , 'batch_transfer_extension_test'],
+    'depends': ['product', 'stock', 'barcodes', 'digest', 'purchase', 'base', 'account', 'delivery' , 'batch_transfer_extension', 'yena_packaging_preparation'],
     'data': [
         'views/inventory_development.xml',
         'security/ir.model.access.csv',
