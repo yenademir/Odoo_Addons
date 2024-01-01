@@ -7,11 +7,10 @@ class Picking(models.Model):
     _inherit = 'stock.picking'
 
     arrive_date = fields.Date(string="Arrive Date")
-    situation = fields.Selection([
-        ("to_be_planned", "To be planned"),
-        ("on_the_way", "On the way"),
-        ("arrived", "Arrived")
-    ], string="Situation", store=True)
+    situation = fields.Selection(
+        [("to_be_planned", "To Be Planned"),
+         ("on_the_way", "On The Way"),
+         ("arrived", "Arrived")], string="Situation", related="batch_id.situation", store=True)
     transportation_code = fields.Char(string="Transportation Code", store=True)
     sale_id=fields.Many2one("sale.order",string="Sale Order")
     purchase_id=fields.Many2one("purchase.order",string="Purchase Order")
