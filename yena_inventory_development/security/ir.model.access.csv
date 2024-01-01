@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_product_yena_material,Product Yena Material,model_product_yena_material,,1,1,1,1
+access_yena_hscode_all,Yena HS Code Access,model_yena_hscode,,1,1,1,1
