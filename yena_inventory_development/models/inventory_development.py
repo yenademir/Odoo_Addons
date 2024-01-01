@@ -11,12 +11,12 @@ class Picking(models.Model):
         ("to_be_planned", "To be planned"),
         ("on_the_way", "On the way"),
         ("arrived", "Arrived")
-    ], string="Situation")
-    transportation_code = fields.Char(string="Transportation Code")
+    ], string="Situation", store=True)
+    transportation_code = fields.Char(string="Transportation Code", store=True)
     sale_id=fields.Many2one("sale.order",string="Sale Order")
     purchase_id=fields.Many2one("purchase.order",string="Purchase Order")
     sequence_code = fields.Char(string='Sequence Code', related='picking_type_id.sequence_code', store=True)
-    logistic_company = fields.Char (string="Logistic Company")
+    logistic_company = fields.Char (string="Logistic Company", store=True)
     delivery_performance_supplier = fields.Integer(compute='_compute_despatch_date_difference', string='S-Delivery Performance', store=True, readonly=True)
     delivery_performance_customer = fields.Integer(compute='_compute_arrival_date_difference', string='C-Delivery Performance', store=True, readonly=True)
 
