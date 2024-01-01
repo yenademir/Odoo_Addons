@@ -20,6 +20,8 @@ class Picking(models.Model):
     logistic_company = fields.Char (string="Logistic Company")
     delivery_performance_supplier = fields.Integer(compute='_compute_despatch_date_difference', string='S-Delivery Performance', store=True, readonly=True)
     delivery_performance_customer = fields.Integer(compute='_compute_arrival_date_difference', string='C-Delivery Performance', store=True, readonly=True)
+    arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
+
     
     @api.model
     def compute_days_difference(self, scheduled_date, comparison_date):
