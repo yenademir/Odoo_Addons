@@ -93,16 +93,6 @@ class StockMove(models.Model):
     edespatch_date=fields.Datetime(related='picking_id.edespatch_date',string="Purchase Order")
     airtag_url = fields.Char(string='Airtag Link', related='picking_id.batch_id.airtag_url', store=True, readonly=True)
     vehicle_type_id = fields.Many2one(string='Vehicle Type', related='picking_id.batch_id.vehicle_type_id', store=True, readonly=True)
-
-class StockMoveLine(models.Model):
-    _inherit = 'stock.move.line'
- 
-    stackable = fields.Boolean(
-        string='Stackable',
-        related='product_id.packaging_ids.package_type_id.stackable',
-        store=True,
-        readonly=True
-    )
     
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
