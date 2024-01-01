@@ -5,11 +5,11 @@ class StockPickingBatch(models.Model):
     _inherit = 'stock.picking.batch'
     _description = "Batch Transfer"
     _order = "name desc"
-    edespatch_date = fields.Datetime(string="Real Departure Date")
+    edespatch_date = fields.Datetime(string="Real Departure Date", store=True)
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
-         ("arrived", "Arrived")], string="Situation")
+         ("arrived", "Arrived")], string="Situation", store=True)
 
     customer_ids = fields.Many2many(
         'res.partner',
@@ -154,10 +154,10 @@ class StockMoveLine(models.Model):
 class Picking(models.Model):
     _inherit = 'stock.picking'
     edespatch_date = fields.Datetime(related='batch_id.edespatch_date', store=True, readonly=False)
-    project_transfer = fields.Many2one("project.project", string="Project Number")
-    effective_date = fields.Date(string="Effective Date")
+    project_transfer = fields.Many2one("project.project", string="Project Number", store=True)
+    effective_date = fields.Date(string="Effective Date", store=True)
     arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
-         ("arrived", "Arrived")], string="Situation", related="batch_id.situation")
+         ("arrived", "Arrived")], string="Situation", related="batch_id.situation", store=True)
