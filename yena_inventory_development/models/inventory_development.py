@@ -7,7 +7,6 @@ class Picking(models.Model):
     _inherit = 'stock.picking'
 
     arrive_date = fields.Date(string="Arrive Date")
-    project_transfer = fields.Many2one("project.project", string="Project Number")
     situation = fields.Selection([
         ("to_be_planned", "To be planned"),
         ("on_the_way", "On the way"),
