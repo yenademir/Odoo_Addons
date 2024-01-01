@@ -153,7 +153,7 @@ class StockMoveLine(models.Model):
             
 class Picking(models.Model):
     _inherit = 'stock.picking'
-    edespatch_date = fields.Date(related='batch_id.edespatch_date', store=True, readonly=False)
+    edespatch_date = fields.Datetime(related='batch_id.edespatch_date', store=True, readonly=False)
     project_transfer = fields.Many2one("project.project", string="Project Number")
     effective_date = fields.Date(string="Effective Date")
     arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
