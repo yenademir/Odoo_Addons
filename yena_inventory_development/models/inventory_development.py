@@ -16,34 +16,7 @@ class Picking(models.Model):
     purchase_id=fields.Many2one("purchase.order",string="Purchase Order")
     sequence_code = fields.Char(string='Sequence Code', related='picking_type_id.sequence_code', store=True)
     logistic_company = fields.Char (string="Logistic Company", store=True)
-    delivery_performance_supplier = fields.Integer(compute='_compute_despatch_date_difference', string='S-Delivery Performance', store=True, readonly=True)
-    delivery_performance_customer = fields.Integer(compute='_compute_arrival_date_difference', string='C-Delivery Performance', store=True, readonly=True)
 
-    
-    @api.model
-    def compute_days_difference(self, scheduled_date, comparison_date):
-        if not scheduled_date or not comparison_date:
-            return 0
- 
-        diff = scheduled_date - comparison_date
-        days = diff.days
- 
-        return days
- 
-    @api.depends('scheduled_date', 'edespatch_date')
-    def _compute_despatch_date_difference(self):
-        for record in self:
-            despatch_date = fields.Datetime.from_string(record.edespatch_date) if record.edespatch_date else None
-            scheduled_date_diff = fields.Datetime.from_string(record.scheduled_date) if record.scheduled_date else None
-            record.delivery_performance_supplier = self.compute_days_difference(scheduled_date_diff, despatch_date)
- 
-    @api.depends('scheduled_date', 'arrival_date')
-    def _compute_arrival_date_difference(self):
-        for record in self:
-            arrival_date = fields.Datetime.from_string(record.arrival_date) if record.arrival_date else None
-            scheduled_date_diff = fields.Datetime.from_string(record.scheduled_date) if record.scheduled_date else None
-            record.delivery_performance_customer = self.compute_days_difference(scheduled_date_diff, arrival_date)
-            
     @api.model
     def create(self, vals):
         self._update_scheduled_date(vals)
@@ -54,6 +27,9 @@ class Picking(models.Model):
         return super(Picking, self).write(vals)
 
     def _update_scheduled_date(self, vals):
+        if 'scheduled_date' not in vals:
+            return
+
         for record in self:
             picking_type = record.env['stock.picking.type'].browse(vals.get('picking_type_id', record.picking_type_id.id))
 
