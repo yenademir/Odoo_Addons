@@ -265,18 +265,7 @@
         </field>
     </record>
     
-    <record id="view_stock_picking_search_inherit" model="ir.ui.view">
-        <field name="name">purchase.order.search.inherit</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
-        <field name="arch" type="xml">
-            <field name="name" position="before">
-                <field name="project_transfer"/>
-                <field name="purchase_id"/>
-                <field name="transportation_code"/>
-            </field>
-        </field>
-    </record>
+
     
     <record id="transportation_follow_up" model="ir.actions.act_window">
         <field name="name">Transportation Follow Up</field>
