@@ -34,7 +34,8 @@
                 <field name="origin"/>
              </xpath>
              <xpath expr="//field[@name='currency_id']" position="before">
-                <field name="arrival_date" />
+                <field name="sequence_code"  attrs="{'invisible': 1}"/>
+                <field name="arrival_date" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
                 <field name="situation" />
              </xpath>
            <xpath expr="//field[@name='partner_id']" position="after">
@@ -42,7 +43,10 @@
                 <field name="project_transfer" attrs="{'required': True}"/>
             </xpath>
             <xpath expr="//field[@name='edespatch_date']" position="attributes">
-                <attribute name="string">Actual Departure Date</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@for='scheduled_date']" position="before">
+                <field name="edespatch_date" string="Actual Departure Date" attrs="{'invisible': [('sequence_code', '=', 'OUT')]}"/>
             </xpath>
             <xpath expr="//field[@name='edespatch_move_id']" position="attributes">
                 <attribute name="string">Vendor E-Despatch Number</attribute>
@@ -242,11 +246,6 @@
                 <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
                 <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
             </xpath>
-            <xpath expr="//field[@name='picking_type_id']"  position="after">
-                <field name="sequence_code"  attrs="{'invisible': 1}"/>
-                <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
-                <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
-            </xpath>
         </field>
     </record>
     <record id="inventory_transfer_stock_vpicking_yena" model="ir.ui.view">
@@ -258,14 +257,21 @@
                 <field name="project_transfer" />
                 <field name="transportation_code"/>
             </xpath>
-            <xpath expr="//field[@name='state']" position="before">
-                <field name="delivery_performance_supplier" />
-                <field name="delivery_performance_customer"/>
-            </xpath>
         </field>
     </record>
-    
 
+    <record id="view_stock_picking_search_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.search.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="project_transfer"/>
+                <field name="purchase_id"/>
+                <field name="transportation_code"/>
+            </field>
+        </field>
+    </record>
     
     <record id="transportation_follow_up" model="ir.actions.act_window">
         <field name="name">Transportation Follow Up</field>
