@@ -47,9 +47,8 @@
                     <group>
                         <group>
                             <field name="edespatch_carrier_id" string="Carrier Partner" domain="[('industry_id.id', '=', 139)]"/>
-                            <field name="transport_type" string="Transport Type" attrs="{'required': [('edespatch_delivery_type', '=', 'edespatch')]}"/>
-            
-                            <field name="vehicle_id" string="Vehicle Id" attrs="{'required': [('edespatch_delivery_type','=','edespatch'), ('picking_type_code','in',['outgoing'])]}" help="AirTransport: aircraft Id - RoadTransport: plate Id - Train: train id - MaritimeTransport: vessel id"/>
+                            <field name="transport_type" string="Transport Type" attrs="{'required': [('edespatch_delivery_type', '=', 'edespatch')]}"/>            
+                            <field name="vehicle_id" string="Vehicle Id" attrs="{'required': [('edespatch_delivery_type', '=', 'edespatch')]}" help="AirTransport: aircraft Id - RoadTransport: plate Id - Train: train id - MaritimeTransport: vessel id"/>
                         </group>
                         <group name="roadtransport" attrs="{'invisible':[('transport_type','!=','roadtransport')]}">
                             <field name="transport_equipment_id" string="Transport Equipment 'Trailer' Plate Id" help="Road Transport Trailer Plate Id"/>
