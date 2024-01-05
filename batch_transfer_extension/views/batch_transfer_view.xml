@@ -42,6 +42,33 @@
                     </field>
                 </page>
             </xpath>
+            <xpath expr="//notebook/page[4]" position="after">
+                <page string="Transport" name="transport_info" attrs="{'invisible': [('edespatch_delivery_type', '!=', 'edespatch')]}">
+                    <group>
+                        <group>
+                            <field name="edespatch_carrier_id" string="Carrier Partner" domain="[('industry_id.id', '=', 139)]"/>
+                            <field name="transport_type" string="Transport Type" attrs="{'required': [('edespatch_delivery_type', '=', 'edespatch')]}"/>
+            
+                            <field name="vehicle_id" string="Vehicle Id" attrs="{'required': [('edespatch_delivery_type','=','edespatch'), ('picking_type_code','in',['outgoing'])]}" help="AirTransport: aircraft Id - RoadTransport: plate Id - Train: train id - MaritimeTransport: vessel id"/>
+                        </group>
+                        <group name="roadtransport" attrs="{'invisible':[('transport_type','!=','roadtransport')]}">
+                            <field name="transport_equipment_id" string="Transport Equipment 'Trailer' Plate Id" help="Road Transport Trailer Plate Id"/>
+                        </group>
+                        <group name="railtransport" attrs="{'invisible':[('transport_type','!=','railtransport')]}">
+                            <field name="rail_car_id" attrs="{'required': [('transport_type','=','railtransport')]}"/>
+                        </group>
+                        <group name="maritimetransport" attrs="{'invisible':[('transport_type','!=','maritimetransport')]}">
+                            <field name="vessel_name"/>
+                            <field name="radio_call_sign_id"/>
+                            <field name="ships_requirements"/>
+                            <field name="gross_tonnage_measure"/>
+                            <field name="net_tonnage_measure"/>
+                            <field name="registry_cert_doc_ref"/>
+                            <field name="registry_port_location"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
     <record id="view_picking_tree_batch_inherit" model="ir.ui.view">
