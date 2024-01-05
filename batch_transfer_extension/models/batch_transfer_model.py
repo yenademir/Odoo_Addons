@@ -221,6 +221,3 @@ class Picking(models.Model):
     project_transfer = fields.Many2one("project.project", string="Project Number", store=True)
     effective_date = fields.Date(string="Effective Date", store=True)
     arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
-    vehicle_id = fields.Char(string='Vehicle ID', attrs={
-        'required': [('edespatch_delivery_type', '=', 'edespatch'), ('picking_type_code', 'in', ['outgoing'])]
-    })
