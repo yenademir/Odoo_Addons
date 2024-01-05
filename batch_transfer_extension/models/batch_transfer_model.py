@@ -38,6 +38,24 @@ class StockPickingBatch(models.Model):
     airtag_url = fields.Char(string='Airtag URL', compute='_compute_airtag_url', store=True)  # Hesaplanmış URL alanı
     transportation_code = fields.Char(string='Transportation Code')
     import_decleration_number = fields.Char(string='Custom Decleration No', inverse='_inverse_import_decleration_number', store=True)
+    edespatch_carrier_id = fields.Many2one('res.partner', string='Carrier Partner', domain=[('industry_id.id', '=', 139)], inverse='_inverse_edespatch_carrier_id')
+    transport_type = fields.Selection([
+        ('airtransport', 'Air Transport'),
+        ('roadtransport', 'Road Transport'),
+        ('railtransport', 'Rail Transport'),
+        ('maritimetransport', 'Maritime Transport'),
+    ], string='Transport Type', inverse='_inverse_transport_type')
+    vehicle_id = fields.Char(string='Vehicle Id', inverse='_inverse_vehicle_id')
+    transport_equipment_id = fields.Char(string='Transport Equipment "Trailer" Plate Id', inverse='_inverse_transport_equipment_id')
+    rail_car_id = fields.Char(string='Rail Car Id', inverse='_inverse_rail_car_id')
+    maritimetransport = fields.Boolean(string='Maritime Transport', inverse='_inverse_maritimetransport_fields')
+    vessel_name = fields.Char(string='Vessel Name', inverse='_inverse_maritimetransport_fields')
+    radio_call_sign_id = fields.Char(string='Radio Call Sign ID', inverse='_inverse_maritimetransport_fields')
+    ships_requirements = fields.Text(string='Ships Requirements', inverse='_inverse_maritimetransport_fields')
+    gross_tonnage_measure = fields.Float(string='Gross Tonnage Measure', inverse='_inverse_maritimetransport_fields')
+    net_tonnage_measure = fields.Float(string='Net Tonnage Measure', inverse='_inverse_maritimetransport_fields')
+    registry_cert_doc_ref = fields.Char(string='Registry Certificate Document Reference', inverse='_inverse_maritimetransport_fields')
+    registry_port_location = fields.Char(string='Registry Port Location', inverse='_inverse_maritimetransport_fields')
     edespatch_delivery_type = fields.Selection(
         [
             ("edespatch", "E-Despatch"),
@@ -58,6 +76,52 @@ class StockPickingBatch(models.Model):
         store=True, 
     )
 
+    @api.depends('picking_ids.edespatch_carrier_id')
+    def _inverse_edespatch_carrier_id(self):
+        for batch in self:
+            batch.picking_ids.write({'edespatch_carrier_id': batch.edespatch_carrier_id.id})
+
+    # transport_type için inverse fonksiyon
+    @api.depends('picking_ids.transport_type')
+    def _inverse_transport_type(self):
+        for batch in self:
+            batch.picking_ids.write({'transport_type': batch.transport_type})
+
+    # vehicle_id için inverse fonksiyon
+    @api.depends('picking_ids.vehicle_id')
+    def _inverse_vehicle_id(self):
+        for batch in self:
+            batch.picking_ids.write({'vehicle_id': batch.vehicle_id})
+
+    # transport_equipment_id için inverse fonksiyon
+    @api.depends('picking_ids.transport_equipment_id')
+    def _inverse_transport_equipment_id(self):
+        for batch in self:
+            batch.picking_ids.write({'transport_equipment_id': batch.transport_equipment_id})
+
+    # rail_car_id için inverse fonksiyon
+    @api.depends('picking_ids.rail_car_id')
+    def _inverse_rail_car_id(self):
+        for batch in self:
+            batch.picking_ids.write({'rail_car_id': batch.rail_car_id})
+
+    # vessel_name ve diğer maritimetransport alanları için inverse fonksiyonlar
+    @api.depends('picking_ids.vessel_name', 'picking_ids.radio_call_sign_id', 
+                 'picking_ids.ships_requirements', 'picking_ids.gross_tonnage_measure', 
+                 'picking_ids.net_tonnage_measure', 'picking_ids.registry_cert_doc_ref', 
+                 'picking_ids.registry_port_location')
+    def _inverse_maritimetransport_fields(self):
+        for batch in self:
+            batch.picking_ids.write({
+                'vessel_name': batch.vessel_name,
+                'radio_call_sign_id': batch.radio_call_sign_id,
+                'ships_requirements': batch.ships_requirements,
+                'gross_tonnage_measure': batch.gross_tonnage_measure,
+                'net_tonnage_measure': batch.net_tonnage_measure,
+                'registry_cert_doc_ref': batch.registry_cert_doc_ref,
+                'registry_port_location': batch.registry_port_location
+            })
+    
     @api.depends('picking_ids.project_transfer')
     def _compute_projects(self):
         for record in self:
