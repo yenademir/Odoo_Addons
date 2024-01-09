@@ -28,6 +28,7 @@ class DocumentUploadWizard(models.Model):
     purchase_name = fields.Many2one('purchase.order', string="Purchase Name")
     project_number = fields.Many2one('project.project', string="Project Number")
     product_id = fields.Many2one('product.product', string='Pose Nr.')
+    notes = fields.Html(string="Notes")
     
     def write(self, vals):
         result = super(DocumentUploadWizard, self).write(vals)
@@ -47,9 +48,9 @@ class DocumentUploadWizardLine(models.Model):
 
     wizard_id = fields.Many2one('document.upload.wizard', string='Wizard')
     required_document = fields.Char(string='Required Document')
-    uploaded_document = fields.Char(string='Uploaded Document')
+    uploaded_document = fields.Char(string='Doc.')
     dimension = fields.Char(string="Dimension")
-    is_uploaded = fields.Boolean(string='Yüklemeden Devam Et')
+    is_uploaded = fields.Boolean(string='N/A')
     upload_document = fields.Binary(string='Upload Document')
     lot_number = fields.Char(string="1.Lot Nr")
     project_number = fields.Many2one('project.project', string="Project Number")
@@ -73,10 +74,10 @@ class DocumentUploadWizardLine(models.Model):
         string="Supplier",
         related='purchase_name.partner_id',        
         )
-    manufacturer = fields.Char(string="Üretici Firma")
-    certificate_number = fields.Char(string="Certificate Nr.")
-    heat_number = fields.Char(string="Heat Number")
-    standart = fields.Char(string="Standart")
+    manufacturer = fields.Char(string="Manufacturer")
+    certificate_number = fields.Char(string="Cert. Nr.")
+    heat_number = fields.Char(string="Heat Nr.")
+    standart = fields.Char(string="Std.")
 
     material_certificate_id = fields.Many2one(
         'material.certificate', string='Material Certificate'
