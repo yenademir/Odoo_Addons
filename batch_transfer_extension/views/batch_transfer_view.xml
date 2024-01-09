@@ -76,7 +76,7 @@
         <field name="inherit_id" ref="stock_picking_batch.view_picking_tree_batch"/>
         <field name="arch" type="xml">
             <xpath expr="//tree/field[@name='name']" position="after">
-                <field name="project_transfer"/>
+                <field name="project_transfer" widget="many2many_tags"/>
             </xpath>
         </field>
     </record>
