@@ -4,7 +4,6 @@ import requests
 import base64
 import logging
 _logger = logging.getLogger(__name__)
-
 class DocumentUploadWizard(models.Model):
     _name = 'document.upload.wizard'
     _description = 'Document Upload Wizard'
@@ -12,34 +11,27 @@ class DocumentUploadWizard(models.Model):
     certificate_line_ids = fields.One2many(
         'document.upload.wizard.line', 'wizard_id', string='Certificate Lines'
     )
-
     measurement_report_ids = fields.One2many(
         'document.upload.wizard.measurement.report', 'wizard_id', string='Measurement Reports'
     )
-
     galvanize_ids = fields.One2many(
         'document.upload.wizard.galvanize', 'wizard_id', string='Galvanize'
     )
-
     packaging_ids = fields.One2many(
         'document.upload.wizard.packaging', 'wizard_id', string='Packaging'
     )
-
     purchase_name = fields.Many2one('purchase.order', string="Purchase Name")
     project_number = fields.Many2one('project.project', string="Project Number")
     product_id = fields.Many2one('product.product', string='Pose Nr.')
-    notes = fields.Html(string="Notes")
-    
+
     def write(self, vals):
         result = super(DocumentUploadWizard, self).write(vals)
-
         # project_number için olan mevcut kodunuz...
         if 'project_number' in vals:
             project_number_id = vals['project_number']
             for wizard in self:
                 wizard.certificate_line_ids.write({'project_number': project_number_id})
                 # Diğer bağlı one2many alanları için de benzer işlem yapılabilir
-
         return result
     
 class DocumentUploadWizardLine(models.Model):
@@ -48,9 +40,9 @@ class DocumentUploadWizardLine(models.Model):
 
     wizard_id = fields.Many2one('document.upload.wizard', string='Wizard')
     required_document = fields.Char(string='Required Document')
-    uploaded_document = fields.Char(string='Doc.')
+    uploaded_document = fields.Char(string='Uploaded Document')
     dimension = fields.Char(string="Dimension")
-    is_uploaded = fields.Boolean(string='N/A')
+    is_uploaded = fields.Boolean(string='Yüklemeden Devam Et')
     upload_document = fields.Binary(string='Upload Document')
     lot_number = fields.Char(string="1.Lot Nr")
     project_number = fields.Many2one('project.project', string="Project Number")
@@ -74,10 +66,10 @@ class DocumentUploadWizardLine(models.Model):
         string="Supplier",
         related='purchase_name.partner_id',        
         )
-    manufacturer = fields.Char(string="Manufacturer")
-    certificate_number = fields.Char(string="Cert. Nr.")
-    heat_number = fields.Char(string="Heat Nr.")
-    standart = fields.Char(string="Std.")
+    manufacturer = fields.Char(string="Üretici Firma")
+    certificate_number = fields.Char(string="Certificate Nr.")
+    heat_number = fields.Char(string="Heat Number")
+    standart = fields.Char(string="Standart")
 
     material_certificate_id = fields.Many2one(
         'material.certificate', string='Material Certificate'
