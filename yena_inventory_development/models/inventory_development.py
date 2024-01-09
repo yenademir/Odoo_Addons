@@ -57,7 +57,7 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     arrive_date = fields.Date(related="picking_id.arrive_date", string="Arrive Date")
-    project_transfer = fields.Many2one(related="picking_id.project_transfer", string="Project Number")
+    project_transfer = fields.Many2many(related="picking_id.project_transfer", string="Project Number")
     situation = fields.Selection(related="picking_id.situation", string="Situation")
     transportation_code = fields.Char(related="picking_id.transportation_code", string="Transportation Code")
     batch_id = fields.Many2one('stock.picking.batch', string='Batch', related='picking_id.batch_id', store=True, readonly=True)
