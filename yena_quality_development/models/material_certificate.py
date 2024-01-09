@@ -5,9 +5,9 @@ class MaterialCertificate(models.Model):
     _description = 'Material Certificate'
     
     name = fields.Char('Name', compute="_compute_name")
-    material_thickness = fields.Float(string="Thickness", required=True)
-    material_width = fields.Float(string="Width")
-    material_length = fields.Float(string="Length")
+    material_thickness = fields.Char(string="Thickness", required=True)
+    material_width = fields.Char(string="Width")
+    material_length = fields.Char(string="Length")
     material_grade = fields.Char(string="Grade", required=True)
 
     @api.depends('material_grade', 'material_thickness', 'material_width', 'material_length')
