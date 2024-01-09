@@ -9,8 +9,11 @@ class StockPickingBatch(models.Model):
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
-         ("arrived", "Arrived")], string="Situation", store=True)
-
+         ("arrived", "Arrived")],
+        string="Situation",
+        store=True,
+        inverse='_inverse_situation'
+    )
     customer_ids = fields.Many2many(
         'res.partner',
         'batch_customer_rel',  # Bu bir ilişki tablosudur
@@ -36,7 +39,10 @@ class StockPickingBatch(models.Model):
     # ], string='Shipping Type')
     vehicle_type_id = fields.Many2one('vehicle.type', string='Araç Türü')
     airtag_url = fields.Char(string='Airtag URL', compute='_compute_airtag_url', store=True)  # Hesaplanmış URL alanı
-    transportation_code = fields.Char(string='Transportation Code')
+    transportation_code = fields.Char(
+        string='Transportation Code',
+        inverse='_inverse_transportation_code'
+    )
     import_decleration_number = fields.Char(string='Custom Decleration No', inverse='_inverse_import_decleration_number', store=True)
     edespatch_carrier_id = fields.Many2one('res.partner', string='Carrier Partner', domain=[('industry_id.id', '=', 139)], inverse='_inverse_edespatch_carrier_id')
     transport_type = fields.Selection([
@@ -44,7 +50,7 @@ class StockPickingBatch(models.Model):
         ('roadtransport', 'Road Transport'),
         ('railtransport', 'Rail Transport'),
         ('maritimetransport', 'Maritime Transport'),
-    ], string='Transport Type', inverse='_inverse_transport_type')
+    ], string='Transport Type',  default="roadtransport", inverse='_inverse_transport_type')
     vehicle_id = fields.Char(string='Vehicle Id', inverse='_inverse_vehicle_id')
     transport_equipment_id = fields.Char(string='Transport Equipment "Trailer" Plate Id', inverse='_inverse_transport_equipment_id')
     rail_car_id = fields.Char(string='Rail Car Id', inverse='_inverse_rail_car_id')
@@ -81,6 +87,15 @@ class StockPickingBatch(models.Model):
         for batch in self:
             batch.picking_ids.write({'edespatch_carrier_id': batch.edespatch_carrier_id.id})
 
+    @api.depends('picking_ids.transportation_code')
+    def _inverse_transportation_code(self):
+        for batch in self:
+            batch.picking_ids.write({'transportation_code': batch.transportation_code})
+
+    def _inverse_situation(self):
+        for batch in self:
+            batch.picking_ids.write({'situation': batch.situation})
+    
     # transport_type için inverse fonksiyon
     @api.depends('picking_ids.transport_type')
     def _inverse_transport_type(self):
