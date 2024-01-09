@@ -45,7 +45,7 @@ class StockPickingBatch(models.Model):
         ('railtransport', 'Rail Transport'),
         ('maritimetransport', 'Maritime Transport'),
     ], string='Transport Type', inverse='_inverse_transport_type')
-    vehicle_id = fields.Char(string='Vehicle Id', inverse='_inverse_maritimetransport_fields')
+    vehicle_id = fields.Char(string='Vehicle Id', inverse='_inverse_vehicle_id')
     transport_equipment_id = fields.Char(string='Transport Equipment "Trailer" Plate Id', inverse='_inverse_transport_equipment_id')
     rail_car_id = fields.Char(string='Rail Car Id', inverse='_inverse_rail_car_id')
     maritimetransport = fields.Boolean(string='Maritime Transport', inverse='_inverse_maritimetransport_fields')
@@ -87,6 +87,12 @@ class StockPickingBatch(models.Model):
         for batch in self:
             batch.picking_ids.write({'transport_type': batch.transport_type})
 
+    # vehicle_id için inverse fonksiyon
+    @api.depends('picking_ids.vehicle_id')
+    def _inverse_vehicle_id(self):
+        for batch in self:
+            batch.picking_ids.write({'vehicle_id': batch.vehicle_id})
+
     # transport_equipment_id için inverse fonksiyon
     @api.depends('picking_ids.transport_equipment_id')
     def _inverse_transport_equipment_id(self):
@@ -99,10 +105,11 @@ class StockPickingBatch(models.Model):
         for batch in self:
             batch.picking_ids.write({'rail_car_id': batch.rail_car_id})
 
+    # vessel_name ve diğer maritimetransport alanları için inverse fonksiyonlar
     @api.depends('picking_ids.vessel_name', 'picking_ids.radio_call_sign_id', 
                  'picking_ids.ships_requirements', 'picking_ids.gross_tonnage_measure', 
                  'picking_ids.net_tonnage_measure', 'picking_ids.registry_cert_doc_ref', 
-                 'picking_ids.registry_port_location', 'picking_ids.vehicle_id')
+                 'picking_ids.registry_port_location')
     def _inverse_maritimetransport_fields(self):
         for batch in self:
             batch.picking_ids.write({
@@ -112,10 +119,9 @@ class StockPickingBatch(models.Model):
                 'gross_tonnage_measure': batch.gross_tonnage_measure,
                 'net_tonnage_measure': batch.net_tonnage_measure,
                 'registry_cert_doc_ref': batch.registry_cert_doc_ref,
-                'registry_port_location': batch.registry_port_location,
-                'vehicle_id': batch.vehicle_id,
+                'registry_port_location': batch.registry_port_location
             })
-    
+
     @api.depends('picking_ids.project_transfer')
     def _compute_projects(self):
         for record in self:
@@ -202,16 +208,16 @@ class StockPickingBatch(models.Model):
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
-    project_ids = fields.Many2many('project.project', string='Projects', compute='_compute_project_transfer', store=True)
+    project_ids = fields.Many2one('project.project', string='Projects', compute='_compute_project_transfer', store=True)
 
     @api.depends('picking_id.project_transfer')
     def _compute_project_transfer(self):
         for record in self:
             record.project_ids = record.picking_id.project_transfer
-            
+
 class Picking(models.Model):
     _inherit = 'stock.picking'
     edespatch_date = fields.Datetime(related='batch_id.edespatch_date', store=True, readonly=False)
-    project_transfer = fields.Many2many("project.project", string="Project Number", store=True)
+    project_transfer = fields.Many2one("project.project", string="Project Number", store=True)
     effective_date = fields.Date(string="Effective Date", store=True)
     arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
