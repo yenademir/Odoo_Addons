@@ -208,7 +208,7 @@ class StockPickingBatch(models.Model):
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
-    project_ids = fields.Many2one('project.project', string='Projects', compute='_compute_project_transfer', store=True)
+    project_ids = fields.Many2many('project.project', string='Projects', compute='_compute_project_transfer', store=True)
 
     @api.depends('picking_id.project_transfer')
     def _compute_project_transfer(self):
@@ -218,6 +218,6 @@ class StockMoveLine(models.Model):
 class Picking(models.Model):
     _inherit = 'stock.picking'
     edespatch_date = fields.Datetime(related='batch_id.edespatch_date', store=True, readonly=False)
-    project_transfer = fields.Many2one("project.project", string="Project Number", store=True)
+    project_transfer = fields.Many2many("project.project", string="Project Number", store=True)
     effective_date = fields.Date(string="Effective Date", store=True)
     arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
