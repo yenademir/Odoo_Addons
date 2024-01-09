@@ -57,7 +57,7 @@
                         </field>
                     </group>
                     <group string="Notes">
-                        <field name="notes" nolaber="1">
+                        <field name="notes" nolaber="1"/>
                     </group>
                 </sheet>
             </form>
