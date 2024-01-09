@@ -10,8 +10,16 @@ class Picking(models.Model):
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
-         ("arrived", "Arrived")], string="Situation", related="batch_id.situation", store=True)
-    transportation_code = fields.Char(string="Transportation Code", related="batch_id.transportation_code", store=True)
+         ("arrived", "Arrived")],
+        string="Situation",
+        store=True,
+        readonly=False
+    )
+    transportation_code = fields.Char(
+        string="Transportation Code",
+        store=True,
+        readonly=False
+    )
     sale_id=fields.Many2one("sale.order",string="Sale Order")
     purchase_id=fields.Many2one("purchase.order",string="Purchase Order")
     sequence_code = fields.Char(string='Sequence Code', related='picking_type_id.sequence_code', store=True)
