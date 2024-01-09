@@ -1,8 +1,0 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_material_certificate_all,Material Certificate Access,model_material_certificate,,1,1,1,1
-access_document_upload_wizard_all,Document Upload Wizard Access,model_document_upload_wizard,,1,1,1,1
-access_document_upload_wizard_line,document_upload_wizard_line,model_document_upload_wizard_line,,1,1,1,1
-access_document_upload_wizard_measurement_report,document.upload.wizard.measurement.report,model_document_upload_wizard_measurement_report,,1,1,1,1
-access_document_upload_wizard_galvanize,document.upload.wizard.galvanize,model_document_upload_wizard_galvanize,,1,1,1,1
-access_document_upload_wizard_packaging,document.upload.wizard.packaging,model_document_upload_wizard_packaging,,1,1,1,1
-
