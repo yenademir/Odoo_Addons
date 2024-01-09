@@ -1,0 +1,76 @@
+<odoo>
+    <record id="view_document_upload_wizard_form" model="ir.ui.view">
+        <field name="name">document.upload.wizard.form</field>
+        <field name="model">document.upload.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="Material Certificate">
+                        <field name="certificate_line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="required_document"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="lot_number"/>
+                                <field name="project_number" optional="hide" readonly="1"/>
+                                <field name="purchase_name" optional="hide" readonly="1"/>
+                                <field name="product_id" optional="hide" readonly="1"/>
+                                <field name="customer_id" optional="hide" readonly="1"/>
+                                <field name="supplier_id" optional="hide" readonly="1"/>
+                                <field name="dimension"/>
+                                <field name="manufacturer"/>
+                                <field name="certificate_number"/>
+                                <field name="heat_number"/>
+                                <field name="standart"/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Measurement Reports">
+                        <field name="measurement_report_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Galvanizing / Painting / Coating">
+                        <field name="galvanize_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Packaging">
+                        <field name="packaging_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolaber="1">
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_document_upload_wizard" model="ir.actions.act_window">
+        <field name="name">Document Upload</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.upload.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_document_upload_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Material Certificate Tree View -->
+    <record id="view_material_certificate_tree" model="ir.ui.view">
+        <field name="name">material.certificate.tree</field>
+        <field name="model">material.certificate</field>
+        <field name="arch" type="xml">
+            <tree string="material_certificate_tree" delete="0" multi_edit="1" sample="1" default_order="name">
+                    <field name="name"/>
+                    <field name="material_grade"/>
+                    <field name="material_thickness"/>
+                    <field name="material_length"/>
+                    <field name="material_width"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Material Certificate Form View -->
+    <record id="view_material_certificate_form" model="ir.ui.view">
+        <field name="name">material.certificate.form</field>
+        <field name="model">material.certificate</field>
+        <field name="arch" type="xml">
+            <form string="Material Certificate">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="material_grade"/>
+                        <field name="material_thickness"/>
+                        <field name="material_length"/>
+                        <field name="material_width"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="product_template_main_form_inherit_yena" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.yena</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="yena_inventory_development.product_template_main_form_inherit_yena"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='technical_drawing']" position="before">
+                <field name="material_certificate" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Material Certificate Action -->
+    <record id="action_material_certificate" model="ir.actions.act_window">
+        <field name="name">Sub Part Materials</field>
+        <field name="res_model">material.certificate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_material_certificate_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_material_certificate_form')})]"/>
+    </record>
+
+    <!-- Material Certificate Menu Item -->
+    <menuitem id="menu_material_certificate"
+              name="Sub Part Materials"
+              parent="stock.menu_stock_root"
+              action="action_material_certificate"/>
+
+</odoo>

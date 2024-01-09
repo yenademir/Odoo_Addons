@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        
+        <record id="view_order_line_tree_inherit_quality_overview" model="ir.ui.view">
+            <field name="name">purchase.order.line.tree.inherit.quality.overview</field>
+            <field name="model">purchase.order.line</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Order Lines" delete="0" multi_edit="1" sample="1">
+                    <field name="order_id" readonly="1"/>
+                    <field name="account_analytic_id"/>
+                    <field name="partner_id"/>
+                    <field name="product_id"/>
+                    <field name="user_id" optional="hide"/>
+                    <field name="product_qty"/>
+                    <field name="product_uom" string="UoM" groups="uom.group_uom"/>
+                    <field name="qty_received"/>
+                    <field name="delivery_date"/>
+                    <field name="price_unit" optional="hide"/>
+                    <field name="price_subtotal" optional="hide"/>
+                    <field name="currency_id" invisible ="1"/>
+                    <field name="tags" widget="many2many_tags" optional="hide"/>
+                    <field name="production_status"/>
+                    <field name="material_certificate_status" widget="badge" decoration-success="material_certificate_status == 'done'" decoration-warning="material_certificate_status == 'not_ok'" decoration-info="material_certificate_status == 'conditional_acceptance'" readonly="1"/>
+                    <field name="measurement_report_status" widget="badge" decoration-success="measurement_report_status == 'done'" decoration-warning="measurement_report_status == 'not_ok'" decoration-info="measurement_report_status == 'conditional_acceptance'" readonly="1"/>
+                    <field name="galvanize_status" widget="badge" decoration-success="galvanize_status == 'done'" decoration-warning="galvanize_status == 'not_ok'" decoration-info="galvanize_status == 'conditional_acceptance'" readonly="1"/>
+                    <field name="packaging_status" widget="badge" decoration-success="packaging_status == 'done'" decoration-warning="packaging_status == 'not_ok'" decoration-info="packaging_status == 'conditional_acceptance'" readonly="1"/>
+                    <field name="quality_status" widget="badge" decoration-success="quality_status == 'done'" decoration-warning="quality_status == 'not_ok'" decoration-info="quality_status == 'conditional_acceptance'" readonly="1" optional="hide"/>
+                    <button name="open_document_upload_wizard" type="object" string="Düzenle"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_document_upload_wizard_line_tree" model="ir.ui.view">
+            <field name="name">document.upload.wizard.line.tree</field>
+            <field name="model">document.upload.wizard.line</field>
+            <field name="arch" type="xml">
+                <tree string="Lot Follow Up" multi_edit="1" sample="1">
+                    <field name="lot_number"/>
+                    <field name="project_number"/>
+                    <field name="purchase_name"/>
+                    <field name="product_id"/>
+                    <field name="customer_id"/>
+                    <field name="supplier_id"/>
+                    <field name="manufacturer"/>
+                    <field name="certificate_number"/>
+                    <field name="heat_number"/>
+                    <field name="standart"/>
+                    <field name="dimension"/>
+                    <field name="required_document"/>
+                    <field name="uploaded_document" widget="url_viewer"/>
+                    <field name="is_uploaded"/>
+                </tree>
+            </field>
+        </record>
+        <data>
+            <record id="view_order_line_tree_inherit_production_quality" model="ir.ui.view">
+                <field name="name">purchase.order.line.tree.inherit.prdocution.quality</field>
+                <field name="model">purchase.order.line</field>
+                <field name="inherit_id" ref="yena_purchase_development.view_order_line_tree_inherit"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='production_status']" position="after">
+                        <field name="quality_status" widget="badge" decoration-success="quality_status == 'done'" decoration-warning="quality_status == 'not_ok'" decoration-info="quality_status == 'conditional_acceptance'" readonly="1" optional="hide"/>
+                    </xpath>
+                </field>
+            </record>
+        </data>
+        <record id="action_purchase_order_line_quality_overview" model="ir.actions.act_window">
+            <field name="name">Quality Overview</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_order_line_tree_inherit_quality_overview"/>
+        </record>
+
+        <menuitem id="menu_purchase_order_line_overview"
+                name="Quality"
+                parent="purchase.menu_purchase_root"
+                sequence="10"/>
+
+        <menuitem id="menu_quality_overview"
+                name="Quality Overview"
+                parent="menu_purchase_order_line_overview"
+                action="action_purchase_order_line_quality_overview"
+                sequence="10"/>
+
+        <record id="action_lot_follow_up" model="ir.actions.act_window">
+            <field name="name">Lot Follow Up</field>
+            <field name="res_model">document.upload.wizard.line</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_document_upload_wizard_line_tree"/>
+        </record>
+
+        <menuitem id="menu_lot_follow_up"
+                name="Lot Follow Up"
+                parent="menu_purchase_order_line_overview"
+                action="action_lot_follow_up"
+                sequence="20"/>
+    </odoo>
