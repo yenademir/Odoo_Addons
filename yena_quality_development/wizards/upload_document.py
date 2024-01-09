@@ -168,7 +168,7 @@ class DocumentUploadWizardMeasurementReport(models.Model):
             files = {
                 'quality_documents': (file_name, base64.b64decode(file_data), 'application/octet-stream')
             }
-            data = {'purchase': self.wizard_id.purchase_name}
+            data = {'purchase': self.wizard_id.purchase_name.name}
 
             response = requests.post(api_url, files=files, data=data)
             if response.status_code == 201:
@@ -226,7 +226,7 @@ class DocumentUploadWizardGalvanize(models.Model):
             files = {
                 'quality_documents': (file_name, base64.b64decode(file_data), 'application/octet-stream')
             }
-            data = {'purchase': self.wizard_id.purchase_name}
+            data = {'purchase': self.wizard_id.purchase_name.name}
 
             response = requests.post(api_url, files=files, data=data)
             if response.status_code == 201:
@@ -240,7 +240,7 @@ class DocumentUploadWizardGalvanize(models.Model):
                 return True  # Başarı durumunu belirt
             return False  # Başarısızlık durumunu belirt
 
-class DocumentUploadWizardGalvanize(models.Model):
+class DocumentUploadWizardPackaging(models.Model):
     _name = 'document.upload.wizard.packaging'
     _description = 'Document Upload Wizard Packaging'
 
@@ -284,7 +284,7 @@ class DocumentUploadWizardGalvanize(models.Model):
             files = {
                 'quality_documents': (file_name, base64.b64decode(file_data), 'application/octet-stream')
             }
-            data = {'purchase': self.wizard_id.purchase_name}
+            data = {'purchase': self.wizard_id.purchase_name.name}
 
             response = requests.post(api_url, files=files, data=data)
             if response.status_code == 201:
