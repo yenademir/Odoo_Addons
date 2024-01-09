@@ -22,7 +22,7 @@
                                 <field name="heat_number"/>
                                 <field name="standart"/>
                                 <field name="is_uploaded"/>
-                                <field name="uploaded_document" widget="url_viewer"/>
+                                <field name="uploaded_document"/>
                             </tree>
                         </field>
                     </group>
