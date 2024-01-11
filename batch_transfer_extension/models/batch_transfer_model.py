@@ -5,7 +5,7 @@ class StockPickingBatch(models.Model):
     _inherit = 'stock.picking.batch'
     _description = "Batch Transfer"
     _order = "name desc"
-    edespatch_date = fields.Datetime(string="Real Departure Date", store=True)
+    edespatch_date = fields.Datetime(string="Actual Departure Date", store=True)
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
