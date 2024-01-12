@@ -24,7 +24,7 @@
                 <field name="vehicle_type_id" required="1"/>
             </field>
             <xpath expr="//field[@name='scheduled_date']" position="after">
-                <field name="edespatch_date" required="1" />
+                <field name="edespatch_date" required="1" string="Departure Date"/>
                 <field name="customer_ids" widget="many2many_tags" options="{'no_create': True}" required="1"/>
                 <field name="vendor_ids" widget="many2many_tags" options="{'no_create': True}" required="1"/>
                 <field name="situation" required="1"/>
