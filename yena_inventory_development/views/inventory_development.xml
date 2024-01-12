@@ -40,13 +40,13 @@
              </xpath>
            <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="transportation_code" attrs="{'required': True}" />
-                <field name="project_transfer" attrs="{'required': True}"/>
+                <field name="project_transfer" attrs="{'required': True}" widget="many2many_tags"/>
             </xpath>
             <xpath expr="//field[@name='edespatch_date']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//label[@for='scheduled_date']" position="before">
-                <field name="edespatch_date" string="Actual Departure Date" attrs="{'invisible': [('sequence_code', '=', 'OUT')]}"/>
+                <field name="edespatch_date" string="Departure Date" />
             </xpath>
             <xpath expr="//field[@name='edespatch_move_id']" position="attributes">
                 <attribute name="string">Vendor E-Despatch Number</attribute>
