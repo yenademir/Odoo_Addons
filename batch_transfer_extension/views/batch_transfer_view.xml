@@ -39,6 +39,7 @@
                         <tree create="true" edit="false" delete="true" editable="bottom" string="Drivers">
                             <field name="function"/>
                             <field name="name"/>
+                            <field name="nationality_id"/>
                         </tree>
                     </field>
                 </page>
