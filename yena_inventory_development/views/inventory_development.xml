@@ -46,7 +46,7 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//label[@for='scheduled_date']" position="before">
-                <field name="edespatch_date" string="Departure Date" />
+                <field name="edespatch_date" string="Despatch Date" />
             </xpath>
             <xpath expr="//field[@name='edespatch_move_id']" position="attributes">
                 <attribute name="string">Vendor E-Despatch Number</attribute>
