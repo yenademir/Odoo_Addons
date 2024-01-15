@@ -84,7 +84,7 @@
             <xpath expr="//header" position="inside">
             <button name="action_batch_despatch_send" type="object"
                     string="Send All E-Despatchs" class="oe_highlight"
-                    attrs="{'invisible': ['|', ('state', '!=', 'done'), '|', ('edespatch_state', '=', 'completed'), ('edespatch_delivery_type', '!=', 'edespatch')]}" />
+                    attrs="{'invisible': ['|', ('state', '!=', 'done'), '|', ('edespatch_state', '!=', 'draft'), ('edespatch_delivery_type', '!=', 'edespatch')]}" />
             </xpath>
         </field>
     </record>
