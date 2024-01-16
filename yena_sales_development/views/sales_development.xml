@@ -143,7 +143,16 @@
             </xpath>
         </field>
     </record>
-
+    <record id="view_quotation_tree_inherit_yena_development" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.yena.development</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="customer_reference" optional="show"/>
+            </xpath>
+        </field>
+    </record>
     <record id="action_print_proposal_form" model="ir.actions.server">
         <field name="name">Print Proposal Form</field>
         <field name="model_id" ref="model_sale_order"/>
