@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Email Template for New Call for Vendors -->
+        <record id="email_template_new_call_for_vendors" model="mail.template">
+            <field name="name">New Call for Vendors</field>
+            <field name="model_id" ref="model_call_for_vendors"/>
+            <field name="email_from">{{ (user.email_formatted) }}</field>
+            <field name="email_to">purchase@yenaengineering.nl</field>
+            <field name="subject">New Call for Vendors Created</field>
+            <field name="body_html"><![CDATA[
+                <p>Hello,</p>
+                <p>A new Call for Vendors has been created.</p>
+                <p><a t-att-href="'/web#id=%s&view_type=form&model=call.for.vendors' % (object.id)" >Click here to view</a></p>
+                <p>Regards,</p>
+            ]]></field>
+        </record>
+        <!-- Email Template for Updated Call for Vendors -->
+        <record id="email_template_updated_call_for_vendors" model="mail.template">
+            <field name="name">Updated Call for Vendors</field>
+            <field name="model_id" ref="model_call_for_vendors"/>
+            <field name="email_from">{{ (user.email_formatted) }}</field>
+            <field name="email_to">purchase@yenaengineering.nl</field>
+            <field name="subject">Updated: {{ object.name or 'n/a' }}</field>
+            <field name="body_html"><![CDATA[
+                <p>Hello,</p>
+                <p>The Call for Vendors titled <t t-out="object.name or ''" contenteditable="false" data-oe-t-inline="true">CFV001</t> has been updated.</p>
+                <p><a t-att-href="'/web#id=%s&view_type=form&model=call.for.vendors' % (object.id)" >Click here to view</a></p>
+                <p>Regards,</p>
+            ]]></field>
+        </record>
+        <!-- RFQ Email Template for Vendors -->
+        <record id="email_template_new_bid_request" model="mail.template">
+            <field name="name">Teklif Talebi</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="email_from">{{(user.email_formatted)}}</field>
+            <field name="email_to">{{ object.contact_person.email_formatted }}</field>
+            <field name="email_cc">purchase@yenaengineering.nl</field>
+            <field name="subject">Teklif Talebi: {{ object.name or 'n/a' }}</field>
+            <field name="body_html"><![CDATA[
+                <div>
+                    <p>
+                        Merhaba,
+                        <br><br>
+                        Linkte teklif talebi ve gerekli çizimleri bulunan <strong t-out="object.project_purchase.name or ''" contenteditable="false">P00015</strong> kodlu projemiz için fiyat teklifinizi rica ederiz.
+                        <br><br>
+                        Fiyat teklifinizi aşağıda bulunan linkten verebilirsiniz.
+                        <br>
+                        <strong>
+                            <a t-att-href="'https://erp.yenaengineering.nl/my/purchase/%s' % (object.id)">
+                                Teklif isteğini görüntüle
+                            </a>
+                        </strong>
+                        <br><br>
+                        Bu maili cevaplamayın, bir sorunuz var ise <t t-out="object.user_id.login or ''" contenteditable="false" data-oe-t-inline="true">mail@yenaengineering.nl</t>  ile iletişime geçebilirsiniz.
+                    </p>
+                </div>
+                <t t-if="user.signature" data-oe-t-group="1" data-oe-t-group-active="true" data-oe-t-inline="true">
+                    <br>
+                    <t t-out="user.signature or ''" contenteditable="false" data-oe-t-inline="true">--<br>Mitchell Admin</t>
+                </t>
+            ]]></field>
+        </record>
+        <!-- RFQ Revise Email Template for Vendors -->
+        <record id="email_template_bid_request_revise" model="mail.template">
+            <field name="name">Teklif Talebi Revize İsteği</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="email_from">{{(user.email_formatted)}}</field>
+            <field name="email_to">{{ object.contact_person.email_formatted }}</field>
+            <field name="email_cc">purchase@yenaengineering.nl</field>
+            <field name="subject">Teklif Talebi Revize İsteği: {{ object.name or 'n/a' }}</field>
+            <field name="body_html"><![CDATA[
+                <div>
+                    <p>
+                        Merhaba,
+                        <br><br>
+                        Linkte teklif talebi ve gerekli çizimleri bulunan <strong t-out="object.project_purchase.name or ''" contenteditable="false">P00015</strong> kodlu projemiz için fiyat teklifinizi rica ederiz.
+                        <br><br>
+                        Fiyat teklifinizi aşağıda bulunan linkten verebilirsiniz.
+                        <br>
+                        <strong>
+                            <a t-att-href="'https://erp.yenaengineering.nl/my/purchase/%s' % (object.id)">
+                                Teklif isteğini görüntüle
+                            </a>
+                        </strong>
+                        <br><br>
+                        Bu maili cevaplamayın, bir sorunuz var ise <t t-out="object.user_id.login or ''" contenteditable="false" data-oe-t-inline="true">mail@yenaengineering.nl</t>  ile iletişime geçebilirsiniz.
+                    </p>
+                </div>
+                <t t-if="user.signature" data-oe-t-group="1" data-oe-t-group-active="true" data-oe-t-inline="true">
+                    <br>
+                    <t t-out="user.signature or ''" contenteditable="false" data-oe-t-inline="true">--<br>Mitchell Admin</t>
+                </t>
+            ]]></field>
+        </record>
+        <!-- Email Template for Send Price -->
+        <record id="email_template_send_price" model="mail.template">
+            <field name="name">Purchase Notification</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">Request for Quotation Updated by {{ object.partner_id.name or 'n/a' }}, {{ object.name or 'n/a' }}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Hello,</p>
+                    <p>The rfq <strong t-out="object.name or ''" contenteditable="false">P00015</strong> has been updated by <strong t-out="object.partner_id.name or ''" contenteditable="false">Vendor</strong>.</p>
+                    <p><a t-att-href="'/web#id=%s&view_type=form&model=call.for.vendors' % (object.call_for_vendors_id.id)" >Click here to view</a></p>
+                    <p>Thanks,</p>
+                ]]>
+            </field>
+            <field name="email_from">info_yena@yenaengineering.nl</field>
+            <field name="email_to">{{ object.user_id.email }}</field>
+            <field name="email_cc">purchase@yenaengineering.nl</field>
+        </record>
+        <!-- PO Email Template for Vendors -->
+        <record id="email_template_purchase" model="mail.template">
+            <field name="name">Satın Alma</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="email_from">{{(user.email_formatted)}}</field>
+            <field name="email_to">{{ object.contact_person.email_formatted }}</field>
+            <field name="email_cc">purchase@yenaengineering.nl</field>
+            <field name="subject">Sipariş Emri: {{ object.name or 'n/a' }}</field>
+            <field name="body_html"><![CDATA[
+                <div>
+                    <p>
+                        Merhaba,
+                        <br><br>
+                        Linkte siparişi ve gerekli çizimleri bulunan <strong t-out="object.project_purchase.name or ''" contenteditable="false">23156498</strong> kodlu projemiz için siparişimiz aşağıdaki linktedir.
+                        <br><br>
+                        Siparişi aşağıda bulunan linkten onaylayabilirsiniz.
+                        <br>
+                        <strong>
+                            <a t-att-href="'https://erp.yenaengineering.nl/my/purchase/%s' % (object.id)">
+                                Siparişi görüntüle
+                            </a>
+                        </strong>
+                        <br><br>
+                        Bu maili cevaplamayın, bir sorunuz var ise <t t-out="object.user_id.login or ''" contenteditable="false" data-oe-t-inline="true">mail@yenaengineering.nl</t>  ile iletişime geçebilirsiniz.
+                    </p>
+                </div>
+                <t t-if="user.signature" data-oe-t-group="1" data-oe-t-group-active="true" data-oe-t-inline="true">
+                    <br>
+                    <t t-out="user.signature or ''" contenteditable="false" data-oe-t-inline="true">--<br>Mitchell Admin</t>
+                </t>
+            ]]></field>
+        </record>
+        <record id="email_template_vendor_confirmation" model="mail.template">
+            <field name="name">Purchase Confirmation</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">Purchase Order Confirmed by {{ object.partner_id.name or 'n/a' }}, {{ object.name or 'n/a' }}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Hello,</p>
+                    <p>The PO <strong t-out="object.name or ''" contenteditable="false">P00015</strong> has been updated by <strong t-out="object.partner_id.name or ''" contenteditable="false">Vendor</strong>.</p>
+                    <p><a t-att-href="'/web#id=%s&view_type=form&model=call.for.vendors' % (object.call_for_vendors_id.id)" >Click here to view</a></p>
+                    <p>Thanks,</p>
+                ]]>
+            </field>
+            <field name="email_from">info_yena@yenaengineering.nl</field>
+            <field name="email_to">{{ object.user_id.email }}</field>
+            <field name="email_cc">purchase@yenaengineering.nl</field>
+        </record>
+    </data>
+</odoo>
+
+
+
+
+
