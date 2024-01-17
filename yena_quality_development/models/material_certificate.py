@@ -4,7 +4,7 @@ class MaterialCertificate(models.Model):
     _name = 'material.certificate'
     _description = 'Material Certificate'
     
-    name = fields.Char('Name', compute="_compute_name")
+    name = fields.Char('Name', compute="_compute_name", index=True, store=True)
     material_thickness = fields.Char(string="Thickness", required=True)
     material_width = fields.Char(string="Width")
     material_length = fields.Char(string="Length")
