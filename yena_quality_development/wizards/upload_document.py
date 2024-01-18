@@ -50,7 +50,7 @@ class DocumentUploadWizardLine(models.Model):
     required_document = fields.Char(string='Required Document')
     uploaded_document = fields.Char(string='Doc.')
     dimension = fields.Char(string="Dimension")
-    is_uploaded = fields.Boolean(string='N/A')
+    is_uploaded = fields.Boolean(string='Yüklemeden Devam Et')
     upload_document = fields.Binary(string='Upload Document')
     lot_number = fields.Char(string="1.Lot Nr")
     project_number = fields.Many2one('project.project', string="Project Number")
