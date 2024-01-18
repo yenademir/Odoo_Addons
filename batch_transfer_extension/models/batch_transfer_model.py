@@ -145,6 +145,20 @@ class StockPickingBatch(models.Model):
             self.edespatch_postbox_id = postbox.id if postbox else False
             self.edespatch_number_sequence = number_sequence.id if number_sequence else False
 
+    @api.model
+    def create(self, vals):
+        # İlk olarak batch oluşturulur
+        batch = super(StockPickingBatch, self).create(vals)
+        # Varsayılan değerler ile picking güncellenir
+        default_values = {
+            'edespatch_number_sequence': batch.edespatch_number_sequence.id,
+            'edespatch_profile': batch.edespatch_profile,
+            'edespatch_sender_id': batch.edespatch_sender_id.id,
+            'edespatch_postbox_id': batch.edespatch_postbox_id.id
+        }
+        batch.picking_ids.write(default_values)
+        return batch
+    
     @api.depends('picking_ids.edespatch_number_sequence')
     def _inverse_edespatch_number_sequence(self):
         for batch in self:
