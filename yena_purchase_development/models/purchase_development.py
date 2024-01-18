@@ -12,7 +12,14 @@ class PurchaseOrder(models.Model):
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
     project_purchase = fields.Many2one('project.project', string="Project Number", required=True, store=True)
     contact_id = fields.Many2one('res.partner', string='Contact Person', store=True)
-
+    
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        if self.company_id.id == 1:
+            self.incoterm_id = 14
+        elif self.company_id.id == 2:
+            self.incoterm_id = 10
+            
     @api.onchange('project_purchase')
     def _onchange_project_purchase(self):
         analytic_account = self.project_purchase.analytic_account_id
