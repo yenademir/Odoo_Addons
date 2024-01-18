@@ -5,7 +5,7 @@
         <field name="name">material.certificate.tree</field>
         <field name="model">material.certificate</field>
         <field name="arch" type="xml">
-            <tree string="material_certificate_tree" delete="0" multi_edit="1" sample="1" default_order="name">
+            <tree string="material_certificate_tree" delete="1" multi_edit="1" sample="1" default_order="name">
                     <field name="name"/>
                     <field name="material_grade"/>
                     <field name="material_thickness"/>
