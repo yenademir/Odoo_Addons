@@ -2,6 +2,7 @@ from odoo import api, fields, models
 import requests
 import base64
 from io import BytesIO
+from datetime import datetime, timedelta
 
 class Picking(models.Model):
     _inherit = 'stock.picking'
@@ -34,6 +35,35 @@ class Picking(models.Model):
         self._update_scheduled_date(vals)
         return super(Picking, self).write(vals)
 
+    @api.model
+    def _create_scheduled_activity(self):
+        model_id = self.env['ir.model'].search([('model', '=', 'stock.picking')], limit=1)
+        activity_type_id = self.env.ref('yena_inventory_development_test.activity_type_custom').id
+        date_deadline = fields.Date.today() + timedelta(days=3)
+
+        return {
+            'res_model_id': model_id.id,
+            'res_id': self.id,
+            'activity_type_id': activity_type_id,
+            'summary': 'Check Documents',
+            'note': 'Lütfen TR/OUT transferi için gerekli lojistik dökümanlarının tamamlandığından emin olun.',
+            'date_deadline': date_deadline,
+            'user_id': self.env.user.id,
+        }
+
+    def button_validate(self):
+        res = super(Picking, self).button_validate()
+        if self.state == 'done' and self.picking_type_id.id == 2:
+            existing_activities = self.env['mail.activity'].search([
+                ('res_model_id.model', '=', 'stock.picking'),
+                ('res_id', '=', self.id),
+                ('activity_type_id', '=', self.env.ref('yena_inventory_development_test.activity_type_custom').id)
+            ])
+            if not existing_activities:
+                activity_vals = self._create_scheduled_activity()
+                self.env['mail.activity'].create(activity_vals)
+        return res
+    
     def _update_scheduled_date(self, vals):
         if 'scheduled_date' not in vals:
             return
