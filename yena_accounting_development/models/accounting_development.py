@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class AccountMoveLineInherit(models.Model):
     _inherit = 'account.move.line'
 
-    customer_reference = fields.Char(string='Müşteri Referansı')
+    customer_reference = fields.Char(string='Customer Referenece')
 
     @api.model
     def create(self, vals):
@@ -17,13 +17,11 @@ class AccountMoveLineInherit(models.Model):
 class AccountMoveInherit(models.Model):
     _inherit = 'account.move'
 
-    customer_references = fields.Char(string='Müşteri Referansları', compute='_compute_customer_references')
+    customer_references = fields.Char(string='Customer Refereneces', compute='_compute_customer_references')
 
     @api.depends('invoice_line_ids.customer_reference')
     def _compute_customer_references(self):
         for record in self:
             references = record.invoice_line_ids.mapped('customer_reference')
-            # Boş olmayan ve string türündeki değerleri filtrele
             valid_references = {ref for ref in references if ref and isinstance(ref, str)}
-            # Benzersiz string değerleri virgülle birleştir
             record.customer_references = ','.join(valid_references)
