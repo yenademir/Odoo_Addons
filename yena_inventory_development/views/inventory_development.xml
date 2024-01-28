@@ -208,17 +208,18 @@
             </xpath>
         </field>
     </record>
-<record id="transporatation_follow_up" model="ir.ui.view">
+    <record id="transporatation_follow_up" model="ir.ui.view">
         <field name="name">transportation.follow.up.tree</field>
         <field name="model">stock.move</field>
         <field name="arch" type="xml">
-            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'">
+            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'" editable="bottom">
+                <field name="company_id" invisible="1"/>
                 <field name="transportation_code" groupby="transportation_code"/>
-                <field name="batch_id" optional="show"/>
+                <field name="batch_id" optional="show" widget='many2one'/>
                 <field name="edespatch_delivery_type" optional="hide"/>
-                <field name="picking_id"/>
+                <field name="picking_id" widget='many2one'/>
                 <field name="project_transfer" optional="hide"/>
-                <field name="product_id" optional="hide"/>
+                <field name="product_id" optional="hide" widget='many2one'/>
                 <field name="partner_id" string="Receive From / Delivery Adress"/>
                 <field name="product_uom_qty"/>
                 <field name="quantity_done"/>
@@ -227,12 +228,12 @@
                 <field name="weight"/>
                 <field name="scheduled_date" optional="hide"/>
                 <field name="arrival_date" optional="hide"/>
-                <field name="purchase_id" optional="show"/>
+                <field name="purchase_id" optional="show" widget='many2one'/>
                 <field name="edespatch_date" optional="hide"/>
-                <field name="situation" />
-                <field name="vehicle_type_id" optional="hide"/>
+                <field name="situation" readonly="0"/>
+                <field name="vehicle_type_id" optional="hide" readonly="0"/>
                 <field name="state" />
-                <field name="airtag_url" optional="hide"/>
+                <field name="airtag_url" optional="hide" readonly="0"/>
             </tree>
         </field>
     </record>
