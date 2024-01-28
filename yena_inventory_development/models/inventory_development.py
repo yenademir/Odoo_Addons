@@ -97,6 +97,7 @@ class StockMove(models.Model):
     arrive_date = fields.Date(related="picking_id.arrive_date", string="Arrive Date")
     project_transfer = fields.Many2many(related="picking_id.project_transfer", string="Project Number")
     picking_type_id = fields.Many2one(related="picking_id.picking_type_id", string="Operation Type", store=True)
+    related_partner = fields.Many2one(related="picking_id.partner_id", string="Receive From / Delivery Adress", store=True)
     situation = fields.Selection(related="picking_id.situation", string="Situation", store=True)
     transportation_code = fields.Char(related="picking_id.transportation_code", string="Transportation Code", store=True)
     batch_id = fields.Many2one('stock.picking.batch', string='Batch', related='picking_id.batch_id', store=True, readonly=True)
