@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <!-- Inherit the form view -->
+        <record id="view_blanket_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.blanket.order.form.inherit</field>
+            <field name="model">purchase.blanket.order</field>
+            <field name="inherit_id" ref="purchase_blanket_order.view_purchase_blanket_order_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//field[@name='taxes_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="required">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='amount_tax']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>-->
+                <xpath expr="//field[@name='taxes_id']" position="after">
+                    <field name="ordered_subtotal"/>
+                    <field name="invoiced_subtotal"/>
+                    <field name="remaining_subtotal"/>
+                    <field name="remaining_invoice_subtotal"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_tax']" position="after">
+                    <field name="ordered_total"/>
+                    <field name="invoiced_total"/>
+                    <field name="remaining_total"/>
+                    <field name="remaining_invoice_total"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_blanket_order_tree_inherited" model="ir.ui.view">
+            <field name="name">purchase.blanket.order.tree.inherited</field>
+            <field name="model">purchase.blanket.order</field>
+            <field name="inherit_id" ref="purchase_blanket_order.view_purchase_blanket_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="validity_date" position="after">
+                    <field name="ordered_total"/>
+                    <field name="remaining_total"/>
+                    <field name="invoiced_total"/>
+                    <field name="remaining_invoice_total"/>
+                    <field name="amount_untaxed"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
