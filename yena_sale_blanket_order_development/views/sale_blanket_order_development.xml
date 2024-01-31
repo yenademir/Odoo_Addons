@@ -15,14 +15,14 @@
                 </xpath>-->
                 <xpath expr="//field[@name='taxes_id']" position="after">
                     <field name="ordered_subtotal"/>
-                    <field name="invoiced_subtotal"/>
                     <field name="remaining_subtotal"/>
+                    <field name="invoiced_subtotal"/>
                     <field name="remaining_invoice_subtotal"/>
                 </xpath>
                 <xpath expr="//field[@name='amount_tax']" position="after">
                     <field name="ordered_total"/>
-                    <field name="invoiced_total"/>
                     <field name="remaining_total"/>
+                    <field name="invoiced_total"/>
                     <field name="remaining_invoice_total"/>
                 </xpath>
             </field>
