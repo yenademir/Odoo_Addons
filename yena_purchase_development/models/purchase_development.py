@@ -10,7 +10,7 @@ class PurchaseOrder(models.Model):
     rfq_date = fields.Date(string="S-RFQ Date")
     customer_reference = fields.Char(string="Customer Reference No", store=True)
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
-    project_purchase = fields.Many2one('project.project', string="Project Number", required=True, store=True)
+    project_purchase = fields.Many2one('project.project', string="Project Number", store=True)
     contact_id = fields.Many2one('res.partner', string='Contact Person', store=True)
     
     @api.onchange('company_id')
