@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+        <record id="activity_type_custom" model="mail.activity.type">
+            <field name="name">Custom Activity</field>
+            <field name="delay_count">5</field>
+            <field name="delay_unit">days</field>
+            <field name="summary">Check Documents</field>
+            <field name="icon">fa-tasks</field>
+        </record>
+    </data>
+</odoo>
