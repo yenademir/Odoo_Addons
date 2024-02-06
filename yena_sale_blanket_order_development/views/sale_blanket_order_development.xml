@@ -1,6 +1,5 @@
 <odoo>
     <data>
-        <!-- Inherit the form view -->
         <record id="view_blanket_order_form_inherit" model="ir.ui.view">
             <field name="name">sale.blanket.order.form.inherit</field>
             <field name="model">sale.blanket.order</field>
@@ -14,11 +13,14 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>-->
                 <xpath expr="//field[@name='taxes_id']" position="after">
-                    <field name="ordered_subtotal"/>
-                    <field name="remaining_subtotal"/>
-                    <field name="invoiced_subtotal"/>
-                    <field name="remaining_invoice_subtotal"/>
+                    <field name="ordered_subtotal" optional="hide"/>
+                    <field name="remaining_subtotal" optional="hide"/>
+                    <field name="invoiced_subtotal" optional="hide"/>
+                    <field name="remaining_invoice_subtotal" optional="hide"/>
                 </xpath>
+                <field name="sequence" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
                 <xpath expr="//field[@name='amount_tax']" position="after">
                     <field name="ordered_total"/>
                     <field name="remaining_total"/>
@@ -39,6 +41,19 @@
                     <field name="remaining_invoice_total"/>
                     <field name="amount_untaxed"/>
                 </field>
+            </field>
+        </record>
+        <record id="sale_blanket_order.act_open_blanket_order_view" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,pivot,graph</field>
+        </record>
+        <record id="sale_blanket_order_line_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.blanket.order.line.tree.inherit</field>
+            <field name="model">sale.blanket.order.line</field>
+            <field name="inherit_id" ref="sale_blanket_order.sale_blanket_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='remaining_uom_qty']" position="after">
+                    <field name="state"/>
+                </xpath>
             </field>
         </record>
     </data>
