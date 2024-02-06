@@ -52,6 +52,20 @@ class Picking(models.Model):
         }
 
     
+    def button_validate(self):
+        for record in self:
+            res = super(Picking, record).button_validate()
+            if record.state == 'done' and record.picking_type_id.id == 2:
+                existing_activities = self.env['mail.activity'].search([
+                    ('res_model_id.model', '=', 'stock.picking'),
+                    ('res_id', '=', record.id),
+                    ('activity_type_id', '=', self.env.ref('yena_inventory_development.activity_type_custom').id)
+                ])
+                if not existing_activities:
+                    activity_vals = record._create_scheduled_activity()
+                    self.env['mail.activity'].create(activity_vals)
+        return res
+        
     def _update_scheduled_date(self, vals):
         if 'scheduled_date' not in vals:
             return
