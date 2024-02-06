@@ -32,6 +32,7 @@
         <field name="arch" type="xml">
              <xpath expr="//field[@name='picking_type_id']" position="after">
                 <field name="origin"/>
+                <field name="sequence_code"  attrs="{'invisible': 1}"/>
                 <field name="arrival_date" />
                 <field name="situation" />
              </xpath>
