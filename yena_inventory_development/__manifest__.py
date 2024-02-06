@@ -10,7 +10,8 @@
     'data': [
         'views/inventory_development.xml',
         'security/ir.model.access.csv',
-        'views/hs_code.xml'
+        'views/hs_code.xml',
+        'data/mail_activity_data.xml'
     ],
     'installable': True,
     'auto_install': False,
