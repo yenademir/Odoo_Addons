@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
+    arrive_date = fields.Date(string="Arrive Date")
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
@@ -37,7 +38,7 @@ class Picking(models.Model):
     @api.model
     def _create_scheduled_activity(self):
         model_id = self.env['ir.model'].search([('model', '=', 'stock.picking')], limit=1)
-        activity_type_id = self.env.ref('yena_inventory_development_test.activity_type_custom').id
+        activity_type_id = self.env.ref('yena_inventory_development.activity_type_custom').id
         date_deadline = fields.Date.today() + timedelta(days=3)
 
         return {
@@ -51,16 +52,17 @@ class Picking(models.Model):
         }
 
     def button_validate(self):
-        res = super(Picking, self).button_validate()
-        if self.state == 'done' and self.picking_type_id.id == 2:
-            existing_activities = self.env['mail.activity'].search([
-                ('res_model_id.model', '=', 'stock.picking'),
-                ('res_id', '=', self.id),
-                ('activity_type_id', '=', self.env.ref('yena_inventory_development_test.activity_type_custom').id)
-            ])
-            if not existing_activities:
-                activity_vals = self._create_scheduled_activity()
-                self.env['mail.activity'].create(activity_vals)
+        for record in self:
+            res = super(Picking, record).button_validate()
+            if record.state == 'done' and record.picking_type_id.id == 2:
+                existing_activities = self.env['mail.activity'].search([
+                    ('res_model_id.model', '=', 'stock.picking'),
+                    ('res_id', '=', record.id),
+                    ('activity_type_id', '=', self.env.ref('yena_inventory_development.activity_type_custom').id)
+                ])
+                if not existing_activities:
+                    activity_vals = record._create_scheduled_activity()
+                    self.env['mail.activity'].create(activity_vals)
         return res
     
     def _update_scheduled_date(self, vals):
@@ -93,8 +95,8 @@ class Picking(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move"
 
+    arrive_date = fields.Date(related="picking_id.arrive_date", string="Arrive Date")
     project_transfer = fields.Many2many(related="picking_id.project_transfer", string="Project Number")
-    picking_type_id = fields.Many2one(related="picking_id.picking_type_id", string="Operation Type", store=True)
     related_partner = fields.Many2one(related="picking_id.partner_id", string="Receive From / Delivery Adress", store=True)
     situation = fields.Selection(related="picking_id.situation", string="Situation", store=True)
     transportation_code = fields.Char(related="picking_id.transportation_code", string="Transportation Code", store=True)
