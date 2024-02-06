@@ -64,7 +64,8 @@ class Picking(models.Model):
                     self.env['mail.activity'].create(activity_vals)
         return res
     
-    def _update_scheduled_date(self, vals):
+
+def _update_scheduled_date(self, vals):
         if 'scheduled_date' not in vals:
             return
 
