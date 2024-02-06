@@ -32,39 +32,45 @@
         <field name="arch" type="xml">
              <xpath expr="//field[@name='picking_type_id']" position="after">
                 <field name="origin"/>
-                <field name="arrival_date" />
+             </xpath>
+             <xpath expr="//field[@name='currency_id']" position="before">
+                <field name="sequence_code"  attrs="{'invisible': 1}"/>
+                <field name="arrival_date" attrs="{'invisible': [('sequence_code', '=', 'IN')]}"/>
                 <field name="situation" />
              </xpath>
            <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="transportation_code" attrs="{'required': True}" />
-                <field name="project_transfer" attrs="{'required': True}"/>
+                <field name="project_transfer" attrs="{'required': True}" widget="many2many_tags"/>
             </xpath>
-            <!--<xpath expr="//field[@name='edespatch_date']" position="attributes">
-                <attribute name="string">Actual Departure Date</attribute>
-            </xpath>-->
+            <xpath expr="//field[@name='edespatch_date']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@for='scheduled_date']" position="before">
+                <field name="edespatch_date" string="Despatch Date" />
+            </xpath>
             <xpath expr="//field[@name='edespatch_move_id']" position="attributes">
                 <attribute name="string">Vendor E-Despatch Number</attribute>
                 <attribute name="readonly">1</attribute>
             </xpath>           
-            <!--<xpath expr="//field[@name='receipt_document_number']" position="attributes">
+            <xpath expr="//field[@name='receipt_document_number']" position="attributes">
                 <attribute name="string">Receipt Doc. No (Accept or Reject)</attribute>
-            </xpath>-->
-            <!-- <xpath expr="//field[@name='currency_rate']"  position="attributes">
+            </xpath>
+            <xpath expr="//field[@name='currency_rate']"  position="attributes">
                 <attribute name="invisible">1</attribute>
-            </xpath> -->
-            <!-- <xpath expr="//field[@name='document_number']"  position="attributes">
+            </xpath>
+            <xpath expr="//field[@name='document_number']"  position="attributes">
                 <attribute name="invisible">1</attribute>
-            </xpath> -->
+            </xpath>
             <xpath expr="//field[@name='origin']"  position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <!-- <xpath expr="//page[@name='extra']//group[@name='other_infos']/field[@name='company_id']" position="before">
+            <xpath expr="//page[@name='extra']//group[@name='other_infos']/field[@name='company_id']" position="before">
                 <field name="document_number"/>
-            </xpath> -->
+            </xpath>
             <!-- Alt satırdaki kod ileride değişecek-->
-            <!--<xpath expr="//field[@name='receipt_document_number']"  position="attributes">
+            <xpath expr="//field[@name='receipt_document_number']"  position="attributes">
                 <attribute name="invisible">1</attribute>
-            </xpath>-->
+            </xpath>
             <xpath expr="//label[@for='scheduled_date']" position="attributes">
                 <attribute name="string">Scheduled Departure/Delivery Date</attribute>
             </xpath>
@@ -73,7 +79,7 @@
             </xpath>
         </field>
     </record>
-    <!-- <record id="view_transfer_form_waybill" model="ir.ui.view">
+    <record id="view_transfer_form_waybill" model="ir.ui.view">
         <field name="name">transfer.form.inherit.waybill.yena</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="l10n_tr_prenumbered_waybill.waybill_stock_picking_form" />
@@ -82,7 +88,7 @@
                 <attribute name="invisible">1</attribute>
              </xpath>
         </field>
-    </record> -->
+    </record>
     <!--<record id="view_transfer_form_inherit_foreign_trade" model="ir.ui.view">
         <field name="name">transfer.form.inherit.yena.foreign.trade</field>
         <field name="model">stock.picking</field>
@@ -202,18 +208,19 @@
             </xpath>
         </field>
     </record>
-<record id="transporatation_follow_up" model="ir.ui.view">
+    <record id="transporatation_follow_up" model="ir.ui.view">
         <field name="name">transportation.follow.up.tree</field>
         <field name="model">stock.move</field>
         <field name="arch" type="xml">
-            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'">
+            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'" editable="bottom">
+                <field name="company_id" invisible="1"/>
                 <field name="transportation_code" groupby="transportation_code"/>
-                <field name="batch_id" optional="show"/>
+                <field name="batch_id" optional="show" widget='many2one'/>
                 <field name="edespatch_delivery_type" optional="hide"/>
-                <field name="picking_id"/>
+                <field name="picking_id" widget='many2one'/>
                 <field name="project_transfer" optional="hide"/>
-                <field name="product_id" optional="hide"/>
-                <field name="partner_id" string="Receive From / Delivery Adress"/>
+                <field name="product_id" optional="hide" widget='many2one'/>
+                <field name="related_partner" />
                 <field name="product_uom_qty"/>
                 <field name="quantity_done"/>
                 <!-- <field name="package_types" Alperenin geliştirdiği packaging ile alakalı/>-->
@@ -221,12 +228,12 @@
                 <field name="weight"/>
                 <field name="scheduled_date" optional="hide"/>
                 <field name="arrival_date" optional="hide"/>
-                <field name="purchase_id" optional="show"/>
+                <field name="purchase_id" optional="show" widget='many2one'/>
                 <field name="edespatch_date" optional="hide"/>
-                <field name="situation" />
-                <field name="vehicle_type_id" optional="hide"/>
+                <field name="situation" readonly="0"/>
+                <field name="vehicle_type_id" optional="hide" readonly="0"/>
                 <field name="state" />
-                <field name="airtag_url" optional="hide"/>
+                <field name="airtag_url" optional="hide" readonly="0"/>
             </tree>
         </field>
     </record>
@@ -236,32 +243,37 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='extra']//field[@name='company_id']" position="after">
-                <!-- <field name="document_number"/> -->
-                <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
-                <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
-            </xpath>
-            <xpath expr="//field[@name='picking_type_id']"  position="after">
-                <field name="sequence_code"  attrs="{'invisible': 1}"/>
+                <field name="document_number"/>
                 <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
                 <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
             </xpath>
         </field>
     </record>
-    <!-- <record id="inventory_transfer_stock_vpicking_yena" model="ir.ui.view">
+    <record id="inventory_transfer_stock_vpicking_yena" model="ir.ui.view">
         <field name="name">stock.vpicking.tree.yena</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="delivery.vpicktree_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
-                <field name="project_transfer" />
+                <field name="project_transfer" widget="many2many_tags" />
                 <field name="transportation_code"/>
             </xpath>
-            <xpath expr="//field[@name='state']" position="before">
-                <field name="delivery_performance_supplier" />
-                <field name="delivery_performance_customer"/>
-            </xpath>
         </field>
-    </record> -->
+    </record>
+
+    <record id="view_stock_picking_search_inherit" model="ir.ui.view">
+        <field name="name">view.stock.picking.search.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="project_transfer" widget="many2many_tags"/>
+                <field name="purchase_id"/>
+                <field name="transportation_code"/>
+            </field>
+        </field>
+    </record>
+    
     <record id="transportation_follow_up" model="ir.actions.act_window">
         <field name="name">Transportation Follow Up</field>
         <field name="res_model">stock.move</field>
@@ -272,4 +284,20 @@
           name="Transportation Follow Up"
           parent="stock.menu_stock_root"
           action="transportation_follow_up"/>
+
+    <record id="view_stock_move_search_inherit" model="ir.ui.view">
+        <field name="name">stock.move.search.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_search"/>
+        <field name="arch" type="xml">
+            <search>
+                <field name="transportation_code"/>
+                <field name="situation"/>
+                <group expand="0" string="Group By">
+                    <filter string="Transportation Code" name="group_by_transportation_code" context="{'group_by': 'transportation_code'}"/>
+                    <filter string="Operation Type" name="group_by_picking_type_id" context="{'group_by': 'picking_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
