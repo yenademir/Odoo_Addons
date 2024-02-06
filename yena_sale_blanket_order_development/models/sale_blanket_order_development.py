@@ -23,7 +23,13 @@ class SaleBlanketOrderLine(models.Model):
     ordered_subtotal = fields.Monetary(compute='_compute_subtotals', string='Ordered Subtotal')
     remaining_invoice_subtotal = fields.Monetary(compute='_compute_subtotals', string='Remaining Invoice Subtotal')
     remaining_subtotal = fields.Monetary(compute='_compute_subtotals', string='Remaining Subtotal')
-
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('open', 'Open'),
+        ('done', 'Done'),
+        ('expired', 'Expired'),
+    ], string='State', related='order_id.state', store=True, readonly=True)
+    
     @api.depends('invoiced_uom_qty', 'ordered_uom_qty', 'original_uom_qty', 'price_unit')
     def _compute_subtotals(self):
         for line in self:
