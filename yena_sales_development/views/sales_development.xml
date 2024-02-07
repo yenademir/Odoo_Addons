@@ -83,7 +83,7 @@
             <xpath expr="//field[@name='partner_shipping_id']" position="after">
                 <field name="company_id" string="Company (Seller)"/>
                 <field name="user_id" string="Sales Person (E-mail Sender)"/>
-                <field name="opportunity_id" />
+                <!--<field name="opportunity_id" />-->
                 <field name="incoterm" required="1"/>
                 <field name="payment_term_id"/>
                 <field name="currency_id"/>
@@ -143,105 +143,22 @@
             </xpath>
         </field>
     </record>
-
+    <record id="view_quotation_tree_inherit_yena_development" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.yena.development</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="customer_reference" optional="show"/>
+            </xpath>
+        </field>
+    </record>
     <record id="action_print_proposal_form" model="ir.actions.server">
         <field name="name">Print Proposal Form</field>
         <field name="model_id" ref="model_sale_order"/>
         <field name="binding_model_id" ref="model_sale_order"/>
         <field name="state">code</field>
         <field name="code">records.print_proposal_form()</field>
-    </record>
-
-
-    <record id="view_sale_order_form_project_logs_inherit_yena" model="ir.ui.view">
-        <field name="name">sale.order.form.project.logs.inherit.yena</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@name='other_information']" position="after">
-                <page string="Project Logs" groups="base.group_user">
-                    <group col="4">
-                        <field name="customer_meeting" widget="radio" options="{'horizontal': true}" />
-                        <field name="customer_meeting_note" nolabel="1" colspan="2" placeholder="Not: Müşteri İle Yapılan Görüşmeler"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="initial_info_request" widget="radio" options="{'horizontal': true}" />
-                        <field name="initial_info_request_note" nolabel="1" colspan="2" placeholder="Not: Müşteriden Gelen Talepte İlk Bilgiler"/>
-                        <div>
-                        <label for="initial_info_request" string="- Sipariş adetleri (ilk sipariş ve yıllık)"/>
-                        <label for="initial_info_request" string="- Hedef fiyat"/>
-                        <label for="initial_info_request" string="- İmalatı yapılmış bir ürün ise ürünün ve paketlemesinin fotoğrafları"/>       
-                    </div>                
-                    </group>
-                    
-                    <group col="4">
-                        <field name="metrage_study" widget="radio" options="{'horizontal': true}" />
-                        <field name="metrage_study_note" nolabel="1" colspan="2" placeholder="Not: Metraj Çalışması"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="technical_inspection" widget="radio" options="{'horizontal': true}" />
-                        <field name="technical_inspection_note" nolabel="1" colspan="2" placeholder="Not: Teknik İncelemeler"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="drawing_sufficiency" widget="radio" options="{'horizontal': true}" />
-                        <field name="drawing_sufficiency_note" nolabel="1" colspan="2" placeholder="Not: Çizimlerin Yeterliliği"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="drawing_details" widget="radio" options="{'horizontal': true}" />
-                        <field name="drawing_details_note" nolabel="1" colspan="2" placeholder="Not: Çizim Detayları"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="raw_material_availability" widget="radio" options="{'horizontal': true}" />
-                        <field name="raw_material_availability_note" nolabel="1" colspan="2" placeholder="Not: Hammadde Tedarik Edilebilirliği"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="surface_treatment_info" widget="radio" options="{'horizontal': true}" />
-                        <field name="surface_treatment_info_note" nolabel="1" colspan="2" placeholder="Not: Yüzey İşlemi Bilgileri"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="non_steel_elements" widget="radio" options="{'horizontal': true}" />
-                        <field name="non_steel_elements_note" nolabel="1" colspan="2" placeholder="Not: Bağlantı Elemanları ve Çelik Dışı Parçalar"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="assembly_scope" widget="radio" options="{'horizontal': true}" />
-                        <field name="assembly_scope_note" nolabel="1" colspan="2" placeholder="Not: Montaj Kapsamı"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="ndt_request" widget="radio" options="{'horizontal': true}" />
-                        <field name="ndt_request_note" nolabel="1" colspan="2" placeholder="Not: NDT Talebi"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="certifications_documents" widget="radio" options="{'horizontal': true}" />
-                        <field name="certifications_documents_note" nolabel="1" colspan="2" placeholder="Not: Sertifikasyon ve Belgeler"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="mold_fixture_creation" widget="radio" options="{'horizontal': true}" />
-                        <field name="mold_fixture_creation_note" nolabel="1" colspan="2" placeholder="Not: Kalıp veya Fikstür Yapımı"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="design_activities" widget="radio" options="{'horizontal': true}" />
-                        <field name="design_activities_note" nolabel="1" colspan="2" placeholder="Not: Tasarım Faaliyetleri"/>
-                    </group>
-
-                    <group col="4">
-                        <field name="special_packaging_request" widget="radio" options="{'horizontal': true}" />
-                        <field name="special_packaging_request_note" nolabel="1" colspan="2" placeholder="Not: Özel Paketleme Talebi"/>
-                    </group>
-                </page>
-            </xpath>
-        </field>
     </record>
     <record id="view_sale_order_tree_to_invoice_yena_tree" model="ir.ui.view">
         <field name="name">sale.order.tree.to.invoice.yena</field>
