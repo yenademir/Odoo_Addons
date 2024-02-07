@@ -18,6 +18,131 @@ class SaleOrder(models.Model):
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
     account_note = fields.Html(string="Account Note")
 
+    customer_meeting = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Müşteri İle Yapılan Görüşmeler')
+    customer_meeting_note = fields.Char(string='Müşteri İle Yapılan Görüşmeler Notu')
+
+    initial_info_request = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Müşteriden Gelen Talepte İlk Bilgiler')
+    initial_info_request_note = fields.Char(string='Müşteriden Gelen Talepte İlk Bilgiler Notu')
+
+    metrage_study = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Metraj Çalışması')
+    metrage_study_note = fields.Char(string='Metraj Çalışması Notu')
+
+    technical_inspection = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Teknik İncelemeler')
+    technical_inspection_note = fields.Char(string='Teknik İncelemeler Notu')
+
+    drawing_sufficiency = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Çizimlerin Yeterliliği')
+    drawing_sufficiency_note = fields.Char(string='Çizimlerin Yeterliliği Notu')
+
+    drawing_details = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Çizim Detayları')
+    drawing_details_note = fields.Char(string='Çizim Detayları Notu')
+
+    raw_material_availability = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Hammadde Tedarik Edilebilirliği')
+    raw_material_availability_note = fields.Char(string='Hammadde Tedarik Edilebilirliği Notu')
+
+    surface_treatment_info = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Yüzey İşlemi Bilgileri')
+    surface_treatment_info_note = fields.Char(string='Yüzey İşlemi Bilgileri Notu')
+
+    non_steel_elements = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Bağlantı Elemanları ve Çelik Dışı Parçalar')
+    non_steel_elements_note = fields.Char(string='Bağlantı Elemanları ve Çelik Dışı Parçalar Notu')
+
+    assembly_scope = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Montaj Kapsamı')
+    assembly_scope_note = fields.Char(string='Montaj Kapsamı Notu')
+
+    ndt_request = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='NDT Talebi')
+    ndt_request_note = fields.Char(string='NDT Talebi Notu')
+
+    certifications_documents = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Sertifikasyon ve Belgeler')
+    certifications_documents_note = fields.Char(string='Sertifikasyon ve Belgeler Notu')
+
+    mold_fixture_creation = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Kalıp veya Fikstür Yapımı')
+    mold_fixture_creation_note = fields.Char(string='Kalıp veya Fikstür Yapımı Notu')
+
+    design_activities = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Tasarım Faaliyetleri')
+    design_activities_note = fields.Char(string='Tasarım Faaliyetleri Notu')
+
+    special_packaging_request = fields.Selection([
+        ('yes', 'Evet'),
+        ('no', 'Hayır')
+    ], string='Özel Paketleme Talebi')
+    special_packaging_request_note = fields.Char(string='Özel Paketleme Talebi Notu')
+    document_numbers = fields.Char(string='Document Numbers', compute='_compute_document_numbers')
+    transportation_codes = fields.Char(string="Transportation Codes", compute='_compute_transportation_codes')
+    date_done_list = fields.Char(string="Effective Date", compute='_compute_date_done_list')
+
+
+    def _compute_document_numbers(self):
+        for order in self:
+            pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
+            if pickings:
+                document_numbers = [picking.document_number for picking in pickings if picking.document_number]
+                document_numbers_str = ', '.join(document_numbers)
+                order.document_numbers = document_numbers_str
+            else:
+                order.document_numbers = ''
+
+    def _compute_transportation_codes(self):
+        for order in self:
+            pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
+            if pickings:
+                unique_transportation_codes = {picking.transportation_code for picking in pickings if picking.transportation_code}
+                transportation_codes_str = ', '.join(unique_transportation_codes)
+                order.transportation_codes = transportation_codes_str
+            else:
+                order.transportation_codes = ''
+
+
+    def _compute_date_done_list(self):
+        for order in self:
+            pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
+            if pickings:
+                date_dones = [picking.date_done.strftime("%Y-%m-%d") for picking in pickings if picking.date_done]
+                date_dones_str = ', '.join(date_dones)
+                order.date_done_list = date_dones_str
+            else:
+                order.date_done_list = ''
+
     @api.model
     def create(self, vals):
 
@@ -63,20 +188,9 @@ class SaleOrder(models.Model):
         if not self.commitment_date:
             raise UserError('The C-Delivery Date is mandatory! Please add this date and try again.')
 
-        # company_id 1 ise, özel işlem yap
+        # company_id 1 ise, standart onay işlemi yapılır ve özel işlemlerden kaçınılır
         if self.company_id.id == 1:
-            # Standart onay işlemi yapılır
-            res = super(SaleOrder, self).action_confirm()
-            
-            for order in self:
-                # İlgili transfer emirlerini bul ve güncelle
-                delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
-                for delivery_order in delivery_orders:
-                    delivery_order.write({
-                        'project_transfer': [(6, 0, order.project_sales.ids)],
-                    })
-        
-                return res
+            return super(SaleOrder, self).action_confirm()
 
         # Diğer durumlarda, öncelikle standart onay işlemi yapılır
         res = super(SaleOrder, self).action_confirm()
@@ -138,10 +252,10 @@ class SaleOrder(models.Model):
 
         return res
 
-    @api.onchange('commitment_date')
-    def _onchange_commitment_date(self):
+    @api.onchange('delivery_date')
+    def _onchange_delivery_date(self):
         for line in self.order_line:
-            line.product_delivery_date = self.commitment_date
+            line.product_delivery_date = self.delivery_date
 
     @api.depends('user_id')
     def _compute_is_current_user(self):
@@ -157,7 +271,7 @@ class SaleOrder(models.Model):
         # id'si 2298 olan raporu indir
         return self.env.ref('__export__.ir_act_report_xml_2298_852ac486').report_action(self)
 
-class SaleOrderLine(models.Model):
+    class SaleOrderLine(models.Model):
         _inherit = 'sale.order.line'
 
         product_delivery_date = fields.Date(string="Product Delivery Date")
