@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
-    arrive_date = fields.Date(string="Arrive Date")
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
@@ -95,7 +94,6 @@ class Picking(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move"
 
-    arrive_date = fields.Date(related="picking_id.arrive_date", string="Arrive Date")
     project_transfer = fields.Many2many(related="picking_id.project_transfer", string="Project Number")
     related_partner = fields.Many2one(related="picking_id.partner_id", string="Receive From / Delivery Adress", store=True)
     situation = fields.Selection(related="picking_id.situation", string="Situation", store=True)
