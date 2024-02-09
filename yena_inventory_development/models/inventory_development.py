@@ -171,23 +171,32 @@ class ProductTemplate(models.Model):
     def default_get(self, fields_list):
         res = super(ProductTemplate, self).default_get(fields_list)
     
+        # standard_price default değeri ayarlama
         if 'standard_price' not in res:
             res['standard_price'] = 1.0
     
-        mto_route_id = 1
+        # MTO rota ayarlama
+        mto_route_id = 1  # "MTO" rotasının ID'si
         if 'route_ids' not in res:
             res['route_ids'] = [(4, mto_route_id)]
         else:
             res['route_ids'].append((4, mto_route_id))
-
+    
+        # Varsayılan satıcı ayarlama ve satıcı bilgileri eklemek
+        # Bu kısım kaldırıldı çünkü aşağıda spesifik partner_id'ler ile satırlar ekleyeceğiz
+    
+        # İlk ve ikinci satır için veriler, burada doğrudan belirtilen partner_id'leri kullanacağız
         lines = [
-            {'name': 1, 'currency_id': 1, 'company_id': 2},
+            {'name': 1, 'currency_id': 1, 'company_id': 2},  # 'name' yerine modelinizin Many2one alan adını kullanın, örneğin 'partner_id'
             {'name': 94654, 'currency_id': 1, 'company_id': 1},
         ]
+        # Eğer seller_ids anahtarı zaten varsa bu satırları ekle, yoksa yeni bir liste oluştur
         if 'seller_ids' in res:
             res['seller_ids'].extend([(0, 0, line) for line in lines])
         else:
             res['seller_ids'] = [(0, 0, line) for line in lines]
+    
+        return res
 
     def _post_technical_drawing(self, drawing, filename, product_id, product_name):
         try:
