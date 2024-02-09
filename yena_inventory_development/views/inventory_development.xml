@@ -30,15 +30,15 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
-             <xpath expr="//field[@name='picking_type_id']" position="after">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
                 <field name="origin"/>
-             </xpath>
-             <xpath expr="//field[@name='currency_id']" position="before">
+            </xpath>
+            <xpath expr="//field[@name='currency_id']" position="before">
                 <field name="sequence_code"  attrs="{'invisible': 1}"/>
                 <field name="arrival_date" attrs="{'invisible': [('sequence_code', '=', 'IN')]}"/>
                 <field name="situation" />
-             </xpath>
-           <xpath expr="//field[@name='partner_id']" position="after">
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="transportation_code" attrs="{'required': True}" />
                 <field name="project_transfer" attrs="{'required': True}" widget="many2many_tags"/>
             </xpath>
@@ -67,7 +67,7 @@
             <xpath expr="//page[@name='extra']//group[@name='other_infos']/field[@name='company_id']" position="before">
                 <field name="document_number"/>
             </xpath>
-            <!-- Alt satırdaki kod ileride değişecek-->
+                <!-- Alt satırdaki kod ileride değişecek-->
             <xpath expr="//field[@name='receipt_document_number']"  position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -110,7 +110,6 @@
             <xpath expr="//field[@name='categ_id']" position="before">
                 <field name="weight" string="Theoretical Weight"/>
             </xpath>
-            
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="customer" string="Customer of Product" required="1"/>
                 <field name="hs_code"/>
@@ -120,7 +119,6 @@
                     <field name="hs_code_description" nolabel="1"/>
                 </div>
             </xpath>
-            
             <xpath expr="//notebook" position="inside">
                 <page string="Technical Info">
                     <group string="Technical Documents">
@@ -162,7 +160,6 @@
                     </group>
                 </group>
             </xpath>
-
             <xpath expr="//field[@name='company_id']"  position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -187,7 +184,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_order_form_inherited" model="ir.ui.view">
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
@@ -260,7 +256,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_stock_picking_search_inherit" model="ir.ui.view">
         <field name="name">view.stock.picking.search.inherit</field>
         <field name="model">stock.picking</field>
@@ -273,7 +268,6 @@
             </field>
         </field>
     </record>
-    
     <record id="transportation_follow_up" model="ir.actions.act_window">
         <field name="name">Transportation Follow Up</field>
         <field name="res_model">stock.move</field>
@@ -284,7 +278,6 @@
           name="Transportation Follow Up"
           parent="stock.menu_stock_root"
           action="transportation_follow_up"/>
-
     <record id="view_stock_move_search_inherit" model="ir.ui.view">
         <field name="name">stock.move.search.inherit</field>
         <field name="model">stock.move</field>
