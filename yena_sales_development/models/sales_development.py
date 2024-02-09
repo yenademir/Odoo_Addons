@@ -76,7 +76,7 @@ class SaleOrder(models.Model):
         project_vals = {
             'name': record.name + '-' + record.customer_reference,
             'partner_id': record.partner_id.id,
-            # ... Daha fazla alanı burada ekleyebilirsiniz.
+            'company_id': 2,
         }
         project = self.env['project.project'].create(project_vals)
 
