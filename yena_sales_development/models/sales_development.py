@@ -8,8 +8,11 @@ class SaleOrder(models.Model):
     contact_id = fields.Many2one('res.partner', string='Contact Person', store=True)
     customer_reference=fields.Char(string="Customer Reference No", store=True)
     delivery_date=fields.Char(string="C-Delivery Date (Text)")
-    invoice_report=fields.Selection([("fullyinvoiced","Fully Invoiced"),("partiallyinvoice","Partially Invoiced"),("nothinginvoiced","Nothing Invoiced")],string="Invoice Report")
-    lost=fields.Many2one("crm.lost.reason",string="Lost Reason")
+    invoice_report = fields.Selection([
+        ("fullyinvoiced", "Fully Invoiced"),
+        ("partiallyinvoice", "Partially Invoiced"),
+        ("nothinginvoiced", "Nothing Invoiced")
+    ], string="Invoice Report", compute='_compute_invoice_report', store=True)    lost=fields.Many2one("crm.lost.reason",string="Lost Reason")
     lost_reason=fields.Many2one("crm.lost.reason",string="Lost Reason")
     project_sales=fields.Many2one("project.project",string="Project Number", store=True)
     quo_date=fields.Date(string="C-Quotation Date")
@@ -21,7 +24,35 @@ class SaleOrder(models.Model):
     transportation_codes = fields.Char(string="Transportation Codes", compute='_compute_transportation_codes')
     date_done_list = fields.Char(string="Effective Date", compute='_compute_date_done_list')
 
+    @api.depends('order_line.product_uom_qty', 'order_line.qty_invoiced')
+    def _compute_invoice_report(self):
+        for order in self:
+            # Varsayılan olarak "nothinginvoiced" varsayalım
+            invoice_status = "nothinginvoiced"
+            partially_invoiced = False
+            fully_invoiced = True
 
+            for line in order.order_line:
+                if line.qty_invoiced > 0:
+                    if line.qty_invoiced < line.product_uom_qty:
+                        partially_invoiced = True
+                        fully_invoiced = False
+                        break  # En az bir satır kısmen faturalandırıldıysa döngüden çık
+                    else:
+                        # Bu satır tamamen faturalandırıldı, döngü devam eder
+                        invoice_status = "fullyinvoiced"
+                else:
+                    fully_invoiced = False  # Eğer qty_invoiced 0 ise tamamen faturalandırılmamıştır
+
+            if partially_invoiced:
+                invoice_status = "partiallyinvoice"
+            elif fully_invoiced:
+                invoice_status = "fullyinvoiced"
+            else:
+                invoice_status = "nothinginvoiced"
+
+            order.invoice_report = invoice_status
+            
     def _compute_document_numbers(self):
         for order in self:
             pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
