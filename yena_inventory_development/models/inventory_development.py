@@ -135,35 +135,37 @@ class ProductTemplate(models.Model):
     hs_code_description = fields.Char(string="HS Code Description", store=True)
     description_sale_en = fields.Char(string="Sale Description English", store=True)
 
-    @api.onchange('categ_id', 'customer')
-    def _onchange_hs_code(self):
-        hs_code_record = self.env['yena.hscode'].search([
-            ('category', '=', self.categ_id.id),
-            ('industry', '=', self.customer.industry_id.id),
-        ], limit=1)
-        self.hs_code = hs_code_record.name if hs_code_record else False
+    @api.model
+    def create(self, values):
+        record = super(ProductTemplate, self).create(values)
+        record._update_hs_code()
+        return record
 
-    @api.onchange('hs_code')
-    def _onchange_hs_code_details(self):
-        if self.hs_code:
-            hs_code_record = self.env['yena.hscode'].search([('name', '=', self.hs_code)], limit=1)
-            if hs_code_record:
-                self.description = hs_code_record.product_description
-                self.description_sale = hs_code_record.customs_description_tr
-                self.description_sale_en = hs_code_record.customs_description_en
-                self.hs_code_description = hs_code_record.example_description
-            else:
-                # Eğer eşleşen bir hs_code kaydı yoksa, açıklamaları boşalt
-                self.description = ''
-                self.description_sale = ''
-                self.description_sale_en = ''
-                self.hs_code_description = ''
-        else:
-            # Eğer hs_code boşsa, açıklamaları boşalt
-            self.description = ''
-            self.description_sale = ''
-            self.description_sale_en = ''
-            self.hs_code_description = ''
+    def write(self, values):
+        res = super(ProductTemplate, self).write(values)
+        if 'categ_id' in values or 'customer' in values:
+            self._update_hs_code()
+        return res
+
+    def _update_hs_code(self):
+        for record in self:
+            if record.categ_id and record.customer and record.customer.industry_id:
+                hs_code_record = self.env['yena.hscode'].search([
+                    ('category', '=', record.categ_id.id),
+                    ('industry', '=', record.customer.industry_id.id),
+                ], limit=1)
+                if hs_code_record:
+                    record.hs_code = hs_code_record.name
+                    record.description = hs_code_record.product_description
+                    record.description_sale = hs_code_record.customs_description_en
+                    record.description_purchase = hs_code_record.customs_description_tr
+                    record.hs_code_description = hs_code_record.example_description
+                else:
+                    record.hs_code = False
+                    record.description = ''
+                    record.description_sale = ''
+                    record.description_purchase = ''
+                    record.hs_code_description = ''
 
     @api.model
     def default_get(self, fields_list):
