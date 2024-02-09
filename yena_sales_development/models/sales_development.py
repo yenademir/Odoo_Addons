@@ -12,7 +12,8 @@ class SaleOrder(models.Model):
         ("fullyinvoiced", "Fully Invoiced"),
         ("partiallyinvoice", "Partially Invoiced"),
         ("nothinginvoiced", "Nothing Invoiced")
-    ], string="Invoice Report", compute='_compute_invoice_report', store=True)    lost=fields.Many2one("crm.lost.reason",string="Lost Reason")
+    ], string="Invoice Report", compute='_compute_invoice_report', store=True)    
+    lost=fields.Many2one("crm.lost.reason",string="Lost Reason")
     lost_reason=fields.Many2one("crm.lost.reason",string="Lost Reason")
     project_sales=fields.Many2one("project.project",string="Project Number", store=True)
     quo_date=fields.Date(string="C-Quotation Date")
