@@ -93,51 +93,50 @@ class SaleOrder(models.Model):
         return record
 
     def action_confirm(self):
-
         # C-Delivery Date kontrolü
         if not self.commitment_date:
             raise UserError('The C-Delivery Date is mandatory! Please add this date and try again.')
-
+    
+        # company_id 1 ise, standart onay işlemi yapılır ve özel işlemlerden kaçınılır
         if self.company_id.id == 1:
-            res = super(SaleOrder, self).action_confirm()
-
-            for order in self:
-                # İlgili transfer emirlerini bul ve güncelle
-                delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
-                for delivery_order in delivery_orders:
-                    delivery_order.write({
-                        'project_transfer': [(6, 0, order.project_sales.ids)],
-                    })
-                return res
-
+            return super(SaleOrder, self).action_confirm()
+    
+        # Diğer durumlarda, öncelikle standart onay işlemi yapılır
         res = super(SaleOrder, self).action_confirm()
-
+    
         current_user = self.env.user  # Şu anki kullanıcıyı al
         incoterm = self.env['account.incoterms'].browse(10)
-
-        # Tüm satış siparişleri için döngü başlat
+    
         for order in self:
-            # İlişkili tüm satın alma siparişlerini bul
             purchase_orders = self.env['purchase.order'].search([('origin', '=', order.name)])
-            # İlişkili tüm satın alma siparişlerini güncelle
             for purchase_order in purchase_orders:
                 purchase_order.write({
-                    'user_id': current_user.id,  # Mevcut kullanıcıyı user_id alanına yaz
+                    'user_id': current_user.id,
                     'customer_reference': order.customer_reference,
                     'project_purchase': order.project_sales.id,
                     'incoterm_id': incoterm.id
                 })
-                # İlişkili tüm satın alma sipariş satırlarını güncelle
-                for po_line in purchase_order.order_line:
-                    # Satış siparişi satırını, ürün kimliği ile eşleştir
-                    so_line = order.order_line.filtered(lambda line: line.product_id == po_line.product_id)
-                    if so_line:
-                        new_price_unit = so_line.price_unit * 0.92  # Satış fiyatını 0.72 ile çarp
-                        po_line.write({
-                            'price_unit': new_price_unit,  # Yeni fiyatı güncelle
-                            'account_analytic_id': order.analytic_account_id.id,
-                        })
-
+    
+                # İlişkili tüm satın alma siparişi satırlarını sil
+                purchase_order.order_line.unlink()
+    
+                # Yeni satın alma siparişi satırlarını oluştur
+                for so_line in order.order_line:
+                    new_price_unit = so_line.price_unit * 0.92  # Örnek indirim oranı
+                    po_line = purchase_order.order_line.create({
+                        'order_id': purchase_order.id,
+                        'product_id': so_line.product_id.id,
+                        'product_qty': so_line.product_uom_qty,
+                        'product_uom': so_line.product_uom.id,
+                        'price_unit': new_price_unit,
+                        'name': so_line.name,
+                        'date_planned': purchase_order.date_order,
+                        'account_analytic_id': order.analytic_account_id.id,
+                        'sale_line_id': so_line.id,  # Satış siparişi satırını bağla
+                    })
+                    # Satış siparişi satırına geri bağlantı oluştur
+                    so_line.purchase_line_ids = [(4, po_line.id)]
+    
             # İlişkili tüm teslimat emirlerini bul
             delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
             # İlişkili tüm teslimat emirlerini güncelle
@@ -145,7 +144,7 @@ class SaleOrder(models.Model):
                 delivery_order.write({
                     'project_transfer': [(6, 0, order.project_sales.ids)],
                 })
-                
+    
         # Eğer customer_reference değiştiyse analitik hesap ve proje adını güncelle
         if self.rfq_reference != self.customer_reference:
             project = self.project_sales
@@ -156,6 +155,7 @@ class SaleOrder(models.Model):
             analytic_account.write({
                 'name': project.name
             })
+    
         return res
 
     def action_quotation_sent(self):
