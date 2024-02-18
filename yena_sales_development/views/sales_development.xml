@@ -87,12 +87,12 @@
                 <field name="incoterm" required="1"/>
                 <field name="payment_term_id"/>
                 <field name="currency_id"/>
-                <label for="tax_selection" />
+                <!--<label for="tax_selection" />
                 <div class="d-flex">
                     <field name="tax_selection" domain="[('type_tax_use','=','sale'), ('company_id','=',company_id), ('country_id', '=', tax_country_id)]"/>
                     <span class="oe_inline o_form_label mr-1 ml-2 oe_edit_only"> </span>
                     <button name="tax_button" string="Apply" type="object" class="oe_highlight"/>
-                </div>
+                </div>-->
             </xpath>
             <xpath expr="//field[@name='validity_date']" position="after">
                 <field name="rfq_date"/>
