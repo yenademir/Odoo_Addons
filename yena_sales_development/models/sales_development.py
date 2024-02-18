@@ -24,6 +24,42 @@ class SaleOrder(models.Model):
     document_numbers = fields.Char(string='Document Numbers', compute='_compute_document_numbers')
     transportation_codes = fields.Char(string="Transportation Codes", compute='_compute_transportation_codes')
     date_done_list = fields.Char(string="Effective Date", compute='_compute_date_done_list')
+    tax_selection = fields.Many2one("account.tax", string="Tax Selection",help="Select taxes to confirm and apply to all order lines." ,store=True)
+    invoice_report = fields.Selection([
+        ("fullyinvoiced", "Fully Invoiced"),
+        ("partiallyinvoice", "Partially Invoiced"),
+        ("nothinginvoiced", "Nothing Invoiced")
+    ], string="Invoice Report", compute='_compute_invoice_report', store=True)   
+    
+    @api.depends('order_line.product_uom_qty', 'order_line.qty_invoiced')
+    def _compute_invoice_report(self):
+        for order in self:
+            # Varsayılan olarak "nothinginvoiced" varsayalım
+            invoice_status = "nothinginvoiced"
+            partially_invoiced = False
+            fully_invoiced = True
+
+            for line in order.order_line:
+                if line.qty_invoiced > 0:
+                    if line.qty_invoiced < line.product_uom_qty:
+                        partially_invoiced = True
+                        fully_invoiced = False
+                        break  # En az bir satır kısmen faturalandırıldıysa döngüden çık
+                    else:
+                        # Bu satır tamamen faturalandırıldı, döngü devam eder
+                        invoice_status = "fullyinvoiced"
+                else:
+                    fully_invoiced = False  # Eğer qty_invoiced 0 ise tamamen faturalandırılmamıştır
+
+            if partially_invoiced:
+                invoice_status = "partiallyinvoice"
+            elif fully_invoiced:
+                invoice_status = "fullyinvoiced"
+            else:
+                invoice_status = "nothinginvoiced"
+
+            order.invoice_report = invoice_status
+
 
     @api.depends('order_line.product_uom_qty', 'order_line.qty_invoiced')
     def _compute_invoice_report(self):
