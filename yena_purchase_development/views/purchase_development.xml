@@ -24,12 +24,20 @@
                 <xpath expr="//header" position="inside">
                     <button name="mark_as_sent" string="Mark as Send" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>/>
                 </xpath>
-                   <xpath expr="//field[@name='partner_id']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="contact_id" string="Contact Person"/>
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" string="Company (Buyer)"/>
                     <field name="user_id" required="1"/>
                     <field name="incoterm_id" required="1"/>
                     <field name="payment_term_id"/>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <label for="tax_selection_purchase" />
+                    <div class="d-flex">
+                        <field name="tax_selection_purchase" domain="[('type_tax_use','=','purchase'), ('company_id','=',company_id), ('country_id', '=', tax_country_id)]"/>
+                        <span class="oe_inline o_form_label mr-1 ml-2 oe_edit_only"> </span>
+                        <button name="tax_confirm_button" string="Apply" type="object" class="oe_highlight"/>
+                    </div>
                 </xpath>
                 <xpath expr="//field[@name='fiscal_position_id']" position="after">
                     <field name="picking_type_id"/>
