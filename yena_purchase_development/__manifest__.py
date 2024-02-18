@@ -6,7 +6,7 @@
     'website': "https://yenaengineering.nl",
     'category': 'Purchase',
     'license': 'LGPL-3',
-    'depends': ["purchase", 'product'],
+    'depends': ["purchase", 'product', 'stock'],
     'data': [
         'views/purchase_development.xml'
     ],
