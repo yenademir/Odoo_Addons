@@ -110,7 +110,7 @@ class SaleOrder(models.Model):
             else:
                 order.transportation_codes = ''
 
-    def tax_confirm_button(self):
+    def tax_button(self):
         for order in self:
             if order.tax_selection_purchase:
                 tax_id = order.tax_selection_purchase.id
