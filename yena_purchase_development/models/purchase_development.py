@@ -12,7 +12,7 @@ class PurchaseOrder(models.Model):
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
     project_purchase = fields.Many2one('project.project', string="Project Number", store=True)
     contact_id = fields.Many2one('res.partner', string='Contact Person', store=True)
-    
+    tax_selection_purchase = fields.Many2one('account.tax',string="Tax Selection",help="Select taxes to confirm and apply to all order lines." ,store=True)
     @api.onchange('company_id')
     def _onchange_company_id(self):
         if self.company_id.id == 1:
@@ -38,6 +38,21 @@ class PurchaseOrder(models.Model):
                 })
         return res
 
+
+    def tax_confirm_button(self):
+        for order in self:
+            for line in order.order_line:
+                if order.tax_selection_purchase and order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_6_47f7ef82').id:
+                    # Vergi alanını boşalt
+                    line.taxes_id = [(5, 0, 0)]
+                else:
+                    # Seçilen vergiyi tüm satırlara uygula
+                    if order.tax_selection_purchase:
+                        line.taxes_id = [(6, 0, [order.tax_selection_purchase.id])]
+                    else:
+                        # Eğer vergi seçimi yapılmamışsa, vergi alanını boşalt
+                        line.taxes_id = [(5, 0, 0)]
+                    
     def mark_as_sent(self):
 
         for record in self:
