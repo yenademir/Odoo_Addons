@@ -36,7 +36,6 @@
                 </xpath>
                 <xpath expr="//field[@name='price_subtotal']" position="before">
                     <field name="production_status" optional="hide"/>
-                    <field name="status" optional="hide"/>
                 </xpath>
                  <xpath expr="//field[@name='order_line']/tree//field[@name='product_packaging_qty']" position="attributes">
                     <attribute name="optional">hidden</attribute>
