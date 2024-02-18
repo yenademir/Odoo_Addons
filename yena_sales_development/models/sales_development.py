@@ -111,11 +111,17 @@ class SaleOrder(models.Model):
                 order.transportation_codes = ''
 
     def tax_button(self):
+        tax_to_clear_ids = [
+            self.env.ref('__export__.account_tax_6_47f7ef82').id,
+            self.env.ref('__export__.account_tax_9_7f4d3d4b').id
+        ]
         for order in self:
-            if order.tax_selection_purchase:
-                tax_id = order.tax_selection_purchase.id
+            if order.tax_selection.id in tax_to_clear_ids:
                 for line in order.order_line:
-                    line.taxes_id = [(6, 0, [tax_id])]
+                    line.tax_id = [(5, 0, 0)]
+            else:
+                for line in order.order_line:
+                    line.tax_id = [(6, 0, [order.tax_selection.id])]
 
     def _compute_date_done_list(self):
         for order in self:
