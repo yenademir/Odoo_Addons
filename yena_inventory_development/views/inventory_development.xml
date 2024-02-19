@@ -278,6 +278,7 @@
           name="Transportation Follow Up"
           parent="stock.menu_stock_root"
           action="transportation_follow_up"/>
+    
     <record id="view_picking_internal_search_inherit_last_week" model="ir.ui.view">
         <field name="name">view.picking.internal.search.inherit.last.week</field>
         <field name="model">stock.picking</field>
@@ -285,10 +286,9 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <separator/>
-                <filter string="Last Week to Future Arrival Dates"
-                name="filter_last_week_arrival"
-                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
-                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last Week to Future Batch Dates"
+                        name="filter_last_week_to_future_transfer"
+                        domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
             </xpath>
         </field>
     </record>
@@ -298,19 +298,16 @@
         <field name="inherit_id" ref="stock.view_move_search"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <!-- Önceki tanımları koruyun -->
                 <field name="transportation_code"/>
                 <field name="situation"/>
                 <group expand="0" string="Group By">
                     <filter string="Transportation Code" name="group_by_transportation_code" context="{'group_by': 'transportation_code'}"/>
                     <filter string="Operation Type" name="group_by_picking_type_id" context="{'group_by': 'picking_type_id'}"/>
                 </group>
-                <!-- Yeni filtreleri ve ayırıcıyı ekleyin -->
                 <separator/>
-                <filter string="Last Week to Future Arrival Dates"
-                        name="filter_last_week_arrival"
-                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
-                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last Week to Future Batch Dates"
+                        name="filter_last_week_to_future_transfer"
+                        domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
             </xpath>
         </field>
     </record>
