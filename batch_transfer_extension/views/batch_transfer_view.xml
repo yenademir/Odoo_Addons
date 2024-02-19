@@ -108,7 +108,7 @@
             </xpath>
         </field>
     </record>
-        <record id="view_picking_batch_search_inherit" model="ir.ui.view">
+    <record id="view_picking_batch_search_inherit" model="ir.ui.view">
         <field name="name">stock.picking.batch.search.inherit</field>
         <field name="model">stock.picking.batch</field>
         <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_filter"/>
@@ -116,9 +116,15 @@
             <xpath expr="//field[@name='name']" position="before">
                 <field name="transportation_code"/>
             </xpath>
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Last Week to Future Batch Dates"
+                        name="filter_last_week_to_future_batch"
+                        domain="[('arrival_date', '>=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+            </xpath>
         </field>
     </record>
-        <record id="view_stock_picking_batch_tree_inherit" model="ir.ui.view">
+    <record id="view_stock_picking_batch_tree_inherit" model="ir.ui.view">
         <field name="name">stock.picking.batch.tree.inherit</field>
         <field name="model">stock.picking.batch</field>
         <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_tree"/>
