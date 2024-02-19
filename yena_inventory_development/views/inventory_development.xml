@@ -306,8 +306,8 @@
           name="Transportation Follow Up"
           parent="stock.menu_stock_root"
           action="transportation_follow_up"/>
-    <record id="view_stock_move_search_inherit" model="ir.ui.view">
-        <field name="name">stock.move.search.inherit</field>
+    <record id="view_stock_move_search_inherit_followup_line" model="ir.ui.view">
+        <field name="name">stock.move.search.inherit.followup.line</field>
         <field name="model">stock.move</field>
         <field name="inherit_id" ref="stock.view_move_search"/>
         <field name="arch" type="xml">
