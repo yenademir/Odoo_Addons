@@ -274,36 +274,23 @@
         <field name="view_mode">tree</field>
         <field name="view_id" ref="transporatation_follow_up"/>
     </record>
-    <record id="view_picking_internal_search_inherit_last_week" model="ir.ui.view">
-        <field name="name">view.picking.internal.search.inherit.last.week</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
-        <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
-                <separator/>
-                <filter string="Last Week Arrival Dates"
-                        name="filter_last_week_arrival"
-                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
-                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
-            </xpath>
-        </field>
-    </record>
-    <record id="view_picking_internal_search_inherit_last_week" model="ir.ui.view">
-        <field name="name">view.picking.internal.search.inherit.last.week</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_move_search"/>
-        <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
-                <separator/>
-                <filter string="Last Week Arrival Dates"
-                        name="filter_last_week_arrival"
-                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
-                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
-            </xpath>
-        </field>
-    </record>
     <menuitem id="transportation_follow_up_menu"
           name="Transportation Follow Up"
           parent="stock.menu_stock_root"
           action="transportation_follow_up"/>
+    <record id="view_stock_move_search_inherit" model="ir.ui.view">
+        <field name="name">stock.move.search.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_search"/>
+        <field name="arch" type="xml">
+            <search>
+                <field name="transportation_code"/>
+                <field name="situation"/>
+                <group expand="0" string="Group By">
+                    <filter string="Transportation Code" name="group_by_transportation_code" context="{'group_by': 'transportation_code'}"/>
+                    <filter string="Operation Type" name="group_by_picking_type_id" context="{'group_by': 'picking_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
