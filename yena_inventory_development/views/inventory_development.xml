@@ -274,6 +274,34 @@
         <field name="view_mode">tree</field>
         <field name="view_id" ref="transporatation_follow_up"/>
     </record>
+    <record id="view_picking_internal_search_inherit_last_week" model="ir.ui.view">
+        <field name="name">view.picking.internal.search.inherit.last.week</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Last Week Arrival Dates"
+                        name="filter_last_week_arrival"
+                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
+                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_picking_internal_search_inherit_last_week" model="ir.ui.view">
+        <field name="name">view.picking.internal.search.inherit.last.week</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_move_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Last Week Arrival Dates"
+                        name="filter_last_week_arrival"
+                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
+                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+            </xpath>
+        </field>
+    </record>
     <menuitem id="transportation_follow_up_menu"
           name="Transportation Follow Up"
           parent="stock.menu_stock_root"
