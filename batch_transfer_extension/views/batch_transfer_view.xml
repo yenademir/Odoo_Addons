@@ -118,9 +118,10 @@
             </xpath>
             <xpath expr="//search" position="inside">
                 <separator/>
-                <filter string="Last Week to Future Batch Dates"
-                        name="filter_last_week_to_future_batch"
-                        domain="[('arrival_date', '>=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last Week to Future Arrival Dates"
+                        name="filter_last_week_arrival"
+                        domain="[('arrival_date', '&gt;=', (context_today()-relativedelta(days=7)).strftime('%Y-%m-%d')),
+                                ('arrival_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
             </xpath>
         </field>
     </record>
