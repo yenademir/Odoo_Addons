@@ -25,11 +25,21 @@ class SaleOrder(models.Model):
     transportation_codes = fields.Char(string="Transportation Codes", compute='_compute_transportation_codes')
     date_done_list = fields.Char(string="Effective Date", compute='_compute_date_done_list')
     tax_selection = fields.Many2one("account.tax", string="Tax Selection",help="Select taxes to confirm and apply to all order lines." ,store=True)
+    edespatch_date_list = fields.Char(string="EDespatch-Date", compute='_compute_edespatch_date_list')
     invoice_report = fields.Selection([
         ("fullyinvoiced", "Fully Invoiced"),
         ("partiallyinvoice", "Partially Invoiced"),
         ("nothinginvoiced", "Nothing Invoiced")
     ], string="Invoice Report", compute='_compute_invoice_report', store=True)   
+
+    def _compute_edespatch_date_list(self):
+        for order in self:
+            pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
+            if pickings:
+                edespatch_dates_str = ', '.join(picking.edespatch_date.strftime("%Y-%m-%d") for picking in pickings if picking.edespatch_date)
+                order.edespatch_date_list = edespatch_dates_str
+            else:
+                order.edespatch_date_list = ''
     
     @api.depends('order_line.product_uom_qty', 'order_line.qty_invoiced')
     def _compute_invoice_report(self):
