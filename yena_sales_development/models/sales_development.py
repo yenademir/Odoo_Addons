@@ -121,17 +121,15 @@ class SaleOrder(models.Model):
                 order.transportation_codes = ''
 
     def tax_button(self):
-        tax_to_clear_ids = [
-            self.env.ref('__export__.account_tax_6_47f7ef82').id,
-            self.env.ref('__export__.account_tax_9_7f4d3d4b').id
-        ]
+        tax_to_clear_id = self.env.ref('__export__.account_tax_125_7615b3b3').id 
         for order in self:
-            if order.tax_selection.id in tax_to_clear_ids:
+            if order.tax_selection.id == tax_to_clear_id:
                 for line in order.order_line:
                     line.tax_id = [(5, 0, 0)]
             else:
                 for line in order.order_line:
                     line.tax_id = [(6, 0, [order.tax_selection.id])]
+
 
     def _compute_date_done_list(self):
         for order in self:
@@ -284,7 +282,6 @@ class SaleOrder(models.Model):
         product_delivery_date = fields.Date(string="Product Delivery Date")
 
 
-#Intercompany & autofill
 
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
