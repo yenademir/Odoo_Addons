@@ -6,7 +6,7 @@
     'website': "https://yenaengineering.nl",
     'category': 'Purchase and Sales',
     'license': 'LGPL-3',
-    'depends': ['sale','yena_sales_development_test','yena_purchase_development_test','stock','purchase', 'yena_inventory_development_test', 'batch_transfer_extension_test'],
+    'depends': ['sale','yena_sales_development','yena_purchase_development','stock','purchase', 'yena_inventory_development', 'batch_transfer_extension'],
     'data': [
         'views/date_diffs.xml',
     ],
