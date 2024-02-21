@@ -134,6 +134,7 @@ class ProductTemplate(models.Model):
     origin_country_id = fields.Many2one("res.country", string="Origin")
     hs_code_description = fields.Char(string="HS Code Description", store=True)
     description_sale_en = fields.Char(string="Sale Description English", store=True)
+    customer_description = fields.Char(string="Customer Description", store=True)
 
     @api.model
     def create(self, values):
