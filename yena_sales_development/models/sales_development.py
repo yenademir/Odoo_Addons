@@ -121,7 +121,10 @@ class SaleOrder(models.Model):
                 order.transportation_codes = ''
 
     def tax_button(self):
-        tax_to_clear_id = self.env.ref('__export__.account_tax_125_7615b3b3').id 
+        tax_to_clear_ids = [
+            self.env.ref('__export__.account_tax_125_7615b3b3').id,
+            self.env.ref('__export__.account_tax_208_e1b8c54a').id
+        ]
         for order in self:
             if order.tax_selection.id == tax_to_clear_id:
                 for line in order.order_line:
