@@ -163,6 +163,11 @@
             <xpath expr="//field[@name='company_id']"  position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <xpath expr="//group[@name='description']" position="after">
+                <group string="Customer Product Description">
+                    <field name="customer_description" nolabel="1"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </data>
@@ -208,7 +213,7 @@
         <field name="name">transportation.follow.up.tree</field>
         <field name="model">stock.move</field>
         <field name="arch" type="xml">
-            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'" editable="bottom">
+            <tree string="Operations" delete="0" multi_edit="1" sample="1" default_order="transportation_code" decoration-info="situation=='to_be_planned'" decoration-danger="situation=='on_the_way'" decoration-success="situation=='arrived'">
                 <field name="company_id" invisible="1"/>
                 <field name="transportation_code" groupby="transportation_code"/>
                 <field name="batch_id" optional="show" widget='many2one'/>
@@ -243,6 +248,11 @@
                 <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
                 <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
             </xpath>
+            <xpath expr="//field[@name='picking_type_id']"  position="after">
+                <field name="sequence_code"  attrs="{'invisible': 1}"/>
+                <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
+                <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
+            </xpath>
         </field>
     </record>
     <record id="inventory_transfer_stock_vpicking_yena" model="ir.ui.view">
@@ -266,6 +276,40 @@
                 <field name="purchase_id"/>
                 <field name="transportation_code"/>
             </field>
+        </field>
+    </record>
+    <record id="view_picking_internal_search_inherit_last_week" model="ir.ui.view">
+        <field name="name">view.picking.internal.search.inherit.last.week</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Last Week to Future Batch Dates"
+                        name="filter_last_week_to_future_transfer"
+                        domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_move_search_inherit_combined" model="ir.ui.view">
+        <field name="name">stock.move.search.inherit.combined</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <!-- Önceki tanımları koruyun -->
+                <field name="transportation_code"/>
+                <field name="situation"/>
+                <group expand="0" string="Group By">
+                    <filter string="Transportation Code" name="group_by_transportation_code" context="{'group_by': 'transportation_code'}"/>
+                    <filter string="Operation Type" name="group_by_picking_type_id" context="{'group_by': 'picking_type_id'}"/>
+                </group>
+                <!-- Yeni filtreleri ve ayırıcıyı ekleyin -->
+                <separator/>
+                <filter string="Last Week to Future Batch Dates"
+                        name="filter_last_week_to_future_transfer"
+                        domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+            </xpath>
         </field>
     </record>
     <record id="transportation_follow_up" model="ir.actions.act_window">
