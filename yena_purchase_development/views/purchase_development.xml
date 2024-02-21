@@ -24,24 +24,24 @@
                 <xpath expr="//header" position="inside">
                     <button name="mark_as_sent" string="Mark as Send" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>/>
                 </xpath>
-                <xpath expr="//field[@name='partner_id']" position="after">
+                   <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="contact_id" string="Contact Person"/>
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" string="Company (Buyer)"/>
                     <field name="user_id" required="1"/>
                     <field name="incoterm_id" required="1"/>
                     <field name="payment_term_id"/>
                 </xpath>
-                <!--<xpath expr="//field[@name='currency_id']" position="after">
+                <xpath expr="//field[@name='currency_id']" position="after">
                     <label for="tax_selection_purchase" />
                     <div class="d-flex">
                         <field name="tax_selection_purchase" domain="[('type_tax_use','=','purchase'), ('company_id','=',company_id), ('country_id', '=', tax_country_id)]"/>
                         <span class="oe_inline o_form_label mr-1 ml-2 oe_edit_only"> </span>
                         <button name="tax_confirm_button" string="Apply" type="object" class="oe_highlight"/>
                     </div>
-                </xpath>-->
-                <xpath expr="//field[@name='fiscal_position_id']" position="after">
-                    <field name="picking_type_id"/>
                 </xpath>
+                <!--<xpath expr="//field[@name='fiscal_position_id']" position="after">
+                    <field name="picking_type_id"/>
+                </xpath>-->
                 <xpath expr="//field[@name='price_subtotal']" position="before">
                     <field name="production_status" optional="hide"/>
                 </xpath>
@@ -126,6 +126,9 @@
                 <xpath expr="(//field[@name='date_approve'])[1]" position="attributes">
                     <attribute name="widget">date</attribute>
                 </xpath>
+                <xpath expr="(//field[@name='date_approve'])[1]" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
             </field>
         </record>
     <record id="inherit_purchase_order_form" model="ir.ui.view">
@@ -142,37 +145,48 @@
             </xpath>
         </field>
     </record>
-        <record id="view_order_line_tree_inherit" model="ir.ui.view">
-            <field name="name">purchase.order.line.tree.inherit</field>
-            <field name="model">purchase.order.line</field>
-            <field name="arch" type="xml">
-                <tree string="Purchase Order Lines" delete="0" multi_edit="1" sample="1">
-                    <field name="order_id" readonly="1"/>
-                    <field name="account_analytic_id"/>
-                    <field name="partner_id"/>
-                    <field name="product_id"/>
-                    <field name="user_id"/>
-                    <field name="product_qty"/>
-                    <field name="product_uom" string="UoM" groups="uom.group_uom"/>
-                    <field name="delivery_date"/>
-                    <field name="qty_received"/>
-                    <field name="price_unit" optional="hide"/>
-                    <field name="price_subtotal" optional="hide"/>
-                    <field name="currency_id" invisible ="1"/>
-                    <field name="tags" widget="many2many_tags" optional="hide"/>
-                    <field name="production_status"/>
-                </tree>
-            </field>
-        </record>
-        <record id="action_purchase_order_line_overview" model="ir.actions.act_window">
-            <field name="name">Production Overview</field>
-            <field name="res_model">purchase.order.line</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="view_order_line_tree_inherit"/>
-        </record>
-        <menuitem id="menu_purchase_order_line_overview"
-          name="Production Overview"
-          parent="purchase.menu_purchase_root"
-          action="action_purchase_order_line_overview"
-          sequence="10"/>
+    <record id="view_order_line_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.line.tree.inherit</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Order Lines" delete="0" multi_edit="1" sample="1" >
+                <field name="order_id" widget="many2one" readonly="1"/>
+                <field name="account_analytic_id" readonly="1"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="product_uom_category_id" invisible="1" readonly="1"/>
+                <field name="product_id" widget="many2one" readonly="1"/>
+                <field name="user_id" readonly="1"/>
+                <field name="product_qty" readonly="1"/>
+                <field name="product_uom" string="UoM" groups="uom.group_uom" readonly="1"/>
+                <field name="delivery_date" readonly="1"/>
+                <field name="qty_received" readonly="1"/>
+                <field name="price_unit" optional="hide" readonly="1"/>
+                <field name="price_subtotal" optional="hide" readonly="1"/>
+                <field name="currency_id" invisible="1" readonly="1"/>
+                <field name="tags" widget="many2many_tags" optional="hide" string="Order Tags"/>
+                <field name="production_status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_purchase_order_line_overview" model="ir.actions.act_window">
+        <field name="name">Production Overview</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_order_line_tree_inherit"/>
+    </record>
+    <menuitem id="menu_purchase_order_line_overview"
+      name="Production Overview"
+      parent="purchase.menu_purchase_root"
+      action="action_purchase_order_line_overview"
+      sequence="10"/>
+    <record id="purchase_order_taxes_id_hide_view_yena" model="ir.ui.view">
+        <field name="name">purchase.order.taxes.id.hide.vies.yena</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">      
+                <xpath expr="//page/field[@name='order_line']/tree//field[@name='taxes_id']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+        </field>
+    </record>
 </odoo>
