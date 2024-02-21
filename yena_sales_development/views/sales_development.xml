@@ -179,4 +179,14 @@
             </xpath>
         </field>
     </record>
+    <record id="view_quotation_tree_inherited" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="customer_reference"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
