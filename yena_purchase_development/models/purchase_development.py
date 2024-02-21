@@ -115,7 +115,7 @@ class PurchaseOrderLine(models.Model):
 
     line_status = fields.Char(string="Line Status", compute="_compute_line_status")
     delivery_date = fields.Date(string="Required Delivery Date")
-    tags = fields.Many2many(related='order_id.tags', string="Tags", readonly=True)
+    tags = fields.Many2many(related='order_id.tags', string="Tags", readonly=False)
     status = fields.Char(string="Status")
     user_id = fields.Char(string="User", related='order_id.user_id.name', readonly=True)
     production_status = fields.Selection([
