@@ -23,7 +23,7 @@ class Picking(models.Model):
     sale_id=fields.Many2one("sale.order",string="Sale Order")
     purchase_id=fields.Many2one("purchase.order",string="Purchase Order")
     sequence_code = fields.Char(string='Sequence Code', related='picking_type_id.sequence_code', store=True)
-    logistic_company = fields.Char (string="Logistic Company", store=True)
+    logistic_company = fields.Many2one('res.partner', string='Logistic Company', domain=[('is_company', '=', True)])
 
     @api.model
     def create(self, vals):
