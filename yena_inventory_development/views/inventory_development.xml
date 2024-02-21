@@ -330,7 +330,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <separator/>
-                <filter string="Last Week to Future Batch Dates"
+                <filter string="Last Week to Future"
                         name="filter_last_week_to_future_transfer"
                         domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
             </xpath>
@@ -349,7 +349,7 @@
                     <filter string="Operation Type" name="group_by_picking_type_id" context="{'group_by': 'picking_type_id'}"/>
                 </group>
                 <separator/>
-                <filter string="Last Week to Future Batch Dates"
+                <filter string="Last Week to Future"
                         name="filter_last_week_to_future_transfer"
                         domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
             </xpath>
