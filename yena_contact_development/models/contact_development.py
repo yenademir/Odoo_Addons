@@ -106,3 +106,16 @@ class ResPartner(models.Model):
             self.lang = 'tr_TR'
         else:
             self.lang = 'en_US'
+
+    def action_view_stock_moves(self):
+        self.ensure_one()
+       
+        domain = [('customer', '=', self.id)]
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Products',
+            'view_mode': 'tree,form',
+            'res_model': 'product.product',
+            'domain': domain,
+            'context': {'default_customer': self.id},
+        }
