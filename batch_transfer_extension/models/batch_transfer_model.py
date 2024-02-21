@@ -39,6 +39,7 @@ class StockPickingBatch(models.Model):
         string='Transportation Code',
         inverse='_inverse_transportation_code'
     )    
+    logistic_company = fields.Many2one('res.partner', inverse='_inverse_logistic_company', string='Logistic Company', domain=[('is_company', '=', True)])
     import_decleration_number = fields.Char(string='Custom Decleration No', inverse='_inverse_import_decleration_number', store=True)
     edespatch_carrier_id = fields.Many2one('res.partner', string='Carrier Partner', domain=[('industry_id.id', '=', 139)], inverse='_inverse_edespatch_carrier_id')
     transport_type = fields.Selection([
