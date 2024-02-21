@@ -42,8 +42,10 @@ class PurchaseOrder(models.Model):
     def tax_confirm_button(self):
         for order in self:
             for line in order.order_line:
-                if order.tax_selection_purchase and order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_201_236c9448').id:
-                    # Vergi alanını boşalt
+                if order.tax_selection_purchase and (
+                    order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_125_7615b3b3').id or
+                    order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_208_e1b8c54a').id
+                ):                    # Vergi alanını boşalt
                     line.taxes_id = [(5, 0, 0)]
                 else:
                     # Seçilen vergiyi tüm satırlara uygula
