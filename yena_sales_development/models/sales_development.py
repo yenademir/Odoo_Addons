@@ -126,7 +126,7 @@ class SaleOrder(models.Model):
             self.env.ref('__export__.account_tax_208_e1b8c54a').id
         ]
         for order in self:
-            if order.tax_selection.id == tax_to_clear_id:
+            if order.tax_selection.id in tax_to_clear_ids:
                 for line in order.order_line:
                     line.tax_id = [(5, 0, 0)]
             else:
