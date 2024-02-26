@@ -190,11 +190,10 @@ class StockPickingBatch(models.Model):
         for batch in self:
             batch.picking_ids.write({'transportation_code': batch.transportation_code})
 
-    @api.depends('picking_ids.logistic_company')
     def _inverse_logistic_company(self):
         for batch in self:
             batch.picking_ids.write({'logistic_company': batch.logistic_company})
-
+            
     def _inverse_situation(self):
         for batch in self:
             batch.picking_ids.write({'situation': batch.situation})
@@ -333,6 +332,7 @@ class Picking(models.Model):
     project_transfer = fields.Many2many("project.project", string="Project Number", store=True)
     effective_date = fields.Date(string="Effective Date", store=True)
     arrival_date = fields.Date(related="batch_id.arrival_date", string='Arrival Date' ,store=True, readonly=False)
+    logistic_company = fields.Many2one('res.partner', string='Logistic Company', domain=[('is_company', '=', True)])
     situation = fields.Selection(
         [("to_be_planned", "To Be Planned"),
          ("on_the_way", "On The Way"),
