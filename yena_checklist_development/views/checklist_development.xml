@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_order_form_project_logs_inherit_yena" model="ir.ui.view">
+        <field name="name">purchase.order.form.project.logs.inherit.yena</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='purchase_delivery_invoice']" position="after">
+                <page string="RFQ Checklist" groups="base.group_user">
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        Please submit as a ticket the items in the list below that you think will not need to be used over time.
+                    </span>
+                    <group>
+                        <group col="4">
+                            <field name="project_docs" />
+                        </group>
+                        <group col="4">
+                            <field name="is_supllied" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="drawing_activities" />
+                        </group>
+                        <group col="4">
+                            <field name="equipments_capability" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="external_outsource" />
+                        </group>
+
+                        <group col="4">
+                            <field name="measurement_equipment_supplier" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="measurement_equipment_yena" />
+                        </group>
+                        <group col="4">
+                            <field name="mold_or_fixture" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="before_project" />
+                        </group>
+                        <group col="4">
+                            <field name="transfer_condition" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="wpqr_approval" />
+                        </group>
+                        <group col="4">
+                            <field name="welder_cert" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="test_info" />
+                        </group>
+                        <group col="4">
+                            <field name="ndt_information" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="supplier_checklist" />
+                        </group>
+                        <group col="4">
+                            <field name="yena_checklist" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="hole_information" />
+                        </group>
+                        <group col="4">
+                            <field name="is_info_shared" />
+                        </group>
+                    </group>
+                    <group>
+                        <group col="4">
+                            <field name="is_revision_actual" />
+                        </group>
+                        <group col="4">
+                            <field name="potential_nonconformity" />
+                        </group>
+                    </group>
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        Enter your Kick-Off Meeting Notes (draft or final): Help: these notes can be
+                        considered as draft notes if there is no kick-off, and as final notes if
+                        there is a kick-off.
+                    </span>
+                    <group col="4">
+                        <field name="kickoff_meeting" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_sale_order_form_project_logs_inherit_yena" model="ir.ui.view">
+        <field name="name">sale.order.form.project.logs.inherit.yena</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='other_information']" position="after">
+                <page string="QUO Checklist" groups="base.group_user">
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        Communicated details with the customer
+                    </span>
+                    <group>
+                        <group>
+                        <field name="communicated_details_with_customer" />
+                    </group>
+                    <group>
+                        <field name="customer_notes_entered" />
+                    </group>
+                    </group>
+
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        If not described in the request from the customer;
+                    </span>
+                    <group>
+                        <field name="order_quantities_requested" />
+                    </group>
+
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        Making calculations (material, surface treatment, length, weight, processes,
+                        etc.) </span>
+                    <group>
+                        <group>
+                            <field name="material_list_issued" />
+                            <field name="surface_treatment_specified" />
+                        </group>
+                        <group>
+                            <field name="weights_clear" />
+                            <field name="manufacturing_processes_clear" />
+                        </group>
+                    </group>
+
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        Technical review </span>
+                    <group>
+                        <group>
+                            <field name="drawings_sufficient" />
+                            <field name="materials_measurement_info_sufficient" />
+                        </group>
+                        <group>
+                            <field name="raw_materials_supplied" />
+                            <field name="surface_treatment_info_clear" />
+                            <field name="dies_or_fixtures_made" />
+                        </group>
+                       
+                    </group>
+                    <span style="font-size: 14px; font-weight: bold; color: #45a0a5">
+                        Enter your Kick-Off Meeting Notes (draft or final): Help: these notes can be
+                        considered as draft notes if there is no kick-off, and as final notes if
+                        there is a kick-off.
+                    </span>
+                    <group>
+                        <field name="kickoff_meeting_made" />
+                    </group>
+                </page>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>
