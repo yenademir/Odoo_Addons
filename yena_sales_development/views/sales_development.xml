@@ -131,7 +131,7 @@
                 <attribute name="string">C-Delivery Address</attribute>
             </xpath>
             <xpath expr="//field[@name='validity_date']" position="attributes">
-                <attribute name="string">Validtiy of Offer</attribute>
+                <attribute name="string">Validity of Offer</attribute>
             </xpath>
             <!--<xpath expr="//field[@name='quota_cancel_reason_id']" position="attributes">
                 <attribute name="string">Quotation Lost Reason</attribute>
