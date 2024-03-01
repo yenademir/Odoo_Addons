@@ -34,4 +34,30 @@
         </field>
     </record>
 
+
+    <record id="yena_purchase_quotation_time_diff" model="ir.ui.view">
+        <field name="name">yena.purchase.order.quotation.time.diff.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="delivery_date_diff"/>
+                <field name="quotation_time_diff" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="yena_sale_quotation_time_diff" model="ir.ui.view">
+        <field name="name">yena.sale.order.quotation.time.diff.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='activity_ids']" position="after">
+                <field name="quotation_time_diff" optional="show"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
