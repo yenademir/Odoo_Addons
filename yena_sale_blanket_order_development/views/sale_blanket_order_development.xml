@@ -45,6 +45,9 @@
                     <field name="remaining_invoice_total"/>
                     <field name="amount_untaxed"/>
                 </field>
+                <field name="name" position="after">
+                    <field name="client_order_ref"/>
+                </field>
             </field>
         </record>
         <record id="sale_blanket_order.act_open_blanket_order_view" model="ir.actions.act_window">
