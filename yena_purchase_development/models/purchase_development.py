@@ -42,10 +42,8 @@ class PurchaseOrder(models.Model):
     def tax_confirm_button(self):
         for order in self:
             for line in order.order_line:
-                if order.tax_selection_purchase and (
-                    order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_206_2a6dd61f').id or
-                    order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_201_236c9448').id
-                ):                    # Vergi alanını boşalt
+                if order.tax_selection_purchase and order.tax_selection_purchase.id == self.env.ref('__export__.account_tax_6_47f7ef82').id:
+                    # Vergi alanını boşalt
                     line.taxes_id = [(5, 0, 0)]
                 else:
                     # Seçilen vergiyi tüm satırlara uygula
@@ -115,7 +113,7 @@ class PurchaseOrderLine(models.Model):
 
     line_status = fields.Char(string="Line Status", compute="_compute_line_status")
     delivery_date = fields.Date(string="Required Delivery Date")
-    tags = fields.Many2many(related='order_id.tags', string="Tags", readonly=False)
+    tags = fields.Many2many(related='order_id.tags', string="Tags", readonly=True)
     status = fields.Char(string="Status")
     user_id = fields.Char(string="User", related='order_id.user_id.name', readonly=True)
     production_status = fields.Selection([
@@ -146,15 +144,21 @@ class PurchaseOrderLine(models.Model):
         ('whoops', 'WHOOPS!'),
     ], string='Production Status')
 
-    @api.depends('qty_received', 'product_qty')
-    def _compute_production_status(self):
+    @api.onchange('qty_received', 'product_qty')
+    def _onchange_production_status(self):
         for record in self:
-            if record.qty_received == record.product_qty:
-                record.production_status = 'despatched'
+        # Otomatik olarak ayarlanacak durumlar
+            if record.qty_received == record.product_qty and record.product_qty > 0:
+                new_status = 'despatched'
             elif 0 < record.qty_received < record.product_qty:
-                record.production_status = 'partially_despatched'
+                new_status = 'partially_despatched'
             elif record.qty_received > record.product_qty:
-                record.production_status = 'whoops'
+                new_status = 'whoops'
+            else:
+                new_status = record.production_status
+
+            if new_status != record.production_status:
+                record.production_status = new_status
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
