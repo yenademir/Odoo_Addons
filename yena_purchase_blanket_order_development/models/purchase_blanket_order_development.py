@@ -3,18 +3,21 @@ from odoo import models, fields, api
 class PurchaseBlanketOrder(models.Model):
     _inherit = 'purchase.blanket.order'
 
-    invoiced_total = fields.Monetary(compute='_compute_totals', string='Invoiced Total')
-    ordered_total = fields.Monetary(compute='_compute_totals', string='Ordered Total')
-    remaining_invoice_total = fields.Monetary(compute='_compute_totals', string='Remaining to Invoice Total')
-    remaining_total = fields.Monetary(compute='_compute_totals', string='Remaining Total')
+    invoiced_total = fields.Monetary(compute='_compute_totals', store=True, string='Invoiced Total')
+    ordered_total = fields.Monetary(compute='_compute_totals', store=True, string='Ordered Total')
+    remaining_invoice_total = fields.Monetary(compute='_compute_totals', store=True, string='Remaining to Invoice Total')
+    remaining_total = fields.Monetary(compute='_compute_totals', store=True, string='Remaining Total')
 
-    @api.depends('line_ids.invoiced_subtotal', 'line_ids.ordered_subtotal', 'line_ids.remaining_invoice_subtotal', 'line_ids.remaining_subtotal')
+
+    @api.depends('line_ids.invoiced_subtotal', 'line_ids.ordered_subtotal', 'line_ids.remaining_invoice_subtotal', 'line_ids.remaining_subtotal','amount_untaxed')
     def _compute_totals(self):
         for order in self:
             order.invoiced_total = sum(line.invoiced_subtotal for line in order.line_ids)
             order.ordered_total = sum(line.ordered_subtotal for line in order.line_ids)
             order.remaining_invoice_total = sum(line.remaining_invoice_subtotal for line in order.line_ids)
             order.remaining_total = sum(line.remaining_subtotal for line in order.line_ids)
+            if order.ordered_total > 0 and order.amount_untaxed > 0 and order.ordered_total == order.amount_untaxed:
+                order.state = 'done'
 
 class PurchaseBlanketOrderLine(models.Model):
     _inherit = 'purchase.blanket.order.line'
