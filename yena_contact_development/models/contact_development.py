@@ -17,17 +17,8 @@ class ResPartner(models.Model):
             ('4', '4'),
             ('5', '5'),
             ]
-    # Ortak Alanlar
     creating_changing_design = fields.Selection(SELECTION_OPTIONS, string='Creating/Changing Design')
     creating_changing_design_note = fields.Char(string='Creating/Changing Design Note')
-    shipment_between_countries = fields.Selection(SELECTION_OPTIONS, string='Shipment (between countries)')
-    shipment_between_countries_note = fields.Char(string='Shipment (between countries) Note')
-    export_operation = fields.Selection(SELECTION_OPTIONS, string='Export Operation')
-    export_operation_note = fields.Char(string='Export Operation Note')
-    import_operation = fields.Selection(SELECTION_OPTIONS, string='Import Operation')
-    import_operation_note = fields.Char(string='Import Operation Note')
-    customs_clearance = fields.Selection(SELECTION_OPTIONS, string='Customs Clearance')
-    customs_clearance_note = fields.Char(string='Customs Clearance Note')
     preparing_shop_drawings = fields.Selection(SELECTION_OPTIONS, string='Preparing Shop Drawings')
     preparing_shop_drawings_note = fields.Char(string='Preparing Shop Drawings Note')
     surface_prep = fields.Selection(SELECTION_OPTIONS, string='Surface Prep.')
@@ -85,7 +76,29 @@ class ResPartner(models.Model):
             ('certification', 'Certification/Licensing'),
             ], string="Vendor Type")
     type_of_material = fields.Many2many('type.material', string="Type of Material")
-
+    is_customer = fields.Boolean(
+        compute='_compute_contact_status_flags',
+        store=False,  
+    )
+   
+    is_vendor = fields.Boolean(
+        compute='_compute_contact_status_flags',
+        store=False,  
+    )
+    @api.onchange('type')
+    def _onchange_type(self):
+        if self.type == 'driver':
+            self.unknown_company = True
+        else:
+            self.unknown_company = False
+            
+    @api.depends('contact_status')
+    def _compute_contact_status_flags(self):
+        for record in self:
+            # 'Customer' veya 'Vendor' durumlarını kontrol et
+            customer_status_names = record.contact_status.mapped('name')
+            record.is_customer = 'Customer' in customer_status_names
+            record.is_vendor = 'Vendor' in customer_status_names
     @api.depends('contact_status')
     def _compute_contact_status(self):
         for record in self:
@@ -106,7 +119,7 @@ class ResPartner(models.Model):
             self.lang = 'tr_TR'
         else:
             self.lang = 'en_US'
-
+            
     def action_view_stock_moves(self):
         self.ensure_one()
        
