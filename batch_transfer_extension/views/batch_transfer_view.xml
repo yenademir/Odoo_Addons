@@ -38,7 +38,7 @@
             <xpath expr="//notebook/page[3]" position="after">
                 <page string="Drivers" name="driver_ids"
                 attrs="{'invisible': [('edespatch_delivery_type', '!=', 'edespatch')]}" >
-                    <field name="driver_ids" domain="[('type','=','driver')]" >
+                    <field name="driver_ids" domain="[('type','=','driver')] " context="{'default_type': 'driver'}" >
                         <tree create="true" edit="false" delete="true" editable="bottom" string="Drivers">
                             <field name="function"/>
                             <field name="name"/>
