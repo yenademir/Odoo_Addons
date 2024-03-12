@@ -4,19 +4,61 @@ class MaterialCertificate(models.Model):
     _name = 'material.certificate'
     _description = 'Material Certificate'
     
-    name = fields.Char('Name', compute="_compute_name", index=True, store=True)
-    material_thickness = fields.Char(string="Thickness", required=True)
-    material_width = fields.Char(string="Width")
-    material_length = fields.Char(string="Length")
+    name = fields.Char('Name', compute="_compute_name")
+    material_type = fields.Selection([
+    ('sheet', 'Sheet'),
+    ('pipe', 'Pipe'),
+    ('box', 'Box'),
+    ('square', 'Square'),
+    ('bracket', 'Bracket'),
+    ('flat', 'Flat'),
+    ('billet', 'Billet'),
+    ], string="Material Type")
+    material_thickness = fields.Float(string="Thickness")
+    material_width = fields.Float(string="Width")
+    material_length = fields.Float(string="Length")
     material_grade = fields.Char(string="Grade", required=True)
-
-    @api.depends('material_grade', 'material_thickness', 'material_width', 'material_length')
+    material_outer_diameter=fields.Float(string="Outer Diameter")
+    material_wall=fields.Float(string="Wall")
+    material_height=fields.Float(string="Height")
+    material_diameter=fields.Float(string="Diameter")
+    
+    @api.depends('material_grade', 'material_thickness', 'material_width', 'material_length',
+                 "material_outer_diameter","material_wall","material_diameter","material_height")
     def _compute_name(self):
+        
+        def sheet_name(rec):
+            return f"{rec.material_thickness}mm x {rec.material_width}mm x {rec.material_length}mm"
+        def pipe_name(rec):
+            return f"{rec.material_outer_diameter}Ø mm x {rec.material_wall}mm x {rec.material_length}mm"
+        def square_name(rec):
+            return f"{rec.material_width}mm x{rec.material_length}mm"
+        def box_name(rec):
+            return f"{rec.material_thickness}mm x {rec.material_height}mm x {rec.material_width}mm x{rec.material_length}mm"
+        def bracket_name(rec):
+            return f"{rec.material_thickness}mm x {rec.material_height}mm x {rec.material_width}mm x{rec.material_length}mm"
+        def flat_name(rec):
+            return f"{rec.material_thickness}mm x {rec.material_width}mm x {rec.material_length}mm"
+        def billet_name(rec):
+            return f"{rec.material_diameter}Ø mm x{rec.material_length}mm"
+        
+        
+        name_generator = {
+        'sheet': sheet_name,
+        'pipe': pipe_name,
+        'square':square_name,
+        'box':box_name,
+        'bracket':bracket_name,
+        'flat':flat_name,
+        'billet':billet_name,
+        }    
         for record in self:
-            name = f"{record.material_grade}, {record.material_thickness}"
-            if record.material_width and record.material_length:
-                name += f"x{record.material_width}x{record.material_length}"
-           
+            name = f"{record.material_grade}, "
+            generator = name_generator.get(record.material_type)
+            if generator:
+                name += generator(record)
+            else:
+                name += "Please enter the measurements."
             record.name = name
 
 class ProductTemplate(models.Model):
