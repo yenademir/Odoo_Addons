@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Material Certificate Tree View -->
-    <record id="view_material_certificate_tree" model="ir.ui.view">
+        <record id="view_material_certificate_tree" model="ir.ui.view">
         <field name="name">material.certificate.tree</field>
         <field name="model">material.certificate</field>
         <field name="arch" type="xml">
-            <tree string="material_certificate_tree" delete="1" multi_edit="1" sample="1" default_order="name">
-                    <field name="name"/>
-                    <field name="material_grade"/>
-                    <field name="material_thickness"/>
-                    <field name="material_length"/>
-                    <field name="material_width"/>
+            <tree string="material_certificate_tree" delete="0" multi_edit="1" sample="1" default_order="name">
+                <field name="name"/>
+                <field name="material_type"/>
+                <field name="material_grade"/>
+                <field name="material_thickness" attrs="{'invisible': [('material_type', 'not in', ['sheet', 'box', 'bracket'])]}"/>
+                <field name="material_height" attrs="{'invisible': [('material_type', 'not in', ['box', 'bracket'])]}"/>
+                <field name="material_diameter" attrs="{'invisible': [('material_type', '!=', 'billet')]}"/>
+                <field name="material_width" attrs="{'invisible': [('material_type', 'not in', ['sheet', 'box', 'square', 'flat','bracket'])]}"/>
+                <field name="material_outer_diameter" attrs="{'invisible': [('material_type', '!=', 'pipe')]}"/>
+                <field name="material_wall" attrs="{'invisible': [('material_type', '!=', 'pipe')]}"/>
+                <field name="material_length" attrs="{'invisible': [('material_type', 'not in', ['sheet', 'pipe', 'box', 'square', 'flat', 'billet','bracket'])]}"/>
             </tree>
         </field>
     </record>
@@ -24,10 +29,15 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="material_type" widget="radio" options="{'horizontal': true}"/>
                         <field name="material_grade"/>
-                        <field name="material_thickness"/>
-                        <field name="material_length"/>
-                        <field name="material_width"/>
+                        <field name="material_thickness" attrs="{'invisible': [('material_type', 'not in', ['sheet', 'box', 'bracket'])]}"/>
+                        <field name="material_height" attrs="{'invisible': [('material_type', 'not in', ['box', 'bracket'])]}"/>
+                        <field name="material_diameter" attrs="{'invisible': [('material_type', '!=', 'billet')]}"/>
+                        <field name="material_width" attrs="{'invisible': [('material_type', 'not in', ['sheet', 'box', 'square', 'flat','bracket'])]}"/>
+                        <field name="material_outer_diameter" attrs="{'invisible': [('material_type', '!=', 'pipe')]}"/>
+                        <field name="material_wall" attrs="{'invisible': [('material_type', '!=', 'pipe')]}"/>
+                        <field name="material_length" attrs="{'invisible': [('material_type', 'not in', ['sheet', 'pipe', 'box', 'square', 'flat', 'billet','bracket'])]}"/>
                     </group>
                 </sheet>
             </form>
