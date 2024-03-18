@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="view_project_compare_product_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.compare.product.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project" />
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='settings']" position="after">
+                    <page string="Customer-Supplier Qty">
+                        <div style="margin-right: 16px; display: inline-block;">
+                            <button name="hide_equal_qty_products" string="Eşit Miktarlı Ürünleri Gizle" type="object" class="btn-primary"/>
+                        </div>
+                        <button name="show_equal_qty_products" string="Eşitleri Göster" type="object" class="oe_highlight"/>
+
+                        <field name="comparison_lines_tr_to_bv">
+                            <tree>
+                                <field name="product_id" />
+                                <field name="yena_bv_sale_qty"/>
+                                <field name="yena_tr_purchase_qty"/>
+                                <field name="yena_bv_sale_weight" />
+                                <field name="yena_tr_purchase_weight" />
+                                
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="BV-TR (MYO) Qty">
+                        <div style="margin-right: 16px; display: inline-block;">
+                            <button name="hide_equal_qty_products" string="Eşit Miktarlı Ürünleri Gizle" type="object" class="btn-primary"/>
+                        </div>
+                            <button name="show_equal_qty_products" string="Eşitleri Göster" type="object" class="oe_highlight"/>
+
+                        <field name="comparison_lines_bv_to_tr">
+                            <tree>
+                                <field name="product_id" />
+                                <field name="yena_bv_purchase_qty"/>
+                                <field name="yena_tr_sale_qty"/>
+                                <field name="yena_bv_purchase_weight" />
+                                <field name="yena_tr_sale_weight" />
+                                
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
