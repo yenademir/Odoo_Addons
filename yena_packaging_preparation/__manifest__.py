@@ -12,7 +12,6 @@
         'security/ir.model.access.csv',
         'reports/packaging_preparation_report.xml',
         'reports/packaging_bill_of_laid_report.xml',
-        'reports/packaging_preparation_report_delivery.xml',
         'reports/packaging_preparation_packing_list_report.xml',
     ],
     'installable': True,
