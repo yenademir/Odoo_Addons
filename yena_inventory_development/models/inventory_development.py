@@ -105,7 +105,8 @@ class StockMove(models.Model):
     edespatch_date=fields.Datetime(related='picking_id.edespatch_date',string="Actual Departure Date")
     airtag_url = fields.Char(string='Airtag Link', related='picking_id.batch_id.airtag_url', store=True, readonly=True)
     vehicle_type_id = fields.Many2one(string='Vehicle Type', related='picking_id.batch_id.vehicle_type_id', store=True, readonly=True)
-    
+    quantity_done = fields.Float(string="Quantity Done", store=True )
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
