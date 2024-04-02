@@ -15,7 +15,7 @@ class PackagingPreparation(models.Model):
     product_id = fields.Many2one('product.product', string='Product')
     description = fields.Text('Description')
     origin = fields.Char('Origin')
-    package_quantity = fields.Float('Quantity', compute='_compute_total_net_weight', store=True)
+    package_quantity = fields.Float('Quantity', compute='_compute_total_net_weight', store=True, readonly=False )
     unit_of_measure = fields.Many2one('uom.uom', string='Unit of Measure')
     unit_net_weight = fields.Float('Unit Net Weight')
     total_net_weight = fields.Float('Total Net Weight')
