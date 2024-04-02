@@ -1,0 +1,12 @@
+<odoo>
+    <report
+        id="packaging_bill_of_laid_report"
+        model="stock.picking.batch"
+        string="Konşimento Talimatı"
+        report_type="xlsx"
+        name="yena_packaging_bill_of_lading.report_xlsx"
+        file="yena_packaging_bill_of_lading.report_xlsx"
+        attachment_use="False"
+        print_report_name="'Konşimento Talimatı - ' + (object.transportation_code or 'No Transport Code').replace('/', '_')"
+    />
+</odoo>

@@ -1,0 +1,13 @@
+<odoo>
+    <report
+        id="packaging_preparation_delivery_report"
+        model="stock.picking.batch"
+        string="Delivery Note"
+        report_type="xlsx"
+        name="yena_packaging_delivery_note.report_xlsx"
+        file="yena_packaging_delivery_note.report_xlsx"
+        attachment_use="False"
+        print_report_name="(object.transportation_code or 'No Transport Code').replace('/', '_') + ' - Delivery Note' "
+
+    />
+</odoo>

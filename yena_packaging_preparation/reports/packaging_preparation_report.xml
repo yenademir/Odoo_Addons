@@ -1,0 +1,12 @@
+<odoo>
+    <report
+        id="packaging_preparation_report"
+        model="stock.picking.batch"
+        string="Packing List Vendor"
+        report_type="xlsx"
+        name="yena_packaging_preparation.report_xlsx"
+        file="yena_packaging_preparation.report_xlsx"
+        attachment_use="False"
+        print_report_name="(object.transportation_code or 'No Transport Code').replace('/', '_') + '-' + (object.vehicle_type_id.name or 'No Vehicle').replace('/', '_')"
+    />
+</odoo>
