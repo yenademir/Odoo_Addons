@@ -32,7 +32,13 @@ class PurchaseBlanketOrderLine(models.Model):
         ('done', 'Done'),
         ('expired', 'Expired'),
     ], string='State', related='order_id.state', store=True, readonly=True)
-
+    partner_ref = fields.Char(
+        string='Partner Reference',
+        related='order_id.partner_ref',  
+        readonly=True, 
+        store=True,  
+    )
+    
     @api.depends('invoiced_uom_qty', 'ordered_uom_qty', 'original_uom_qty', 'price_unit')
     def _compute_subtotals(self):
         for line in self:
