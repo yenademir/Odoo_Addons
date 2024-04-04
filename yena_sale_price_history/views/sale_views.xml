@@ -5,7 +5,7 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='order_line']/tree">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
                 <button
                     name="%(sale_order_line_price_history_action)d"
                     type="action"
