@@ -52,6 +52,9 @@
                 <xpath expr="//field[@name='remaining_uom_qty']" position="after">
                     <field name="state"/>
                 </xpath>
+                <xpath expr="//field[@name='order_id']" position="after">
+                    <field name="partner_ref"/>
+                </xpath>
             </field>
         </record>
         <record id="view_purchase_blanket_order_pivot" model="ir.ui.view">
