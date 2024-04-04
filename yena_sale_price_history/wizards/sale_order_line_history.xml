@@ -50,6 +50,7 @@
                             <field name="blanket_order_line" />
                             <field name="product_qty" />
                             <field name="price_unit" />
+                            <field name="quota_cancel_reason_id"/>
                         </tree>
                     </field>
                 </group>
