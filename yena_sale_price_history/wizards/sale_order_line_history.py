@@ -110,6 +110,8 @@ class SaleOrderLinePriceHistoryLine(models.TransientModel):
     product_qty = fields.Float(related="sale_order_line_id.product_qty")
     product_uom = fields.Many2one(related="sale_order_line_id.product_uom")
     price_unit = fields.Float(related="sale_order_line_id.price_unit")
+    quota_cancel_reason_id = fields.Many2one(related="sale_order_line_id.order_id.quota_cancel_reason_id")
+    
     def _prepare_sale_order_line_vals(self):
         self.ensure_one()
         return {"price_unit": self.price_unit}
