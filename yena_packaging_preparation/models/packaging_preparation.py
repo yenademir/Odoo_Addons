@@ -209,10 +209,10 @@ class PackagingPreparationReportXlsx(models.AbstractModel):
             if despatch_date:
                 despatch_date = datetime.strftime(despatch_date, '%d-%m-%Y')
             project_nos = set(project.name for project in batch.project_ids)
-            project_text = 'Project No(s) # ' + ', '.join(project_nos)       
+            project_text = 'Project No # ' + ', '.join(project_nos)       
             transportation_code = batch.transportation_code if batch.transportation_code else ''
             shipment_info_text = f'Shipment Number: {transportation_code} / Shipment Date: {despatch_date}'
-            po_text = 'PO(s) # ' + ', '.join(customer_references)
+            po_text = 'PO Numbers # ' + ', '.join(customer_references)
 
             sheet.merge_range('A1:C9', 'PACKING LIST', merge_format14)
             sheet.merge_range('A10:D10', po_text, merge_format14left)
