@@ -297,7 +297,9 @@ class PackagingPreparationReportXlsx(models.AbstractModel):
         })
 
         for batch in batches:
-            sheet = workbook.add_worksheet('ALL')    
+            sheet = workbook.add_worksheet('ALL')
+            sheet.fit_to_pages(1, 1)
+            sheet.set_landscape()
             row = 12 
             row_line=row 
             self.add_headers(sheet, batches, merge_format14, merge_format14left, merge_format10, merge_format18,row_line,header_format)
@@ -392,7 +394,8 @@ class PackagingPreparationReportXlsx(models.AbstractModel):
         for pallet_no, pallet_info in pallet_data.items():
             sheet_name = '{}'.format(pallet_no)
             sheet = workbook.add_worksheet(sheet_name[:31])
-            
+            sheet.fit_to_pages(1, 1)
+            sheet.set_landscape()
             row_line = 12
             self.add_headers(sheet, batches, merge_format14, merge_format14left, merge_format10, merge_format18,row_line,header_format)
            
