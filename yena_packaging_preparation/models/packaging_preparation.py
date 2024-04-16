@@ -9,6 +9,7 @@ import math
 class PackagingPreparation(models.Model):
     _name = 'packaging.preparation'
     _description = 'Packaging Preparation'
+    _order = 'pallet_no'
 
     name = fields.Char('Name')
     batch_id = fields.Many2one('stock.picking.batch', string='Batch Reference')
@@ -209,10 +210,10 @@ class PackagingPreparationReportXlsx(models.AbstractModel):
             if despatch_date:
                 despatch_date = datetime.strftime(despatch_date, '%d-%m-%Y')
             project_nos = set(project.name for project in batch.project_ids)
-            project_text = 'Project No # ' + ', '.join(project_nos)       
+            project_text = 'Project No(s) # ' + ', '.join(project_nos)       
             transportation_code = batch.transportation_code if batch.transportation_code else ''
             shipment_info_text = f'Shipment Number: {transportation_code} / Shipment Date: {despatch_date}'
-            po_text = 'PO Numbers # ' + ', '.join(customer_references)
+            po_text = 'PO(s) # ' + ', '.join(customer_references)
 
             sheet.merge_range('A1:C9', 'PACKING LIST', merge_format14)
             sheet.merge_range('A10:D10', po_text, merge_format14left)
@@ -550,7 +551,7 @@ class PackagingDeliveryReportXlsx(models.AbstractModel):
                 pallet_unique_no = pallet_unique_no_dict.get(prep.id, 1)
 
                 if blanket_order_line_exists:
-                    blanket_order_line = prep.purchase_order_line_id.blanket_order_line.partner_ref if prep.purchase_order_line_id.blanket_order_line else ""
+                    blanket_order_line = prep.purchase_order_line_id.blanket_order_line.partnet_ref if prep.purchase_order_line_id.blanket_order_line else ""
                     sheet.write(row, 2, prep.customer_reference or '', centered_format)
                     sheet.write(row, 3, blanket_order_line or '', centered_format)
                     sheet.write(row, 4, prep.product_id.display_name or '', centered_format)
@@ -806,7 +807,7 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
         row += 1
         
         for batch in batches:
-            
+           
             product_descriptions = set()
             total_net_weight = 0.0
             total_gross_weight = 0.0
@@ -816,7 +817,7 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
             final_addresses = {}
             pallet_count_by_customer_and_volume = {}
             unique_pallet_nos=set()
-
+ 
             for line in batch.packaging_preparation_ids:
                 total_net_weight += line.total_net_weight
                 total_gross_weight += line.total_gross_weight
@@ -824,20 +825,19 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
                 formatted_total_gross_weight=f"{total_gross_weight:.2f}"
                 volume = line.width * line.length * line.height
                 pallet_no = line.pallet_no
-                
+               
                 if pallet_no in volume_by_pallet:
                     if volume > volume_by_pallet[pallet_no]['volume']:
                         volume_by_pallet[pallet_no] = {'volume': volume, 'width': line.width, 'length': line.length, 'height': line.height}
                 else:
                     volume_by_pallet[pallet_no] = {'volume': volume, 'width': line.width, 'length': line.length, 'height': line.height}
-                
                 product_stackable = line.stackable
                 product_description = line.product_id.description_sale
-
+ 
                 if product_description:
                     cleaned_description=clean_html(product_description)
                     product_descriptions.add(cleaned_description)
-            
+           
             address_lines = []
             address_headers=[]
             for index,receiveFrom in enumerate(batch.vendor_ids,start=1):
@@ -847,7 +847,7 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
                                 f"{receiveFrom.zip}, {receiveFrom.country_id.name if receiveFrom.country_id else ''}"
                 address_headers.append(f"Alım Adresi {index}")
                 address_lines.append(f"{vendor_name}, {receive_address}")
-
+ 
             for index,customer in enumerate(batch.customer_ids,start=1):
                 customer_name = customer.name
                 delivery_address = f"{customer.street}, {customer.city}, " \
@@ -856,17 +856,17 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
                 final_address = f"Teslim Adresi {index}"
                 final_addresses[customer.name] = final_address
                 address_headers.append(final_address)
-                
+               
                 address_lines.append(f"{customer_name}, {delivery_address}")
-
+ 
                 volume_by_pallet_customer_specific = {}
                 stackable_by_pallet_customer_specific = {}
-
+ 
                 for line in [l for l in batch.packaging_preparation_ids if l.product_id.customer.name == customer_name]:
                     volume = line.width * line.length * line.height
                     pallet_no = line.pallet_no
                     unique_pallet_nos.add(pallet_no)
-
+ 
                     if pallet_no in volume_by_pallet_customer_specific:
                         if volume > volume_by_pallet_customer_specific[pallet_no]['volume']:
                             volume_by_pallet_customer_specific[pallet_no] = {'volume': volume, 'width': line.width, 'length': line.length, 'height': line.height}
@@ -874,30 +874,27 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
                     else:
                         stackable_by_pallet_customer_specific[pallet_no] = line.stackable
                         volume_by_pallet_customer_specific[pallet_no] = {'volume': volume, 'width': line.width, 'length': line.length, 'height': line.height}
-
+ 
                     if customer_name not in pallet_count_by_customer_and_volume:
                         pallet_count_by_customer_and_volume[customer_name] = {}
-                    if volume not in pallet_count_by_customer_and_volume[customer_name]:
-                        pallet_count_by_customer_and_volume[customer_name][volume] = 1
+                       
+                    if (pallet_no, volume) not in pallet_count_by_customer_and_volume[customer_name]:
+                        pallet_count_by_customer_and_volume[customer_name][(pallet_no, volume)] = 1
                     else:
-                        pallet_count_by_customer_and_volume[customer_name][volume] += 1
-                
-                for customer_name, volumes in pallet_count_by_customer_and_volume.items():
-                    for volume, count in volumes.items():
+                        pallet_count_by_customer_and_volume[customer_name][(pallet_no, volume)] += 1
+                       
+                for customer_name, pallet_infos in pallet_count_by_customer_and_volume.items():
+                    for (pallet_no, expected_volume), count in pallet_infos.items():
                         final_address = final_addresses.get(customer_name, '')
                         if not final_address:
-                            continue 
-                        for pallet_no, data in volume_by_pallet_customer_specific.items():
-                            product_width = data['width']
-                            product_length = data['length']
-                            product_height = data['height']
-                            calculated_volume = product_width * product_length * product_height
-                            
-                            if calculated_volume == volume:
-                                volume_text = f"{product_width}x{product_length}x{product_height}mm"
+                            continue
+                        if pallet_no in volume_by_pallet_customer_specific:
+                            data = volume_by_pallet_customer_specific[pallet_no]
+                            calculated_volume = data['width'] * data['length'] * data['height']
+                            if calculated_volume == expected_volume:
+                                volume_text = f"{data['width']}x{data['length']}x{data['height']}mm"
                                 stackable_text = "İstiflenebilir" if stackable_by_pallet_customer_specific[pallet_no] else "İstiflenemez"
-                                customer_pallet_counts.append((final_address, f"{count} Kap, {volume_text}, {stackable_text}"))  
-                                break             
+                                customer_pallet_counts.append((final_address, f"{count} Kap, {volume_text}, {stackable_text}"))
                     
             date_now = datetime.today().strftime('%d-%m-%Y')
             vehicle_type = batch.vehicle_type_id.name if batch.vehicle_type_id.name else ".............."
