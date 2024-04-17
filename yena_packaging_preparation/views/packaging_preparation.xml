@@ -57,7 +57,7 @@
                 <field name="height" optional="show"/>
                 <field name="stackable" optional="show"/>
                 <field name="gross_weight" optional="show"/>
-                <field name="type" string="Package Type(Box, Pallet, etc.)" optional="show"/>
+                <field name="type" string="Package Type(Box, Pallet, etc.)" optional="hide"/>
             </xpath>
         </field>
     </record>
