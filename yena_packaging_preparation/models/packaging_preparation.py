@@ -4,12 +4,10 @@ from io import BytesIO
 from datetime import datetime
 from collections import defaultdict
 import re
-import math
 
 class PackagingPreparation(models.Model):
     _name = 'packaging.preparation'
     _description = 'Packaging Preparation'
-    _order = 'pallet_no'
 
     name = fields.Char('Name')
     batch_id = fields.Many2one('stock.picking.batch', string='Batch Reference')
@@ -77,6 +75,7 @@ class StockPickingBatch(models.Model):
                             'unit_net_weight': line.product_id.weight, 
                             'total_net_weight': line.product_id.weight * line.qty_done,
                             'package_no': 1,
+                            'gross_weight': line.gross_weight,
                             'width': line.width,
                             'length': line.length,
                             'height': line.height,
@@ -102,6 +101,7 @@ class StockPickingBatch(models.Model):
                             'unit_net_weight': line.product_id.weight, 
                             'total_net_weight': line.product_id.weight * line.package_quantity,
                             'package_no': 1,
+                            'gross_weight': line.gross_weight,
                             'width': line.width,
                             'length': line.length,
                             'height': line.height,
@@ -126,6 +126,7 @@ class StockPickingBatch(models.Model):
                             'unit_net_weight': line.product_id.weight, 
                             'total_net_weight': line.product_id.weight * line.package_quantity,
                             'package_no': 1,
+                            'gross_weight': line.gross_weight,
                             'width': line.width,
                             'length': line.length,
                             'height': line.height,
@@ -179,6 +180,11 @@ class StockMoveLine(models.Model):
         store=True,
         readonly=True
     )
+    gross_weight = fields.Float(
+        string='Tare Weight',
+        related='product_id.packaging_ids.gross_weight',
+        store=True,
+    )
 
 class PackagingType(models.Model):
     _name = 'type.packaging'
@@ -193,7 +199,7 @@ class ProductPackaging(models.Model):
     width = fields.Integer('Width')
     height = fields.Integer('Height')
     stackable = fields.Boolean('Stackable')
-    gross_weight = fields.Float('Gross Weight')
+    gross_weight = fields.Float('Tare Weight')
     type = fields.Many2one('type.packaging', string='Type')
 
 class PackagingPreparationReportXlsx(models.AbstractModel):
