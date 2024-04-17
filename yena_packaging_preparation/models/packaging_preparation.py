@@ -4,10 +4,12 @@ from io import BytesIO
 from datetime import datetime
 from collections import defaultdict
 import re
+import math
 
 class PackagingPreparation(models.Model):
     _name = 'packaging.preparation'
     _description = 'Packaging Preparation'
+    _order = 'pallet_no'
 
     name = fields.Char('Name')
     batch_id = fields.Many2one('stock.picking.batch', string='Batch Reference')
