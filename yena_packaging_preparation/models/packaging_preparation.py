@@ -150,7 +150,7 @@ class StockMoveLine(models.Model):
         string='Package Quantity',
         related='product_id.packaging_ids.qty',
         store=True,
-        
+        readonly=False
     )
     length = fields.Integer(
         string='Length',
