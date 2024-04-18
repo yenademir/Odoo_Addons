@@ -657,7 +657,7 @@ class PackagingCustomsReportXlsx(models.AbstractModel):
         
         for col, header in enumerate(headers):
             sheet.write(row, start_col -1 + col, header, centered_format)
-        url = 'https://yenastorage.blob.core.windows.net/odoo-container/YENA_logo.png'
+        url = 'https://yenastorage.blob.core.windows.net/steelify/redlogo.png'
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -810,7 +810,7 @@ class PackagingBillOfLadingReportXlsx(models.AbstractModel):
             sheet.set_column(start_col -1 + i, start_col -1 + i, width)       
         row = 16
         
-        url = 'https://yenastorage.blob.core.windows.net/odoo-container/YENA_logo.png'
+        url = 'https://yenastorage.blob.core.windows.net/steelify/redlogo.png'
         response = requests.get(url)
         if response.status_code == 200:
             image_data = BytesIO(response.content)
