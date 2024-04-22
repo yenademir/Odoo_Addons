@@ -145,16 +145,6 @@
             </xpath>
         </field>
     </record>
-    <record id="view_picking_move_tree_inherited_custom" model="ir.ui.view">
-        <field name="name">stock.picking.batch.view.picking.move.tree.inherited.custom</field>
-        <field name="model">stock_picking_batch</field>
-        <field name="inherit_id" ref="stock_picking_batch.view_picking_move_tree_inherited"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='picking_id']" position="after">
-                <field name="related_partner" optional="show"/>
-            </xpath>
-        </field>
-    </record>
     <record id="view_picking_form_inherited_custom" model="ir.ui.view">
         <field name="name">stock.picking.batch.view.picking.form.inherited.custom</field>
         <field name="model">stock.picking</field>
