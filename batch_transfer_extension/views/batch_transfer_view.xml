@@ -18,7 +18,12 @@
             </xpath>
             <field name="user_id" position="after">
                 <field name="project_ids" widget="many2many_tags" options="{'no_create': True}" />
-                <field name="transportation_code" required="1"/>
+                <label for="transportation_code"/>
+                    <div class="d-flex">
+                        <field name="transportation_code"/>
+                        <span class="oe_inline o_form_label mr-1 ml-2 oe_edit_only"> </span>
+                        <button name="set_transportation_code" string="Apply" type="object" class="oe_inline"/>
+                    </div>                
                 <field name="edespatch_delivery_type" required="1"
                attrs="{'readonly': [('state', '=', 'done')]}" />
                 <field name="arrival_date" required="1"/>
