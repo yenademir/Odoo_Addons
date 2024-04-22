@@ -118,7 +118,14 @@ class StockPickingBatch(models.Model):
         inverse='_inverse_driver_ids',
         store=True, 
     )
-
+    
+    def set_transportation_code(self):
+        for batch in self:
+            transportation_code = batch.transportation_code
+            for picking in batch.picking_ids:
+                picking.transportation_code = transportation_code
+                picking.message_post(body="Transportation code updated to {}".format(transportation_code))
+                
     def action_batch_despatch_send(self):
         self.ensure_one()
         for picking in self.picking_ids:
