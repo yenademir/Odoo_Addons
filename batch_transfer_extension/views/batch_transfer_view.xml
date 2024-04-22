@@ -22,7 +22,7 @@
                     <div class="d-flex">
                         <field name="transportation_code"/>
                         <span class="oe_inline o_form_label mr-1 ml-2 oe_edit_only"> </span>
-                        <button name="set_transportation_code" string="Apply" type="object" class="oe_inline"/>
+                        <button name="set_transportation_code" string="Apply" type="object" class="oe_highlight"/>
                     </div>                
                 <field name="edespatch_delivery_type" required="1"
                attrs="{'readonly': [('state', '=', 'done')]}" />
