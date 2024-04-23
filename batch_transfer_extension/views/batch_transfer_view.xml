@@ -112,14 +112,6 @@
         <field name="model">stock.move.line</field>
         <field name="inherit_id" ref="stock_picking_batch.view_move_line_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='picking_id']" position="after">
-                <field name="project_ids" widget="many2many_tags"/>
-                <field name="lot_name" groups="stock.group_production_lot" attrs="{'column_invisible': [('parent.show_lots_text', '=', False)], 'readonly': [('tracking', 'not in', ['lot', 'serial'])]}" optional="hide"/>
-                <field name="location_id" optional="show"/>
-                <field name="location_dest_id" optional="show"/>
-                <field name="package_id" groups="stock.group_tracking_lot" optional="hide"/>
-                <field name="result_package_id" groups="stock.group_tracking_lot" optional="hide"/>
-            </xpath>
             <xpath expr="//field[@name='lot_name']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -134,6 +126,14 @@
             </xpath>
             <xpath expr="//field[@name='result_package_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_id']" position="after">
+                <field name="project_ids" widget="many2many_tags"/>
+                <field name="lot_name" groups="stock.group_production_lot" attrs="{'column_invisible': [('parent.show_lots_text', '=', False)], 'readonly': [('tracking', 'not in', ['lot', 'serial'])]}" optional="hide"/>
+                <field name="location_id" optional="show"/>
+                <field name="location_dest_id" optional="show"/>
+                <field name="package_id" groups="stock.group_tracking_lot" optional="hide"/>
+                <field name="result_package_id" groups="stock.group_tracking_lot" optional="hide"/>
             </xpath>
         </field>
     </record>
