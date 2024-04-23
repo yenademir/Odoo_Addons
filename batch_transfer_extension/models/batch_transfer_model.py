@@ -353,3 +353,9 @@ class Picking(models.Model):
         store=True,
         readonly=False
     )
+
+    def _create_backorder(self):
+        backorder_picking = super()._create_backorder()
+        if backorder_picking:
+            backorder_picking.transportation_code = '-'
+        return backorder_picking
