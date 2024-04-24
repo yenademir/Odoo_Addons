@@ -153,6 +153,13 @@
                 <filter string="Last Week to Future Batch Dates"
                         name="filter_last_week_to_future_batch"
                         domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Transportation Code" name="transportation_code" domain="[]" context="{'group_by': 'transportation_code'}"/>
+                    <filter string="Situation" name="situation" domain="[]" context="{'group_by': 'situation'}"/>
+                    <filter string="Batch" name="name" domain="[]" context="{'group_by': 'name'}"/>
+                    <filter string="State" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Operation Type" name="picking_type_id" domain="[]" context="{'group_by': 'picking_type_id'}"/>
+                </group>
             </xpath>
         </field>
     </record>
