@@ -111,7 +111,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    line_status = fields.Char(string="Line Status", compute="_compute_line_status")
+    line_status = fields.Char(string="Line Status")
     delivery_date = fields.Date(string="Required Delivery Date")
     tags = fields.Many2many(related='order_id.tags', string="Tags", readonly=True)
     status = fields.Char(string="Status")
