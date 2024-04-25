@@ -30,9 +30,6 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='picking_type_id']" position="after">
-                <field name="origin"/>
-            </xpath>
             <xpath expr="//field[@name='currency_id']" position="before">
                 <field name="sequence_code"  attrs="{'invisible': 1}"/>
                 <field name="arrival_date" attrs="{'invisible': [('sequence_code', '=', 'IN')]}"/>
