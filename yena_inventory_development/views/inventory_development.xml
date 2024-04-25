@@ -351,11 +351,15 @@
                 <group expand="0" string="Group By">
                     <filter string="Transportation Code" name="group_by_transportation_code" context="{'group_by': 'transportation_code'}"/>
                     <filter string="Operation Type" name="group_by_picking_type_id" context="{'group_by': 'picking_type_id'}"/>
+                    <filter string="Related Partner" name="related_partner" context="{'group_by': 'related_partner'}"/>
                 </group>
                 <separator/>
                 <filter string="Last Week to Future"
                         name="filter_last_week_to_future_transfer"
                         domain="[('arrival_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Partially Available" 
+                    name="filter_partially_available" 
+                    domain="[('state', '=', 'partially_available')]"/>
             </xpath>
         </field>
     </record>
