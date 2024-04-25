@@ -45,6 +45,9 @@
             <xpath expr="//field[@name='edespatch_date']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//label[@for='scheduled_date']" position="before">
                 <field name="edespatch_date" string="Despatch Date" />
             </xpath>
@@ -245,6 +248,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='extra']//field[@name='company_id']" position="after">
                 <field name="document_number"/>
+                <field name="origin"/>
                 <field name="sale_id" attrs="{'invisible': [('sequence_code', '!=', 'OUT')]}"/>
                 <field name="purchase_id" attrs="{'invisible': [('sequence_code', '!=', 'IN')]}"/>
             </xpath>
