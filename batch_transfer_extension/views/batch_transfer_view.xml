@@ -130,6 +130,9 @@
             <xpath expr="//field[@name='company_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//field[@name='picking_id']" position="after">
                 <field name="project_ids" widget="many2many_tags"/>
                 <field name="lot_name" groups="stock.group_production_lot" attrs="{'column_invisible': [('parent.show_lots_text', '=', False)], 'readonly': [('tracking', 'not in', ['lot', 'serial'])]}" optional="hide"/>
