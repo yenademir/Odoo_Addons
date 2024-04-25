@@ -410,7 +410,6 @@
             <group expand="0" string="Group By">
                <filter string="Product" name="product_id" context="{'group_by': 'product_id'}"/>
                <filter string="Vendor Type" name="partner_id" context="{'group_by': 'partner_id'}"/>
-               <filter string="O.A. Number" name="partner_ref" context="{'group_by': 'partner_ref'}"/>
             </group>
         </field>
     </record>
