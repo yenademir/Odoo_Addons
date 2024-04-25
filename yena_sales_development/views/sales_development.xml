@@ -189,4 +189,17 @@
             </xpath>
         </field>
     </record>
+    <record id="view_sale_order_search_inherit" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <search string="Sales Orders">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="project_sales"/>
+                <field name="customer_reference"/>
+            </xpath>
+            </search>
+        </field>
+    </record>
 </odoo>
