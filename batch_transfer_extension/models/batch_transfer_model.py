@@ -353,7 +353,15 @@ class Picking(models.Model):
         store=True,
         readonly=False
     )
-
+    
+    def write(self, vals):
+        res = super().write(vals)
+        if 'batch_id' in vals:
+            for record in self:
+                if record.batch_id:
+                    record.situation = record.batch_id.situation
+        return res
+        
     def _create_backorder(self):
         backorder_picking = super()._create_backorder()
         if backorder_picking:
