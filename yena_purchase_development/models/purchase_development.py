@@ -37,7 +37,12 @@ class PurchaseOrder(models.Model):
                     'project_transfer': [(6, 0, order.project_purchase.ids)],
                 })
         return res
-
+        
+    def button_cancel(self):
+        res = super(PurchaseOrder, self).button_cancel()
+        for order in self:
+            order.order_line.write({'production_status': False})
+        return res
 
     def tax_confirm_button(self):
         for order in self:
