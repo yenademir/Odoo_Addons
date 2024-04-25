@@ -70,6 +70,15 @@
                 </pivot>
             </field>
         </record>
-
+        <record id="purchase_blanket_order_line_search_inherit" model="ir.ui.view">
+            <field name="name">purchase.blanket.order.line.search.inherit</field>
+            <field name="model">purchase.blanket.order.line</field>
+            <field name="inherit_id" ref="purchase_blanket_order.purchase_blanket_order_line_search"/>
+            <field name="arch" type="xml">
+                <group expand="0" string="Group By">
+                   <filter string="O.A. Number" name="partner_ref" context="{'group_by': 'partner_ref'}"/>
+                </group>
+            </field>
+        </record>
     </data>
 </odoo>
