@@ -54,7 +54,7 @@
                 </xpath>
                 <xpath expr="//field[@name='order_id']" position="after">
                     <field name="partner_ref"/>
-                    <field nmae="partner_id"/>
+                    <field name="partner_id"/>
                 </xpath>
             </field>
         </record>
