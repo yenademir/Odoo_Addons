@@ -70,7 +70,6 @@ class SaleOrder(models.Model):
 
             order.invoice_report = invoice_status
 
-
     @api.depends('order_line.product_uom_qty', 'order_line.qty_invoiced')
     def _compute_invoice_report(self):
         for order in self:
@@ -132,8 +131,7 @@ class SaleOrder(models.Model):
             else:
                 for line in order.order_line:
                     line.tax_id = [(6, 0, [order.tax_selection.id])]
-
-
+                    
     def _compute_date_done_list(self):
         for order in self:
             pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
@@ -160,14 +158,16 @@ class SaleOrder(models.Model):
 
         record = super().create(vals)
 
-        if not record.customer_reference:
-            return record
+        return record
+        
+    def create_project_button(self):
+        if not self.customer_reference:
+            return
 
-        # satış oluşturulduktan sonra bir proje oluştur.
         project_vals = {
-            'name': record.name + '-' + record.customer_reference,
-            'partner_id': record.partner_id.id,
-            'company_id': 2,
+            'name': self.name + '-' + self.customer_reference,
+            'partner_id': self.partner_id.id,
+            'company_id': 2,  # `id` değerini kullanın
         }
         project = self.env['project.project'].create(project_vals)
 
@@ -175,13 +175,11 @@ class SaleOrder(models.Model):
         analytic_account_id = project.analytic_account_id.id if project.analytic_account_id else None
 
         # Son olarak, satışa analitik hesabı ve proje ID'yi ekleyin.
-        record.write({
+        self.write({
             'analytic_account_id': analytic_account_id,
             'project_sales': project.id,
-            'company_id': 2,
+            'company_id':2,
         })
-
-        return record
 
     def action_confirm(self):
         # C-Delivery Date kontrolü
@@ -292,8 +290,6 @@ class SaleOrder(models.Model):
         _inherit = 'sale.order.line'
 
         product_delivery_date = fields.Date(string="Product Delivery Date")
-
-
 
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
