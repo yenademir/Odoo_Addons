@@ -17,10 +17,18 @@
                         name="delete_packaging_preparations"
                         attrs="{'invisible': [('packaging_preparation_ids', '=', [])]}"
                         confirm="Paket Listesini silmek istediğine emin misin?"/>
+                <button string="Lock"
+                        type="object"
+                        name="action_lock_packaging"
+                        class="oe_highlight"/>
+                <button string="Unlock"
+                        type="object"
+                        name="action_unlock_packaging"
+                        class="oe_highlight"/>
             </header>
             <xpath expr="//notebook" position="inside">
                 <page string="Packaging Preparation">
-                    <field name="packaging_preparation_ids">
+                    <field name="packaging_preparation_ids" attrs="{'readonly': [('is_locked', '=', True)]}">
                         <tree editable="bottom">
                             <field name="customer_reference"/>
                             <field name="product_id"/>
