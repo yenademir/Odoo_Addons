@@ -55,13 +55,20 @@ class PackagingPreparation(models.Model):
 
 class StockPickingBatch(models.Model):
     _inherit = 'stock.picking.batch'
-
+    
     packaging_preparation_ids = fields.One2many(
         comodel_name='packaging.preparation',
         inverse_name='batch_id',
         string='Packaging Preparations'
     )
+    is_locked = fields.Boolean(string="Is Locked", default=False)
 
+    def action_lock_packaging(self):
+        self.write({'is_locked': True})
+
+    def action_unlock_packaging(self):
+        self.write({'is_locked': False})
+        
     def delete_packaging_preparations(self):
         for batch in self:
             preparations_to_delete = batch.packaging_preparation_ids
