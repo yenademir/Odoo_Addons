@@ -265,7 +265,7 @@ class StockPickingBatch(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'purchase.order',
             'domain': [('id', 'in', purchase_ids)],
-            'context': {'create': False},
+            'context': {'create': True},
         }
 
     def _compute_purchase_count(self):
