@@ -31,6 +31,18 @@ class PackagingPreparation(models.Model):
     pallet_no = fields.Integer('Pallet Number')
     purchase_order_line_id = fields.Many2one('purchase.order.line', string="Purchase Order Line")
 
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id:
+            self.description = self.product_id.description_sale
+            self.unit_of_measure = self.product_id.uom_id
+            self.unit_net_weight = self.product_id.weight
+            self.gross_weight = self.product_id.packaging_ids.gross_weight
+            self.width = self.product_id.packaging_ids.width
+            self.length = self.product_id.packaging_ids.length
+            self.height = self.product_id.packaging_ids.height
+            self.stackable = self.product_id.packaging_ids.stackable
+            
     @api.depends('gross_weight', 'total_net_weight')
     def _compute_total_gross_weight(self):
         for record in self:
