@@ -28,6 +28,7 @@
             </header>
             <xpath expr="//notebook" position="inside">
                 <page string="Packaging Preparation">
+                    <field name="is_locked" invisible="1">
                     <field name="packaging_preparation_ids" attrs="{'readonly': [('is_locked', '=', True)]}">
                         <tree editable="bottom">
                             <field name="customer_reference"/>
