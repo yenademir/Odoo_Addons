@@ -20,10 +20,12 @@
                 <button string="Lock"
                         type="object"
                         name="action_lock_packaging"
+                        attrs="{'invisible': [('is_locked', '=', True)]}"
                         class="oe_highlight"/>
                 <button string="Unlock"
                         type="object"
                         name="action_unlock_packaging"
+                        attrs="{'invisible': [('is_locked', '=', False)]}"
                         class="oe_highlight"/>
             </header>
             <xpath expr="//notebook" position="inside">
