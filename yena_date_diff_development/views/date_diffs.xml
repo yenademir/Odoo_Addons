@@ -29,7 +29,7 @@
         <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="transit_time"/>
+                <field name="transit_time" optional="show"/>
             </xpath>
         </field>
     </record>
@@ -41,7 +41,7 @@
         <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_order']" position="after">
-                <field name="delivery_date_diff"/>
+                <field name="delivery_date_diff" optional="show"/>
                 <field name="quotation_time_diff" optional="show"/>
             </xpath>
             <xpath expr="//field[@name='date_order']" position="attributes">
@@ -56,7 +56,7 @@
         <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='activity_ids']" position="after">
-                <field name="delivery_date_diff"/>
+                <field name="delivery_date_diff" optional="show"/>
                 <field name="quotation_time_diff" optional="show"/>
             </xpath>
         </field>
