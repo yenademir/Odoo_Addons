@@ -48,26 +48,22 @@ class SaleOrder(models.Model):
             invoice_status = "nothinginvoiced"
             partially_invoiced = False
             fully_invoiced = True
-
-            for line in order.order_line:
+            
+            for line in self.order_line:
                 if line.qty_invoiced > 0:
                     if line.qty_invoiced < line.product_uom_qty:
                         partially_invoiced = True
                         fully_invoiced = False
-                        break  # En az bir satır kısmen faturalandırıldıysa döngüden çık
-                    else:
-                        # Bu satır tamamen faturalandırıldı, döngü devam eder
-                        invoice_status = "fullyinvoiced"
                 else:
-                    fully_invoiced = False  # Eğer qty_invoiced 0 ise tamamen faturalandırılmamıştır
-
+                    fully_invoiced = False
+ 
             if partially_invoiced:
                 invoice_status = "partiallyinvoice"
             elif fully_invoiced:
                 invoice_status = "fullyinvoiced"
             else:
                 invoice_status = "nothinginvoiced"
-
+ 
             order.invoice_report = invoice_status
 
     @api.depends('order_line.product_uom_qty', 'order_line.qty_invoiced')
