@@ -8,7 +8,8 @@
     'depends': ['stock', 'project', 'purchase', 'contacts', 'l10n_tr_stock_edespatch'],
     'data': [
         'views/batch_transfer_view.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'date/email_template.xml'
     ],
     'installable': True,
     'auto_install': False,
