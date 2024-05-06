@@ -9,7 +9,7 @@
     'data': [
         'views/batch_transfer_view.xml',
         'security/ir.model.access.csv',
-        'date/email_template.xml'
+        'data/email_template.xml'
     ],
     'installable': True,
     'auto_install': False,
