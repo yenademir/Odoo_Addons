@@ -30,6 +30,9 @@ class DocumentUploadWizard(models.Model):
     product_id = fields.Many2one('product.product', string='Pose Nr.')
     notes = fields.Html(string="Notes")
     
+    line_ids = fields.One2many('document.upload.wizard.line', 'wizard_id', string='Lines')
+    all_lot_numbers_filled = fields.Boolean(string='All Lot Numbers Filled', compute='_compute_all_lot_numbers_filled')
+
     def write(self, vals):
         result = super(DocumentUploadWizard, self).write(vals)
 
@@ -41,16 +44,39 @@ class DocumentUploadWizard(models.Model):
                 # Diğer bağlı one2many alanları için de benzer işlem yapılabilir
 
         return result
+   
+    @api.depends('line_ids.lot_number')
+    def _compute_all_lot_numbers_filled(self):
+        for record in self:
+            record.all_lot_numbers_filled = all(line.lot_number for line in record.line_ids)
+
+    
+
+    def button_generate_lot_sequence(self):
+        self.ensure_one()
+        
+        lines = self.certificate_line_ids
+        for line in lines:
+            line.generate_lot_sequence()
+        return {
+            'name': 'Document Upload Wizard',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'document.upload.wizard',
+            'target': 'new',
+            'res_id': self.id,
+        }
     
 class DocumentUploadWizardLine(models.Model):
     _name = 'document.upload.wizard.line'
     _description = 'Document Upload Wizard Line'
 
+
     wizard_id = fields.Many2one('document.upload.wizard', string='Wizard')
     required_document = fields.Char(string='Required Document')
     uploaded_document = fields.Char(string='Doc.')
     dimension = fields.Char(string="Dimension")
-    is_uploaded = fields.Boolean(string='Yüklemeden Devam Et')
+    is_uploaded = fields.Boolean(string='N/A')
     upload_document = fields.Binary(string='Upload Document')
     lot_number = fields.Char(string="1.Lot Nr")
     project_number = fields.Many2one('project.project', string="Project Number")
@@ -82,6 +108,14 @@ class DocumentUploadWizardLine(models.Model):
     material_certificate_id = fields.Many2one(
         'material.certificate', string='Material Certificate'
     )
+    
+    def generate_lot_sequence(self):
+        sequence_code = 'document.upload.wizard.line.lot.number'
+        for record in self:
+            if not record.lot_number:
+                sequence_number = self.env['ir.sequence'].next_by_code(sequence_code)
+                record.lot_number = sequence_number
+ 
         
     @api.model_create_multi
     def create(self, vals_list):
@@ -168,7 +202,7 @@ class DocumentUploadWizardMeasurementReport(models.Model):
             files = {
                 'quality_documents': (file_name, base64.b64decode(file_data), 'application/octet-stream')
             }
-            data = {'purchase': self.wizard_id.purchase_name.name}
+            data = {'purchase': self.wizard_id.purchase_name}
 
             response = requests.post(api_url, files=files, data=data)
             if response.status_code == 201:
@@ -226,7 +260,7 @@ class DocumentUploadWizardGalvanize(models.Model):
             files = {
                 'quality_documents': (file_name, base64.b64decode(file_data), 'application/octet-stream')
             }
-            data = {'purchase': self.wizard_id.purchase_name.name}
+            data = {'purchase': self.wizard_id.purchase_name}
 
             response = requests.post(api_url, files=files, data=data)
             if response.status_code == 201:
@@ -240,7 +274,7 @@ class DocumentUploadWizardGalvanize(models.Model):
                 return True  # Başarı durumunu belirt
             return False  # Başarısızlık durumunu belirt
 
-class DocumentUploadWizardPackaging(models.Model):
+class DocumentUploadWizardGalvanize(models.Model):
     _name = 'document.upload.wizard.packaging'
     _description = 'Document Upload Wizard Packaging'
 
@@ -284,7 +318,7 @@ class DocumentUploadWizardPackaging(models.Model):
             files = {
                 'quality_documents': (file_name, base64.b64decode(file_data), 'application/octet-stream')
             }
-            data = {'purchase': self.wizard_id.purchase_name.name}
+            data = {'purchase': self.wizard_id.purchase_name}
 
             response = requests.post(api_url, files=files, data=data)
             if response.status_code == 201:
