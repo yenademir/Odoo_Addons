@@ -138,6 +138,7 @@
                 </div>
                 <field name="analytic_account_id"
                     attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}" />
+                <field name="sharepoint_url" widget="url" />
                 <field name="is_current_user" invisible="1" />
             </xpath>
             <xpath expr="//page/field[@name='order_line']/tree//field[@name='price_subtotal']"
