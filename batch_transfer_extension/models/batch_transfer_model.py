@@ -118,7 +118,29 @@ class StockPickingBatch(models.Model):
         inverse='_inverse_driver_ids',
         store=True, 
     )
+    sale_numbers = fields.Char(compute='_compute_sale_numbers', string='Sale Numbers')
+    unique_countries = fields.Char(compute='_compute_customer_countries', string='Customer Countries')
     
+    def _compute_sale_numbers(self):
+        for batch in self:
+            sale_orders = batch.picking_ids.mapped('sale_id')
+            batch.sale_numbers = ', '.join(sale_orders.mapped('name'))
+            
+    def _compute_customer_countries(self):
+        for batch in self:
+            countries = batch.customer_ids.mapped('country_id').mapped('name')
+            unique_countries = list(set(countries))
+            batch.unique_countries=', '.join(unique_countries)
+            
+    def action_done(self):
+            res = super(StockPickingBatch, self).action_done()
+            self.send_batch_transfer_email()
+            return res
+
+    def send_batch_transfer_email(self):
+        template = self.env.ref('batch_transfer_extension_test.mail_template_batch_transfer_done')   
+        template.send_mail(self.id, force_send=True)
+        
     def set_transportation_code(self):
         for batch in self:
             transportation_code = batch.transportation_code
