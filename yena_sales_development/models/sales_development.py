@@ -31,7 +31,8 @@ class SaleOrder(models.Model):
         ("partiallyinvoice", "Partially Invoiced"),
         ("nothinginvoiced", "Nothing Invoiced")
     ], string="Invoice Report", compute='_compute_invoice_report', store=True)   
-
+    sharepoint_url=fields.Char(string="Share Point URL")
+    
     def _compute_edespatch_date_list(self):
         for order in self:
             pickings = self.env['stock.picking'].search([('sale_id', '=', order.id)])
