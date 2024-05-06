@@ -13,8 +13,9 @@ class MaterialCertificate(models.Model):
     ('bracket', 'Bracket'),
     ('flat', 'Flat'),
     ('billet', 'Billet'),
-], string="Material Type")
+    ], string="Material Type")
     material_thickness = fields.Float(string="Thickness")
+    material_thicknes = fields.Float(string="Thickness")
     material_width = fields.Float(string="Width")
     material_length = fields.Float(string="Length")
     material_grade = fields.Char(string="Grade", required=True)
@@ -23,37 +24,24 @@ class MaterialCertificate(models.Model):
     material_height=fields.Float(string="Height")
     material_diameter=fields.Float(string="Diameter")
     
-    @api.depends('material_grade', 'material_thickness', 'material_width', 'material_length',
+    @api.depends('material_grade', 'material_thicknes', 'material_width', 'material_length',
                  "material_outer_diameter","material_wall","material_diameter","material_height")
     def _compute_name(self):
-        
         def sheet_name(rec):
-            params = [f"{rec.material_thickness}mm", f"{rec.material_width}mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
-
+            return f"{rec.material_thicknes}mm x {rec.material_width}mm x {rec.material_length}mm"
         def pipe_name(rec):
-            params = [f"Ø{rec.material_outer_diameter} mm", f"{rec.material_wall}mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
-
+            return f"{rec.material_outer_diameter}Ø mm x {rec.material_wall}mm x {rec.material_length}mm"
         def square_name(rec):
-            params = [f"{rec.material_width}mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
-
+            return f"{rec.material_width}mm x{rec.material_length}mm"
         def box_name(rec):
-            params = [f"{rec.material_thickness}mm", f"{rec.material_height}mm", f"{rec.material_width}mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
-
+            return f"{rec.material_thicknes}mm x {rec.material_height}mm x {rec.material_width}mm x{rec.material_length}mm"
         def bracket_name(rec):
-            params = [f"{rec.material_thickness}mm", f"{rec.material_height}mm", f"{rec.material_width}mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
-
+            return f"{rec.material_thicknes}mm x {rec.material_height}mm x {rec.material_width}mm x{rec.material_length}mm"
         def flat_name(rec):
-            params = [f"{rec.material_thickness}mm", f"{rec.material_width}mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
-
+            return f"{rec.material_thicknes}mm x {rec.material_width}mm x {rec.material_length}mm"
         def billet_name(rec):
-            params = [f"Ø{rec.material_diameter} mm", f"{rec.material_length}mm"]
-            return " x ".join(param for param in params if param)
+            return f"{rec.material_diameter}Ø mm x{rec.material_length}mm"
+        
         
         name_generator = {
         'sheet': sheet_name,
@@ -72,7 +60,6 @@ class MaterialCertificate(models.Model):
             else:
                 name += "Please enter the measurements."
             record.name = name
-    
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -134,7 +121,6 @@ class PurchaseOrderLine(models.Model):
         ('conditional_acceptance', 'Şartlı Kabul'),
         ('done', 'Tamamlandı'),
     ], string="Quality Status", compute='_compute_quality_status', store=True)
-    
 
     @api.depends('wizard_id.certificate_line_ids.uploaded_document', 'wizard_id.certificate_line_ids.is_uploaded')
     def _compute_material_certificate_status(self):
