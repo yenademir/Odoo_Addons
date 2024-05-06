@@ -5,61 +5,59 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <button name="button_generate_lot_sequence" string="Lot Numarası Ata" type="object" class="oe_highlight" attrs="{'invisible': [('all_lot_numbers_filled', '!=', False)]}"/>
-                    <field name="all_lot_numbers_filled" invisible="1" />
-
                     <group string="Material Certificate">
-
                         <field name="certificate_line_ids" nolabel="1">
                             <tree editable="bottom">
-
-                                <field name="required_document" />
-                                <field name="upload_document" widget='binary' />
-                                <field name="lot_number" />
-                                <field name="project_number" optional="hide" readonly="1" />
-                                <field name="purchase_name" optional="hide" readonly="1" />
-                                <field name="product_id" optional="hide" readonly="1" />
-                                <field name="customer_id" optional="hide" readonly="1" />
-                                <field name="supplier_id" optional="hide" readonly="1" />
-                                <field name="dimension" />
-                                <field name="manufacturer" />
-                                <field name="certificate_number" />
-                                <field name="heat_number" />
-                                <field name="standart" />
-                                <field name="is_uploaded" />
-                                <field name="uploaded_document" />
+                                <field name="required_document"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="lot_number"/>
+                                <field name="project_number" optional="hide" readonly="1"/>
+                                <field name="purchase_name" optional="hide" readonly="1"/>
+                                <field name="product_id" optional="hide" readonly="1"/>
+                                <field name="customer_id" optional="hide" readonly="1"/>
+                                <field name="supplier_id" optional="hide" readonly="1"/>
+                                <field name="dimension"/>
+                                <field name="manufacturer"/>
+                                <field name="certificate_number"/>
+                                <field name="heat_number"/>
+                                <field name="standart"/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
                             </tree>
                         </field>
                     </group>
                     <group string="Measurement Reports">
                         <field name="measurement_report_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="name" />
-                                <field name="upload_document" widget='binary' />
-                                <field name="is_uploaded" />
-                                <field name="uploaded_document" />
+                                <field name="name"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
                             </tree>
                         </field>
                     </group>
                     <group string="Galvanizing / Painting / Coating">
                         <field name="galvanize_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="name" />
-                                <field name="upload_document" widget='binary' />
-                                <field name="is_uploaded" />
-                                <field name="uploaded_document" />
+                                <field name="name"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
                             </tree>
                         </field>
                     </group>
                     <group string="Packaging">
                         <field name="packaging_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="name" />
-                                <field name="upload_document" widget='binary' />
-                                <field name="is_uploaded" />
-                                <field name="uploaded_document" />
+                                <field name="name"/>
+                                <field name="upload_document" widget='binary'/>
+                                <field name="is_uploaded"/>
+                                <field name="uploaded_document"/>
                             </tree>
                         </field>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolaber="1"/>
                     </group>
                 </sheet>
             </form>
@@ -72,19 +70,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">document.upload.wizard</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="view_document_upload_wizard_form" />
+        <field name="view_id" ref="view_document_upload_wizard_form"/>
         <field name="target">new</field>
     </record>
-    <data noupdate="1">
-    <record id="seq_document_upload_wizard_line_lot_number" model="ir.sequence">
-        <field name="name">Document Upload Wizard Line Lot Number</field>
-        <field name="code">document.upload.wizard.line.lot.number</field>
-        <field name="prefix">2024/</field>
-        <field name="padding">3</field>
-        <field name="number_increment">1</field>
-        <field name="number_next_actual">1</field>
-    </record>
-   
-</data>
-
 </odoo>
