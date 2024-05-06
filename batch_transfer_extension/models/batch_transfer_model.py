@@ -138,7 +138,7 @@ class StockPickingBatch(models.Model):
             return res
 
     def send_batch_transfer_email(self):
-        template = self.env.ref('batch_transfer_extension_test.mail_template_batch_transfer_done')   
+        template = self.env.ref('batch_transfer_extension.mail_template_batch_transfer_done')   
         template.send_mail(self.id, force_send=True)
         
     def set_transportation_code(self):
