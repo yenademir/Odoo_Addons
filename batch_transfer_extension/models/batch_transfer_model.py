@@ -131,16 +131,6 @@ class StockPickingBatch(models.Model):
             countries = batch.customer_ids.mapped('country_id').mapped('name')
             unique_countries = list(set(countries))
             batch.unique_countries=', '.join(unique_countries)
-            
-    def action_done(self):
-            res = super(StockPickingBatch, self).action_done()
-            self.send_batch_transfer_email()
-            return res
-
-    def send_batch_transfer_email(self):
-        if self.picking_type_id.id == 2:
-            template = self.env.ref('batch_transfer_extension.mail_template_batch_transfer_done')   
-            template.send_mail(self.id, force_send=True)
         
     def set_transportation_code(self):
         for batch in self:
