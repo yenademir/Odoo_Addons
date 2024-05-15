@@ -399,20 +399,7 @@
             </form>
         </field>
     </record>
-    <record id="purchase_blanket_order_line_search" model="ir.ui.view">
-        <field name="name">purchase.blanket.order.line.search</field>
-        <field name="model">purchase.blanket.order.line</field>
-        <field name="arch" type="xml">
-            <search string="Search Purchase Blanket Order Line">
-                <field name="product_id" />
-                <field name="date_schedule" />
-            </search>
-            <group expand="0" string="Group By">
-               <filter string="Product" name="product_id" context="{'group_by': 'product_id'}"/>
-               <filter string="Vendor Type" name="partner_id" context="{'group_by': 'partner_id'}"/>
-            </group>
-        </field>
-    </record>
+    
     <record
         id="act_open_purchase_blanket_order_lines_view_tree"
         model="ir.actions.act_window"
@@ -421,7 +408,6 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.blanket.order.line</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="purchase_blanket_order_line_search" />
     </record>
     <menuitem
         id="menu_purchase_blanket_order_config"
