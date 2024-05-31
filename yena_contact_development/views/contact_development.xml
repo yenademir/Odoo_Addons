@@ -214,7 +214,7 @@
 
             <xpath expr="//field[@name='contact_status']" position="after">
                 <field name="industry_id" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_vendor'), ('contact_type', '=', False)], 'required': [('contact_type', '=', 'potential_customer')]}" options="{'no_create': True}"/>
-                <field name="vendor_type" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_customer'), ('contact_type', '=', False) ], 'required': [('contact_type', '=', 'potential_vendor')]}" />
+                <field name="vendor_type" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_customer'), ('contact_type', '=', False) ], 'required': [('contact_type', '=', 'potential_vendor'), ('type', '!=', 'driver')]}"/>
                 <field name="type_of_material" attrs="{'invisible': ['|', '|', ('is_company', '=', False), ('contact_type', '=', 'potential_customer'), ('vendor_type', '!=', 'material')], 'required': [('vendor_type', '=', 'material')]}" widget="many2many_tags"/>
             </xpath>
 
