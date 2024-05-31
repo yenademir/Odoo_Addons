@@ -6,10 +6,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <field name="vat" position="after">
-                <field name="contact_type" attrs="{
-                    'invisible': [('contact_status_visibility', '=', True)],
-                    'required': [('contact_status', '=', [])]
-                }"/>
+                <field name="contact_type" attrs="{'invisible': [('contact_status_visibility', '=', True)], 'required': [('contact_status', '=', []), ('type', '!=', 'driver')]}"/>
                 <field name="contact_status" widget="many2many_tags" attrs="{'invisible': [('contact_type', '!=', False)]}"/>
                 <field name="contact_status_visibility" invisible="1"/>
             </field>
