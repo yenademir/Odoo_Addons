@@ -235,6 +235,7 @@
                 <field name="vehicle_type_id" optional="hide" readonly="0"/>
                 <field name="state" />
                 <field name="airtag_url" optional="hide" readonly="0"/>
+                <field name="sales_cost" string="Sales Cost" />
             </tree>
         </field>
     </record>
