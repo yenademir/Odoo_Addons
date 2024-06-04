@@ -106,7 +106,21 @@ class StockMove(models.Model):
     airtag_url = fields.Char(string='Airtag Link', related='picking_id.batch_id.airtag_url', store=True, readonly=True)
     vehicle_type_id = fields.Many2one(string='Vehicle Type', related='picking_id.batch_id.vehicle_type_id', store=True, readonly=True)
     quantity_done = fields.Float(string="Quantity Done", store=True )
+    sales_cost = fields.Float(string='Sales Cost', compute='_compute_sales_cost')
 
+    @api.depends('state', 'product_id', 'product_uom_qty')
+    def _compute_sales_cost(self):
+        for move in self:
+            if move.state == 'done':
+                sale_order_lines = self.env['sale.order.line'].search([('product_id', '=', move.product_id.id)])
+                if sale_order_lines:
+                    sale_order_line = sale_order_lines[0]
+                    move.sales_cost = move.product_uom_qty * sale_order_line.price_unit
+                else:
+                    move.sales_cost = 0.0
+            else:
+                move.sales_cost = 0.0
+                
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
