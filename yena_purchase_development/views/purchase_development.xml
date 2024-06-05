@@ -90,6 +90,9 @@
                 <xpath expr="//field[@name='date_order']" position="attributes">
                     <attribute name="string">Latest Bid Date</attribute>
                 </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="required">0</attribute>
+                </xpath>
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="rfq_date" string="Quotation Received Date"/>
                     <field name="rfq_sent_date" string="S-RFQ Sent Date"/>
