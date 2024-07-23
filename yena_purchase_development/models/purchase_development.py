@@ -8,6 +8,7 @@ class PurchaseOrder(models.Model):
     rfq_sent_date = fields.Date(string="S-RFQ Sent Date")
     delivery_date = fields.Date(string="Required Delivery Date")
     rfq_date = fields.Date(string="S-RFQ Date")
+    last_date = fields.Date(string="Son Tarih")
     customer_reference = fields.Char(string="Customer Reference No", store=True)
     is_current_user = fields.Boolean(compute='_compute_is_current_user')
     project_purchase = fields.Many2one('project.project', string="Project Number", store=True)
