@@ -107,6 +107,7 @@ class StockMove(models.Model):
     vehicle_type_id = fields.Many2one(string='Vehicle Type', related='picking_id.batch_id.vehicle_type_id', store=True, readonly=True)
     quantity_done = fields.Float(string="Quantity Done", store=True )
     sales_cost = fields.Float(string='Sales Cost', compute='_compute_sales_cost')
+    effective_date = fields.Datetime(related='picking_id.date_done', store=True, readonly=True)
 
     @api.depends('state', 'product_id', 'product_uom_qty')
     def _compute_sales_cost(self):
