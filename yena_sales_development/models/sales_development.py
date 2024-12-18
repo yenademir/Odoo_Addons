@@ -217,7 +217,7 @@ class SaleOrder(models.Model):
     
                 # Yeni satın alma siparişi satırlarını oluştur
                 for so_line in order.order_line:
-                    new_price_unit = so_line.price_unit * 0.8  # Örnek indirim oranı
+                    new_price_unit = so_line.price_unit * 0.9  # Örnek indirim oranı
                     po_line = purchase_order.order_line.create({
                         'order_id': purchase_order.id,
                         'product_id': so_line.product_id.id,
